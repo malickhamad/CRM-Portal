@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             UserPermissionSeeder::class,
             PermissionPermissionSeeder::class,
             CreateAdminUserSeeder::class,
+            SubscriptionPlanSeeder::class,
+            StandardsSeeder::class,
             SiteSettingsSeeder::class,
             EmailSettingsSeeder::class,
             HomepageSettingsSeeder::class,
@@ -29,4 +31,3 @@ class DatabaseSeeder extends Seeder
 
     }
 }
-

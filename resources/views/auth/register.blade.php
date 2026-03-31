@@ -108,7 +108,7 @@
                     <label class="form-check-label text-sm" for="condition">
                         By creating an account, you agree to the
                         <a href="javascript:void(0)" class="text-primary-600 fw-semibold">Terms & Conditions</a> and our
-                        <a     href="javascript:void(0)" class="text-primary-600 fw-semibold">Privacy Policy</a>
+                        <a href="javascript:void(0)" class="text-primary-600 fw-semibold">Privacy Policy</a>
                     </label>
                 </div> --}}
 
