@@ -26,7 +26,7 @@
                     <div class="card basic-data-table">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="card-title text-success-1000 ">Logs</h4>
-                            <
+
                         </div>
                             <div class="card-body  ">
                                 {{-- show here logs --}}
@@ -49,7 +49,7 @@
                                         <tbody>
                                             @foreach ($logs as $key => $log)
                                                 <tr>
-                                                    <td class="text-start">               
+                                                    <td class="text-start">
                                                            {{ $key + 1 }}
                                                     </td>
                                                     <td class="text-start">

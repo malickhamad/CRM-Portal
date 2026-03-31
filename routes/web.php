@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PageController;
 
 
 
@@ -64,7 +63,3 @@ Route::get('/storage-link', function () {
 
 
 
- Route::get('/services', [PageController::class, 'services'])->name('services');
- Route::get('/finance_services', [PageController::class, 'finance_services'])->name('finance_services');
- Route::get('/utilities_services', [PageController::class, 'utilities_services'])->name('utilities_services');
- Route::get('/card_machine', [PageController::class, 'card_machine'])->name('card_machine');

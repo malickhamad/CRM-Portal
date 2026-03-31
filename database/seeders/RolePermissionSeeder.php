@@ -17,9 +17,7 @@ class RolePermissionSeeder extends Seeder
         $permissions = [
 
             'role-list', 'role-create', 'role-edit', 'role-delete',
-            'plans-list', 'plans-create', 'plans-edit', 'plans-delete',
-            'plan-features-list', 'plan-features-create', 'plan-features-edit', 'plan-features-delete',
-            'assessment', 'assessment-user', 'practice-info', 'faqs', 'reports', 'contact-us', 'settings','standards','activity-logs','payment-history','category', 'customers-list','user-subscription','admin-reports',
+           'faqs', 'reports', 'contact-us', 'settings','activity-logs','payment-history','category', 'customers-list','user-subscription','admin-reports','new-application',
         ];
 
         foreach ($permissions as $permission) {

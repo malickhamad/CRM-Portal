@@ -4,14 +4,24 @@
     <main class="dashboard-main">
         @include('backend.layouts.partials.header')
 
-        <div class="dashboard-main-body bg-light">
+        <div class="dashboard-main-body bg-light position-relative">
 
+            <!-- ⭐ Attractive Back Button (Bootstrap only) -->
+            <div class="position-absolute top-0 start-0 mt-3 ms-3">
+                <a href="javascript:history.back()"
+                    class="btn btn-light border shadow-sm rounded-pill px-4 py-2 fw-semibold
+                      d-flex align-items-center gap-2">
+                    ← Back
+                </a>
+            </div>
             <div class="d-flex align-items-center justify-content-center min-vh-100">
 
                 <div class="text-center w-100 px-3">
 
+
                     <!-- Heading -->
-                    <h4 class="fw-bold mb-1 text-dark">Our Services</h4>
+                    <h4 class="fw-bold mb-1 text-dark">Our Finance
+                        Services</h4>
                     <p class="text-muted mb-5">Select a service to continue</p>
 
                     <!-- Hidden Input -->
@@ -21,21 +31,30 @@
                     <div class="d-flex justify-content-center gap-5 flex-wrap mb-4">
 
                         <!-- Finance -->
+                        <div class="card border-0 shadow-sm service-card" data-service="card_machine">
+
+                            <div class="service-img-box">
+                                <img src="{{ asset('asset/crm/services/card_machine.png') }}" class="img-fluid service-img">
+                            </div>
+                            <h6 class="fw-semibold text-secondary small mb-0">Card Machine</h6>
+                        </div>
+
+                        <!-- Finance -->
                         <div class="card border-0 shadow-sm service-card" data-service="finance">
 
                             <div class="service-img-box">
-                                <img src="{{ asset('asset/crm/services/finance.png') }}" class="img-fluid service-img">
+                                <img src="{{ asset('asset/crm/services/loan.png') }}" class="img-fluid service-img">
                             </div>
-                            <h6 class="fw-semibold text-secondary small mb-0">Finance</h6>
+                            <h6 class="fw-semibold text-secondary small mb-0">Loan</h6>
                         </div>
 
                         <!-- Utilities -->
                         <div class="card border-0 shadow-sm service-card" data-service="utilities">
 
                             <div class="service-img-box">
-                                <img src="{{ asset('asset/crm/services/Utilities.png') }}" class="img-fluid service-img">
+                                <img src="{{ asset('asset/crm/services/open_banking.png') }}" class="img-fluid service-img">
                             </div>
-                            <h6 class="fw-semibold text-secondary small mb-0">Utilities</h6>
+                            <h6 class="fw-semibold text-secondary small mb-0">Open Banking</h6>
                         </div>
 
                     </div>
@@ -79,11 +98,14 @@
                 }
 
                 if (service === "finance") {
-                    window.location.href = "{{ route('finance_services') }}";
+                    window.location.href = "{{ route('admin.finance_services') }}";
+                }
+                if (service === "card_machine") {
+                    window.location.href = "{{ route('admin.card_machine') }}";
                 }
 
                 if (service === "utilities") {
-                    window.location.href = "{{ route('utilities_services') }}";
+                    window.location.href = "{{ route('admin.utilities_services') }}";
                 }
             });
 

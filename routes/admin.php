@@ -1,27 +1,14 @@
 <?php
 
+use App\Http\Controllers\Admin\{ CustomersController, DashboardController, FaqController, PermissionController, RoleController, UserController, };
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\LogsController;
 use App\Http\Controllers\Admin\MYProfileController;
 use App\Http\Controllers\Admin\SettingsController;
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\TestimonialController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\{
-    CustomersController,
-    DashboardController,
-    FaqController,
-    PaymentHistoryController,
-    PlanFeaturesController,
-    PermissionController,
-    RoleController,
-    SubscriptionPlanController,
-    UpgradePlanRequestController,
-    UserController,
-};
 use App\Http\Controllers\Frontend\ContactController;
-use App\Http\Controllers\user\UpgradePlanController;
-use App\Http\Middleware\ExcludeUserRole;
-use Stripe\Customer;
+use App\Http\Controllers\Admin\ApplicationController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -38,6 +25,19 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     Route::get('/account-settings', [MYProfileController::class, 'showAccountSettings'])->name('account-settings');
     Route::post('/account-settings/update-password', [MYProfileController::class, 'updatePassword'])->name('update-password');
+
+
+    // New Application routes
+
+
+ Route::get('/services', [ApplicationController::class, 'services'])->name('services');
+ Route::get('/finance_services', [ApplicationController::class, 'finance_services'])->name('finance_services');
+ Route::get('/utilities_services', [ApplicationController::class, 'utilities_services'])->name('utilities_services');
+ Route::get('/card_machine', [ApplicationController::class, 'card_machine'])->name('card_machine');
+
+
+
+
 
     // logs
 
@@ -60,11 +60,6 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     Route::get('/assesments', [ContactController::class, 'assesments'])->name('assesments.index');
 
-    // Subscription Plan routes
-    Route::resource('subscription-plans', SubscriptionPlanController::class);
-
-    // Plan Features
-    Route::resource('plan-features', PlanFeaturesController::class);
 
     //FAQS routes
     Route::resource('faqs', FaqController::class);
@@ -72,14 +67,6 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
     // Testimonial routes
     Route::resource('testimonials', TestimonialController::class);
-
-
-    // Section routes
-    Route::resource('sections', SectionController::class);
-
-    // MCQ routes
-    Route::resource('mcqs', McqsController::class);
-
 
     // categories rouets
     Route::resource('categories', CategoryController::class);
@@ -113,21 +100,8 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     // New route to handle dynamic group-based update (for tabbed settings)
     Route::post('settings/group-update', [SettingsController::class, 'updateGroupSettings'])->name('settings.group-update');
 
-    //RiskReport
-    Route::get('/risk-report', function () {
-        return view('backend.reports.riskreport');
-    })->name('riskreport.index');
-
-    //Payment history
-    Route::get('/payments-history', [PaymentHistoryController::class, 'index'])->name('payments-history.index');
 
 
-    // ugrade plan requests
-
-    Route::get('/upgrade-requests', [UpgradePlanRequestController::class, 'index'])->name('upgrade-requests.index');
-    Route::get('/upgrade-requests/{id}', [UpgradePlanRequestController::class, 'show'])->name('apgrade-requests.show');
-    Route::post('/upgrade-requests/{id}/approve', [UpgradePlanRequestController::class, 'approve'])->name('upgrade-requests.approve');
-    Route::post('/upgrade-requests/{id}/reject', [UpgradePlanRequestController::class, 'reject'])->name('upgrade-requests.reject');
 
 
 });
