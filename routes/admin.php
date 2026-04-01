@@ -32,7 +32,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
 
 
-    // profile routes
+    //  profile routes
     Route::get('/my-profile', [MYProfileController::class, 'showProfile'])->name('my-profile');
     Route::post('/my-profile/update', [MYProfileController::class, 'updateProfile'])->name('update-profile');
 
