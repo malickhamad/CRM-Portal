@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
-use App\Models\PlanFeature;
 use App\Models\SubscribtionPlan;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {

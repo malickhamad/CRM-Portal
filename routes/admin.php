@@ -1,17 +1,30 @@
 <?php
 
 use App\Http\Controllers\Admin\{ CustomersController, DashboardController, FaqController, PermissionController, RoleController, UserController, };
+use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\LogsController;
 use App\Http\Controllers\Admin\MYProfileController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Frontend\ContactController;
-use App\Http\Controllers\Admin\ApplicationController;
 use Illuminate\Support\Facades\Route;
 
+
+
+// Route to redirect to admin dashboard
+Route::get('/', function () {
+    return redirect()->route('admin.dashboard');
+});
+
+
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
+
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+
+
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
 

@@ -1,13 +1,12 @@
-
-
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compliance Management System</title>
-  <link rel="icon" type="image/png" href="{{asset('asset/backend/images/favicon.png')}}" sizes="16x16">
-  <!-- remix icon font css  -->
+ <link rel="icon" type="image/png" sizes="32x32"
+    href="{{ isset($siteSettings['favicon']) ? asset('storage/' . $siteSettings['favicon']) : asset('asset/backend/images/fivestarlogo.png') }}">    <link href="{{ asset('asset/frontend/css/style.css?v=5.0.0') }}" rel="stylesheet">
+    <title>{{ $siteSettings['site_title'] ?? 'Five Star Solutions' }}</title>
+        <!-- remix icon font css  -->
   <link rel="stylesheet" href="{{asset('asset/backend/css/remixicon.css')}}">
   <!-- BootStrap css -->
   <link rel="stylesheet" href="{{asset('asset/backend/css/lib/bootstrap.min.css')}}">
@@ -70,13 +69,13 @@
                         <span class="icon top-50 translate-middle-y">
                             <iconify-icon icon="mage:email"></iconify-icon>
                         </span>
-                        <input 
-                            type="email" 
-                            name="email" 
+                        <input
+                            type="email"
+                            name="email"
                             class="form-control h-56-px bg-neutral-50 radius-12 @error('email') is-invalid @enderror"
-                            placeholder="Email" 
-                            value="{{ old('email') }}" 
-                            required 
+                            placeholder="Email"
+                            value="{{ old('email') }}"
+                            required
                             autofocus
                         >
                     </div>
@@ -95,16 +94,16 @@
                         <span class="icon top-50 translate-middle-y">
                             <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
                         </span>
-                        <input 
-                            type="password" 
-                            name="password" 
+                        <input
+                            type="password"
+                            name="password"
                             id="your-password"
                             class="form-control h-56-px bg-neutral-50 radius-12 @error('password') is-invalid @enderror"
-                            placeholder="Password" 
+                            placeholder="Password"
                             required
                         >
                         {{-- Toggle password eye icon --}}
-                        <span 
+                        <span
                             class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
                             data-toggle="#your-password">
                         </span>

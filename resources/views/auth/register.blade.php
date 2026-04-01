@@ -5,9 +5,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compliance Management System</title>
-  <link rel="icon" type="image/png" href="{{asset('asset/backend/images/favicon.png')}}" sizes="16x16">
-  <!-- remix icon font css  -->
+ <link rel="icon" type="image/png" sizes="32x32"
+    href="{{ isset($siteSettings['favicon']) ? asset('storage/' . $siteSettings['favicon']) : asset('asset/backend/images/fivestarlogo.png') }}">    <link href="{{ asset('asset/frontend/css/style.css?v=5.0.0') }}" rel="stylesheet">
+    <title>{{ $siteSettings['site_title'] ?? 'Five Star Solutions' }}</title>  <!-- remix icon font css  -->
   <link rel="stylesheet" href="{{asset('asset/backend/css/remixicon.css')}}">
   <!-- BootStrap css -->
   <link rel="stylesheet" href="{{asset('asset/backend/css/lib/bootstrap.min.css')}}">

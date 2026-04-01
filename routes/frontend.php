@@ -3,15 +3,16 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Frontend\ContactController;
-use App\Http\Controllers\frontend\EassayController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\StripePaymentController;
-use App\Http\Controllers\User\DashboardController;
-use App\Http\Controllers\Frontend\EssayGenerateController;
 
 
 // frontend routes
-Route::get('/', [HomeController::class, 'home'])->name('frontend.home');
+
+
+
+
+// Route::get('/', [HomeController::class, 'home'])->name('frontend.home');
 Route::get('/pricing-plans', [HomeController::class, 'pricing'])->name('frontend.pricing');
 Route::get('/about-us', [HomeController::class, 'about'])->name('frontend.about');
 Route::get('/contact-us', [HomeController::class, 'contact'])->name('frontend.contact');
