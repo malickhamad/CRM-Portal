@@ -9,8 +9,8 @@
             <!-- ⭐ Attractive Back Button (Bootstrap only) -->
             <div class="position-absolute top-0 start-0 mt-3 ms-3">
                 <a href="javascript:history.back()"
-                    class="btn btn-light border shadow-sm rounded-pill px-4 py-2 fw-semibold
-                      d-flex align-items-center gap-2">
+                    class="btn btn-light border shadow-sm rounded-pill px-3 py-2 fw-semibold
+                      d-flex align-items-center gap-2 bg_green_color">
                     ← Back
                 </a>
             </div>
@@ -20,7 +20,7 @@
 
 
                     <!-- Heading -->
-                    <h4 class="fw-bold mb-1 text-dark">Our Finance
+                    <h4 class="fw-bold mb-1 green_color">Our Finance
                         Services</h4>
                     <p class="text-muted mb-5">Select a service to continue</p>
 
@@ -61,7 +61,7 @@
 
                     <!-- Next Button -->
                     <div class="mt-5">
-                        <button class="btn btn-primary px-5 py-2 rounded-pill shadow-lg fw-semibold next-btn">
+                        <button class="btn btn-brand-1 float-right px-5 rounded-pill shadow-lg fw-semibold next-btn bg_green_color">
                             Next →
                         </button>
                     </div>
@@ -114,6 +114,13 @@
 
     <!-- Minimal Glass CSS -->
     <style>
+          .green_color {
+                color: #14532d !important;
+            }
+             .bg_green_color {
+                background-color: #14532d !important;
+                color: white !important;
+            }
         .service-card {
             width: 200px;
             height: 250px;
@@ -158,10 +165,10 @@
 
         /* ⭐ Selected state */
         .service-card.selected {
-            border: 2px solid #0d6efd;
-            background: rgba(13, 110, 253, 0.08);
+            border: 2px solid #14532d;
+            background: rgb(184 213 191 / 25%);
             transform: scale(1.05);
-            box-shadow: 0 12px 25px rgba(13, 110, 253, 0.25) !important;
+            box-shadow: 0 12px 25px rgba(54, 177, 85, 0.25) !important;
         }
 
         .service-card.selected .service-img {
