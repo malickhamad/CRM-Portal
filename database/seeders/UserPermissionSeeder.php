@@ -18,11 +18,15 @@ class UserPermissionSeeder extends Seeder
            'user-list',
            'user-create',
            'user-edit',
-           'user-delete'
+           'user-delete',
+           'assessment-user',
+           'user-subscription',
+           'reports',
+           'practice-info',
         ];
 
         foreach ($permissions as $permission) {
-             Permission::create(['name' => $permission]);
+             Permission::firstOrCreate(['name' => $permission]);
         }
          //Ensure User role exists before assigning permissions
          $userRole = Role::firstOrCreate(['name' => 'User', 'guard_name' => 'web']);

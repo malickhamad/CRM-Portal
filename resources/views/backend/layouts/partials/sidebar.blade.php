@@ -28,14 +28,14 @@
 
 
 
-            @can('new-application')
+            {{-- @can('new-application') --}}
                 <li>
                     <a href="{{ route('admin.services') }}">
                         <iconify-icon icon="mdi:file-document-outline" class="menu-icon"></iconify-icon>
                         <span>New Application</span>
                     </a>
                 </li>
-            @endcan
+            {{-- @endcan --}}
 
 
 

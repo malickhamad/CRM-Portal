@@ -6,12 +6,22 @@
     <main class="dashboard-main">
         @include('backend.layouts.partials.header')
 
-        <div class="dashboard-main-body py-3 bg-light">
-            <div class="container-fluid">
+                  <div class="dashboard-main-body bg-light position-relative pt-5">
+
+            <!-- ⭐ Attractive Back Button (Bootstrap only) -->
+            <div class="position-absolute top-0 start-0 mt-3 ms-3">
+                <a href="javascript:history.back()"
+                    class="btn btn-light border shadow-sm rounded-pill px-3 py-2 fw-semibold
+                      d-flex align-items-center gap-2 bg_green_color">
+                    ← Back
+                </a>
+            </div>
+            
+            <div class="container-fluid bg-white px-3 py-5">
 
                 <!-- HEADER -->
-                <div class="mb-3 px-3 py-2 bg-white border rounded">
-                    <h6 class="fw-bold mb-0 text-primary">
+                <div class="mb-3 px-3 py-2 bg-white border rounded" >
+                    <h6 class="fw-bold mb-0 green_color">
                         <i class="bi bi-ui-checks-grid me-1"></i> Application Form
                     </h6>
                 </div>
@@ -321,7 +331,7 @@
 
                             <div class="col-md-4 d-flex align-items-center">
                                 <div class="form-check form-switch ms-1">
-                                    <input class="form-check-input switcBtn" type="checkbox" id="eposSystem"
+                                    <input class="form-check-input switcBtn mt-1" type="checkbox" id="eposSystem"
                                         name="epos_system" value="1">
                                     <label class="form-check-label ms-2 text-muted" for="eposSystem">
                                         Enable
@@ -520,7 +530,7 @@
                                     </div>
                                 </div>
 
-                                
+
                             </div>
                         </div>
                     </div>
@@ -544,10 +554,16 @@
         </div>
 
         <style>
-            body {
-                background: #f5f6f8;
-                font-size: 12px;
+       
+            .green_color {
+                color: #14532d !important;
             }
+
+              .bg_green_color {
+                background-color: #14532d !important;
+                color: white !important;
+            }
+            
 
             .form-section {
                 background: #fff;
@@ -559,7 +575,7 @@
             .section-title {
                 position: relative;
                 text-align: center;
-                font-size: 15px;
+                font-size: 17px;
                 font-weight: 700;
                 color: #2f3e5c;
                 margin-bottom: 14px;
@@ -586,7 +602,7 @@
             .section-title span {
                 background: #fff;
                 padding: 0 12px;
-                color: #3a7bd5;
+                color: #14532d;
             }
 
             .form-control,
@@ -603,7 +619,7 @@
             }
 
             label {
-                font-size: 12px;
+                font-size: 14px;
                 font-weight: 600;
                 color: #444;
                 margin-bottom: 0;
@@ -611,12 +627,12 @@
 
             .form-control:focus,
             .form-select:focus {
-                border-color: #3a7bd5;
+                border-color: #14532d;
                 box-shadow: 0 0 0 2px rgba(58, 123, 213, 0.08);
             }
 
             .btn-primary {
-                background: #3a7bd5;
+                background: #14532d;
                 border: none;
                 font-size: 14px;
                 padding: 9px;
@@ -662,8 +678,8 @@
             }
 
             .kyc-upload-box:hover {
-                border-color: #0d6efd;
-                background: #f0f7ff;
+                border-color: #14532d;
+                background: #fafffc;
             }
         </style>
     @endsection

@@ -68,7 +68,7 @@
                                             <!-- Next Button -->
                                                 <div class="mt-5">
                                                     <button
-                                                        class="btn btn-brand-1 float-right next-btn">
+                                                        class="btn btn-brand-1 float-right px-5 rounded-pill shadow-lg fw-semibold bg_green_color next-btn">
                                                         Next →
                                                     </button>
                                                 </div>
@@ -135,6 +135,12 @@ $(document).ready(function() {
 
         <!-- Minimal Glass CSS -->
         <style>
+              .green_color {
+                color: #14532d !important;
+            }
+             .bg_green_color {
+                background-color: #14532d !important;
+            }
             .service-card {
                 width: 200px;
                 height: 250px;
@@ -179,9 +185,9 @@ $(document).ready(function() {
 
             /* ⭐ Selected state */
             .service-card.selected {
-                border: 2px solid #0d6efd;
+                border: 2px solid #14532d;
                 transform: scale(1.05);
-                box-shadow: 0 12px 25px rgba(13, 110, 253, 0.25) !important;
+                box-shadow: 0 12px 25px rgba(54, 177, 85, 0.25) !important;
             }
 
             .service-card.selected .service-img {
