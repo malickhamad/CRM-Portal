@@ -1,92 +1,157 @@
 @extends('backend.layouts.app')
 
 @section('content')
+    <main class="dashboard-main">
+        @include('backend.layouts.partials.header')
 
-<main class="dashboard-main">
-    @include('backend.layouts.partials.header')
+        <div class="dashboard-main-body bg-light position-relative">
 
-    <div class="dashboard-main-body bg-light">
 
-        <div class="d-flex align-items-center justify-content-center min-vh-100">
+            
+            <!-- ⭐ Attractive Back Button (Bootstrap only) -->
+            <div class="position-absolute top-0 start-0 mt-3 ms-3">
+                <a href="javascript:history.back()"
+                    class="btn btn-light border shadow-sm rounded-pill px-3 py-2 fw-semibold
+                      d-flex align-items-center gap-2 bg_green_color">
+                    ← Back
+                </a>
+            </div>
+            <div class="d-flex align-items-center justify-content-center min-vh-100">
 
-            <div class="text-center w-100 px-3">
+                <div class="text-center w-100 px-3">
 
-                <!-- Heading -->
-                <h4 class="fw-bold mb-1 text-dark">Our utilities_services</h4>
-                <p class="text-muted mb-5">Select a service to continue</p>
 
-                <!-- Cards -->
-                <div class="d-flex justify-content-center gap-5 flex-wrap mb-4">
+                    <!-- Heading -->
+                    <h4 class="fw-bold mb-1 green_color">Our Utilities
+                        Services</h4>
+                    <p class="text-muted mb-5">Select a service to continue</p>
 
-                    <!-- Card 1 -->
-                    <div class="card border-0 shadow-sm service-card bg-white">
-                        <div class="service-img-box">
-                            <img src="{{asset('asset/crm/services/finance.png')}}" class="img-fluid service-img">
+                    <!-- Hidden Input -->
+                    <input type="hidden" id="selectedService">
+
+                    <!-- Cards -->
+                    <div class="d-flex justify-content-center gap-3 flex-wrap mb-4">
+
+                        <!-- utilities -->
+                        <div class="card border-0 shadow-sm service-card_utilities" data-service="water">
+
+                            <div class="service-img-box">
+                                <img src="{{ asset('asset/crm/services/card_machine.png') }}" class="img-fluid service-img">
+                            </div>
+                            <h6 class="fs-15 fw-semibold text-secondary small mb-0">Water</h6>
                         </div>
-                        <h6 class="fw-semibold text-secondary small mb-0">Finance</h6>
+
+                        <!-- utilities -->
+                        <div class="card border-0 shadow-sm service-card_utilities" data-service="broadband">
+
+                            <div class="service-img-box">
+                                <img src="{{ asset('asset/crm/services/loan.png') }}" class="img-fluid service-img">
+                            </div>
+                            <h6 class="fs-15 fw-semibold text-secondary small mb-0">Broadband</h6>
+                        </div>
+
+                        <!-- Utilities -->
+                        <div class="card border-0 shadow-sm service-card_utilities" data-service="telecom">
+
+                            <div class="service-img-box">
+                                <img src="{{ asset('asset/crm/services/open_banking.png') }}" class="img-fluid service-img">
+                            </div>
+                            <h6 class="fs-15 fw-semibold text-secondary small mb-0">Telecom</h6>
+                        </div>
+                           <!-- utilities -->
+                        <div class="card border-0 shadow-sm service-card_utilities" data-service="gas">
+
+                            <div class="service-img-box">
+                                <img src="{{ asset('asset/crm/services/card_machine.png') }}" class="img-fluid service-img">
+                            </div>
+                            <h6 class="fs-15 fw-semibold text-secondary small mb-0">Gas</h6>
+                        </div>
+
+                        <!-- utilities -->
+                        <div class="card border-0 shadow-sm service-card_utilities" data-service="electricity">
+
+                            <div class="service-img-box">
+                                <img src="{{ asset('asset/crm/services/loan.png') }}" class="img-fluid service-img">
+                            </div>
+                            <h6 class="fs-15 fw-semibold text-secondary small mb-0">Electricity</h6>
+                        </div>
+
+                        <!-- Utilities -->
+                        <div class="card border-0 shadow-sm service-card_utilities" data-service="electric_gas">
+
+                            <div class="service-img-box">
+                                <img src="{{ asset('asset/crm/services/open_banking.png') }}" class="img-fluid service-img">
+                            </div>
+                            <h6 class="fs-15 fw-semibold text-secondary small mb-0">Electric-Gas</h6>
+                        </div>
+                   
+
                     </div>
 
-                    <!-- Card 2 -->
-                    <div class="card border-0 shadow-sm service-card bg-white">
-                        <div class="service-img-box">
-                            <img src="{{asset('asset/crm/services/Utilities.png')}}" class="img-fluid service-img">
-                        </div>
-                        <h6 class="fw-semibold text-secondary small mb-0">Utilities</h6>
+                    <!-- Next Button -->
+                    <div class="mt-5">
+                        <button class="btn btn-brand-1 float-right px-5 rounded-pill shadow-lg fw-semibold next-btn bg_green_color">
+                            Next →
+                        </button>
                     </div>
 
-                </div>
-
-                <!-- Next Button -->
-                   <!-- Next Button -->
-                <div class="mt-5">
-                    <button class="btn btn-primary px-5 py-2 rounded-pill shadow-lg fw-semibold next-btn">
-                        Next →
-                    </button>
                 </div>
 
             </div>
 
         </div>
 
-    </div>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-<!-- CSS -->
-<style>
-    .service-card {
-        width: 200px;
-        height: 250px;
-        border-radius: 16px;
-        transition: all 0.25s ease;
-        cursor: pointer;
-        padding: 18px;
-    }
+    <script>
+        $(document).ready(function() {
 
-    .service-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 14px 30px rgba(0,0,0,0.12) !important;
-    }
+            $(".service-card_utilities").click(function() {
 
-    .service-img-box {
-        height: 170px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 10px;
-    }
+                let service = $(this).data("service");
+                $("#selectedService").val(service);
 
-    .service-img {
-        max-height: 200px;
-        max-width: 100%;
-        object-fit: contain;
-        filter: grayscale(100%);
-        transition: all 0.25s ease;
-    }
+                $(".service-card_utilities").removeClass("selected");
+                $(this).addClass("selected");
 
-    .service-card:hover .service-img {
-        filter: grayscale(0%);
-        transform: scale(1.08);
-    }
+            });
 
-</style>
+            $(".next-btn").click(function() {
 
+                let service = $("#selectedService").val();
+
+                if (!service) {
+                    alert("Please select a service first!");
+                    return;
+                }
+
+
+
+                if (service === "water") {
+                    window.location.href = "{{ route('admin.water') }}";
+                }
+                if (service === "broadband") {
+                    window.location.href = "{{ route('admin.broadband') }}";
+                }
+
+                if (service === "telecom") {
+                    window.location.href = "{{ route('admin.telecom') }}";
+                }
+                if (service === "gas") {
+                    window.location.href = "{{ route('admin.gas') }}";
+                }
+                if (service === "electricity") {
+                    window.location.href = "{{ route('admin.electricity') }}";
+                }
+
+                if (service === "electric_gas") {
+                    window.location.href = "{{ route('admin.electric_gas') }}";
+                }
+            });
+
+        });
+    </script>
+
+  
 @endsection

@@ -46,9 +46,34 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
  Route::get('/services', [ApplicationController::class, 'services'])->name('services');
  Route::get('/finance_services', [ApplicationController::class, 'finance_services'])->name('finance_services');
  Route::get('/utilities_services', [ApplicationController::class, 'utilities_services'])->name('utilities_services');
- Route::get('/card_machine', [ApplicationController::class, 'card_machine'])->name('card_machine');
 
 
+Route::prefix('finance')->group(function () {
+
+    Route::get('/card_machine', [ApplicationController::class, 'card_machine'])->name('card_machine');
+
+    Route::get('/loan', [ApplicationController::class, 'loan'])->name('loan');
+
+    Route::get('/open_banking', [ApplicationController::class, 'open_banking'])->name('open_banking');
+
+});
+
+
+Route::prefix('utilities')->group(function () {
+
+    Route::get('/water', [ApplicationController::class, 'water'])->name('water');
+
+    Route::get('/broadband', [ApplicationController::class, 'broadband'])->name('broadband');
+
+    Route::get('/telecom', [ApplicationController::class, 'telecom'])->name('telecom');
+
+    Route::get('/gas', [ApplicationController::class, 'gas'])->name('gas');
+
+    Route::get('/electricity', [ApplicationController::class, 'electricity'])->name('electricity');
+
+    Route::get('/electric_gas', [ApplicationController::class, 'electric_gas'])->name('electric_gas');
+
+});
 
 
 
