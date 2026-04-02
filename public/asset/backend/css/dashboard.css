@@ -1,0 +1,352 @@
+
+            /*  Dashboard CSS  */
+            .premium-card {
+                background: #ffffff;
+                border-radius: 12px;
+                padding: 1.5rem;
+                border: 1px solid #f0f2f5;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                height: 100%;
+                display: flex;
+                align-items: center;
+                gap: 1.25rem;
+            }
+
+            .premium-card:hover {
+                box-shadow: 0 10px 30px -10px rgba(0, 155, 65, 0.171);
+                transform: translateY(-3px);
+                rgba(8, 177, 78, 0.15)rgb(8, 177, 78)rgb(38, 255, 129)
+            }
+
+            /* Icon Box: Rounded Square (Not Circle) for Modern Look */
+            .icon-box {
+                width: 56px;
+                height: 56px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                font-size: 24px;
+            }
+
+            .data-section {
+                flex-grow: 1;
+            }
+
+            .stat-label {
+                color: #64748b;
+                font-size: 0.85rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.8px;
+                margin-bottom: 4px;
+                display: block;
+            }
+
+            .stat-number {
+                font-size: 1.75rem;
+                font-weight: 700;
+                color: #0f172a;
+                line-height: 1.2;
+            }
+
+            /* Professional Muted Colors */
+            .bg-total {
+                background-color: #f1f5f9;
+                color: #0e522a;
+            }
+
+            /* Neutral Greenish Gray */
+            .bg-pending {
+                background-color: #fff7ed;
+                color: #f59e0b;
+            }
+
+            /* Soft Amber */
+            .bg-live {
+                background-color: #f0fdf4;
+                color: #10b981;
+            }
+
+            /* Soft Emerald */
+            .bg-rejected {
+                background-color: #fef2f2;
+                color: #ef4444;
+            }
+
+            /* Soft Rose */
+
+            /* Small Trend Indicator (Optional but looks premium) */
+            .trend-text {
+                font-size: 0.75rem;
+                font-weight: 600;
+                margin-top: 4px;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+
+
+
+
+                    /* ===== Application Box ===== */
+                    .app-box {
+                        padding: 10px 0;
+                    }
+
+                    /* ===== Header ===== */
+                    .app-header {
+                        display: flex;
+                        gap: 10px;
+                        align-items: center;
+                        font-size: 13px;
+                        margin-bottom: 6px;
+                    }
+
+                    .app-header .status-text {
+                        margin-left: auto;
+                        font-weight: 600;
+                        color: #444;
+                    }
+
+                    /* ===== Progress Bar ===== */
+                    .progress-track {
+                        width: 100%;
+                        height: 12px;
+                        background: #e5e5e5;
+                        border-radius: 20px;
+                        overflow: hidden;
+                        margin-bottom: 6px;
+                    }
+
+                    /* Default Grey (completed/inactive look) */
+                    .progress-bar-custom {
+                        height: 100%;
+                        background: repeating-linear-gradient(45deg,
+                                #bdbdbd,
+                                #bdbdbd 8px,
+                                #9e9e9e 8px,
+                                #9e9e9e 16px);
+                    }
+
+                    /* Active (Purple striped like image) */
+                    .progress-bar-custom.active {
+                        background: repeating-linear-gradient(45deg,
+                                #d05ce3,
+                                #d05ce3 8px,
+                                #ba68c8 8px,
+                                #ba68c8 16px);
+                    }
+
+                    /* Base Style */
+                    .progress-bar-custom {
+                        height: 100%;
+                        transition: background 0.3s ease;
+                        /* Smooth color change */
+                    }
+
+                    /* 1. App Sent - Light Blue */
+                    .progress-bar-custom.status-app {
+                        background: repeating-linear-gradient(45deg, #4fc3f7, #4fc3f7 8px, #29b6f6 8px, #29b6f6 16px);
+                    }
+
+                    /* 2. Docs Required - Amber/Yellow */
+                    .progress-bar-custom.status-docs {
+                        background: repeating-linear-gradient(45deg, #ffd54f, #ffd54f 8px, #ffca28 8px, #ffca28 16px);
+                    }
+
+                    /* 3. Cot in process - Purple */
+                    .progress-bar-custom.status-cot {
+                        background: repeating-linear-gradient(45deg, #ba68c8, #ba68c8 8px, #ab47bc 8px, #ab47bc 16px);
+                    }
+
+                    /* 4. Awaiting Signature - Orange */
+                    .progress-bar-custom.status-await {
+                        background: repeating-linear-gradient(45deg, #ffb74d, #ffb74d 8px, #ffa726 8px, #ffa726 16px);
+                    }
+
+                    /* 5. Cot Done - Teal */
+                    .progress-bar-custom.status-done {
+                        background: repeating-linear-gradient(45deg, #4db6ac, #4db6ac 8px, #26a69a 8px, #26a69a 16px);
+                    }
+
+                    /* 6. Signed - Indigo */
+                    .progress-bar-custom.status-signed {
+                        background: repeating-linear-gradient(45deg, #7986cb, #7986cb 8px, #5c6bc0 8px, #5c6bc0 16px);
+                    }
+
+                    /* 7. Submitted to Supplier - Deep Blue */
+                    .progress-bar-custom.status-submit {
+                        background: repeating-linear-gradient(45deg, #64b5f6, #64b5f6 8px, #42a5f5 8px, #42a5f5 16px);
+                    }
+
+                    /* 8. Cost Objected - Pink/Alert */
+                    .progress-bar-custom.status-object {
+                        background: repeating-linear-gradient(45deg, #f06292, #f06292 8px, #ec407a 8px, #ec407a 16px);
+                    }
+
+                    /* 9. Live - Green (Success) */
+                    .progress-bar-custom.status-live {
+                        background: repeating-linear-gradient(45deg, #81c784, #81c784 8px, #66bb6a 8px, #66bb6a 16px);
+                    }
+
+                    /* 10. Rejected - Red (Error) */
+                    .progress-bar-custom.status-reject {
+                        background: repeating-linear-gradient(45deg, #e57373, #e57373 8px, #ef5350 8px, #ef5350 16px);
+                    }
+
+                    /* 11. Paid - Gold/Bright Green */
+                    .progress-bar-custom.status-paid {
+                        background: repeating-linear-gradient(45deg, #aed581, #aed581 8px, #9ccc65 8px, #9ccc65 16px);
+                    }
+
+                    /* Default Grey (Inactive) */
+                    .progress-bar-custom.inactive {
+                        background: repeating-linear-gradient(45deg, #bdbdbd, #bdbdbd 8px, #9e9e9e 8px, #9e9e9e 16px);
+                    }
+
+                    /* ===== Status Labels ===== */
+                    .status-labels {
+                        display: flex;
+                        justify-content: space-between;
+                        font-size: 10px;
+                        flex-wrap: wrap;
+                        gap: 5px;
+                    }
+
+                    /* ===== Optional: Active Highlight ===== */
+                    .status-active {
+                        font-weight: 700;
+                        text-decoration: underline;
+                    }
+
+
+
+
+                    /* Container jo applications ko hold karega */
+.applications-container {
+    max-height: 500px; /* Box ki height aap apni marzi se set kar sakte hain */
+    overflow-y: auto;  /* Vertical scroll enable karne ke liye */
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fdfdfd;
+}
+
+/* Har application box ki styling */
+.app-box-item {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px; /* Box ke darmiyan space */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+
+.app-box-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Header styling taake status alag nazar aaye */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.status-badge {
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Scrollbar ko khoobsurat banane ke liye (Optional) */
+.applications-container::-webkit-scrollbar {
+    width: 6px;
+}
+.applications-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+
+/* Header Bar Styling */
+.custom-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.header-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+.header-right {
+    display: flex;
+    gap: 10px;
+}
+
+.header-btn {
+    background: transparent;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 5px;
+    transition: 0.2s;
+}
+
+.header-btn:hover {
+    color: #333;
+}
+
+.close-btn:hover {
+    color: #dc3545; /* Red on hover */
+}
+
+/* Applications Box with Scroll */
+.applications-container {
+    max-height: 450px;
+    overflow-y: auto;
+    padding: 15px;
+    border: 1px solid #ddd;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+
+/* Fullscreen mode sirf is card ke liye */
+#pendingSalesSection.fullscreen-mode {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 999999 !important; /* Bohot high z-index taake dashboard ke upar aaye */
+    background: white !important;
+    margin: 0 !important;
+    display: flex;
+    flex-direction: column;
+}
+
+#pendingSalesSection.fullscreen-mode #scrollContainer {
+    max-height: none !important;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+}

@@ -40,7 +40,7 @@
 
 
     <li>
-        <a href="{{ route('admin.dashboard') }}">
+        <a href="{{ route('admin.settings.index') }}">
             <iconify-icon icon="mdi:magnify" class="menu-icon"></iconify-icon>
             <span>Find Application</span>
         </a>

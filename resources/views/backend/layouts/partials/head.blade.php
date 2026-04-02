@@ -38,6 +38,9 @@
   <link rel="stylesheet" href="{{asset('asset/backend/css/lib/audioplayer.css')}}">
   <!-- main css -->
   <link rel="stylesheet" href="{{asset('asset/backend/css/style.css')}}">
+  <link rel="stylesheet" href="{{asset('asset/backend/css/dashboard.css')}}">
+
+
     <!-- main js -->
 
 

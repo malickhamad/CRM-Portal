@@ -4,6 +4,7 @@
     <main class="dashboard-main">
         @include('backend.layouts.partials.header')
 
+
         <div class="dashboard-main-body">
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
                 <h6 class="fw-semibold mb-0 text-success-1000">Dashboard</h6>
@@ -22,7 +23,7 @@
 
             <div class="row gy-4">
 
-
+                {{-- Total Applications section --}}
                 <div class="container-fluid py-4">
 
                     <div class="row g-4 mt-2">
@@ -77,421 +78,124 @@
                 </div>
 
 
-                <div class="card-body  ">
-                    {{-- show here logs --}}
-                    <div class="table-responsive">
-                        <table class="table bordered-table mb-0 text-start" id="dataTable" data-page-length='5'>
-                            <thead>
-                                <tr>
-                                    <th style="width:80px;">S.L</th>
-                                    <th>Applications</th>
-                                </tr>
-                            </thead>
+                {{-- Pending sales status  --}}
+                <div id="pendingSalesSection" class=" mb-4">
 
-                            <tbody>
+                    <div class="custom-card-header">
+                        <div class="header-left">
+                            <i class="fas fa-list-alt"></i>
+                            <span class="header-title">Pending Sales Status</span>
+                        </div>
+                        <div class="header-right">
+                            <button class="header-btn" title="Settings">&#9881;</button>
+                            <button class="header-btn" onclick="toggleMinimize()" title="Minimize">&#8211;</button>
+                            <button class="header-btn" onclick="toggleFullscreen()" title="Full View">&#9723;</button>
+                            <button class="header-btn close-btn" onclick="closeWidget()" title="Close">&#10005;</button>
+                        </div>
+                    </div>
+                    <div id="scrollContainer" class="applications-container">
+                        <div class="app-box-item">
+                            <div class="app-header">
+                                <strong>Application #632</strong>
+                                <span>(19 Feb, 2026)</span>
+                                <span class="status-badge status-docs">Docs Required</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-bar-custom status-paid" style="width:15%"></div>
+                            </div>
+                            <div class="status-labels">
+                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
+                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
+                                <span>Submitted to Supplier</span><span>Cost Objected</span>
+                                <span>Live</span><span>Rejected</span><span>Paid</span>
+                            </div>
+                        </div>
 
-                                <!-- 2 -->
-
-                                 <tr>
-                                    <td>2</td>
-                                    <td>
-                                        <div class="app-box">
-                                            <div class="app-header">
-                                                <strong>Application #632</strong>
-                                                <span>(19 Feb, 2026)</span>
-                                                <span class="status-text">Docs Required</span>
-                                            </div>
-                                            <div class="progress-track">
-                                                <div class="progress-bar-custom status-docs" style="width:15%"></div>
-                                            </div>
-                                            <div class="status-labels">
-                                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-
-
-
-
-                                <!-- 5 -->
-                                <tr>
-                                    <td>5</td>
-                                    <td>
-                                        <div class="app-box">
-                                            <div class="app-header">
-                                                <strong>Application #635</strong>
-                                                <span>(18 Feb, 2026)</span>
-                                                <span class="status-text">Cot Done</span>
-                                            </div>
-                                            <div class="progress-track">
-                                                <div class="progress-bar-custom status-done" style="width:45%"></div>
-                                            </div>
-                                            <div class="status-labels">
-                                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                                  <!-- 10 -->
-                                <tr>
-                                    <td>10</td>
-                                    <td>
-                                        <div class="app-box">
-                                            <div class="app-header">
-                                                <strong>Application #640</strong>
-                                                <span>(16 Feb, 2026)</span>
-                                                <span class="status-text">Rejected</span>
-                                            </div>
-                                            <div class="progress-track">
-                                                <div class="progress-bar-custom status-reject" style="width:95%"></div>
-                                            </div>
-                                            <div class="status-labels">
-                                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                                <!-- 6 -->
-                                <tr>
-                                    <td>6</td>
-                                    <td>
-                                        <div class="app-box">
-                                            <div class="app-header">
-                                                <strong>Application #636</strong>
-                                                <span>(18 Feb, 2026)</span>
-                                                <span class="status-text">Signed</span>
-                                            </div>
-                                            <div class="progress-track">
-                                                <div class="progress-bar-custom status-signed" style="width:55%"></div>
-                                            </div>
-                                            <div class="status-labels">
-                                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                   <!-- 3 -->
-                                <tr>
-                                    <td>3</td>
-                                    <td>
-                                        <div class="app-box">
-                                            <div class="app-header">
-                                                <strong>Application #633</strong>
-                                                <span>(19 Feb, 2026)</span>
-                                                <span class="status-text">Cot in process</span>
-                                            </div>
-                                            <div class="progress-track">
-                                                <div class="progress-bar-custom status-cot" style="width:25%"></div>
-                                            </div>
-                                            <div class="status-labels">
-                                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- 4 -->
-                                <tr>
-                                    <td>4</td>
-                                    <td>
-                                        <div class="app-box">
-                                            <div class="app-header">
-                                                <strong>Application #634</strong>
-                                                <span>(18 Feb, 2026)</span>
-                                                <span class="status-text">Awaiting Signature</span>
-                                            </div>
-                                            <div class="progress-track">
-                                                <div class="progress-bar-custom status-await" style="width:35%"></div>
-                                            </div>
-                                            <div class="status-labels">
-                                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- 7 -->
-                                <tr>
-                                    <td>7</td>
-                                    <td>
-                                        <div class="app-box">
-                                            <div class="app-header">
-                                                <strong>Application #637</strong>
-                                                <span>(17 Feb, 2026)</span>
-                                                <span class="status-text">Submitted to Supplier</span>
-                                            </div>
-                                            <div class="progress-track">
-                                                <div class="progress-bar-custom status-submit" style="width:65%"></div>
-                                            </div>
-                                            <div class="status-labels">
-                                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                                 <!-- 1 -->
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <div class="app-box">
-                                            <div class="app-header">
-                                                <strong>Application #631</strong>
-                                                <span>(19 Feb, 2026)</span>
-                                                <span class="status-text">App Sent</span>
-                                            </div>
-                                            <div class="progress-track">
-                                                <div class="progress-bar-custom status-app" style="width:5%"></div>
-                                            </div>
-                                            <div class="status-labels">
-                                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- 8 -->
-                                <tr>
-                                    <td>8</td>
-                                    <td>
-                                        <div class="app-box">
-                                            <div class="app-header">
-                                                <strong>Application #638</strong>
-                                                <span>(17 Feb, 2026)</span>
-                                                <span class="status-text">Cost Objected</span>
-                                            </div>
-                                            <div class="progress-track">
-                                                <div class="progress-bar-custom status-object" style="width:75%"></div>
-                                            </div>
-                                            <div class="status-labels">
-                                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- 9 -->
-                                <tr>
-                                    <td>9</td>
-                                    <td>
-                                        <div class="app-box">
-                                            <div class="app-header">
-                                                <strong>Application #639</strong>
-                                                <span>(16 Feb, 2026)</span>
-                                                <span class="status-text">Live</span>
-                                            </div>
-                                            <div class="progress-track">
-                                                <div class="progress-bar-custom status-live" style="width:85%"></div>
-                                            </div>
-                                            <div class="status-labels">
-                                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                                <!-- 11 -->
-                                <tr>
-                                    <td>11</td>
-                                    <td>
-                                        <div class="app-box">
-                                            <div class="app-header">
-                                                <strong>Application #641</strong>
-                                                <span>(15 Feb, 2026)</span>
-                                                <span class="status-text">Paid</span>
-                                            </div>
-                                            <div class="progress-track">
-                                                <div class="progress-bar-custom status-paid" style="width:100%"></div>
-                                            </div>
-                                            <div class="status-labels">
-                                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-
-                        </table>
+                        <div class="app-box-item">
+                            <div class="app-header">
+                                <strong>Application #635</strong>
+                                <span>(18 Feb, 2026)</span>
+                                <span class="status-badge status-object">Cot Done</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-bar-custom status-object" style="width:45%"></div>
+                            </div>
+                            <div class="status-labels">
+                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
+                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
+                                <span>Submitted to Supplier</span><span>Cost Objected</span>
+                                <span>Live</span><span>Rejected</span><span>Paid</span>
+                            </div>
+                        </div>
+                        <div class="app-box-item">
+                            <div class="app-header">
+                                <strong>Application #22</strong>
+                                <span>(19 Feb, 2026)</span>
+                                <span class="status-badge status-reject">Docs Required</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-bar-custom status-reject" style="width:90%"></div>
+                            </div>
+                            <div class="status-labels">
+                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
+                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
+                                <span>Submitted to Supplier</span><span>Cost Objected</span>
+                                <span>Live</span><span>Reject</span><span>Paid</span>
+                            </div>
+                        </div>
+                        <div class="app-box-item">
+                            <div class="app-header">
+                                <strong>Application #635</strong>
+                                <span>(18 Feb, 2026)</span>
+                                <span class="status-badge status-done">Object</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-bar-custom status-done" style="width:45%"></div>
+                            </div>
+                            <div class="status-labels">
+                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
+                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
+                                <span>Submitted to Supplier</span><span>Cost Objected</span>
+                                <span>Live</span><span>Rejected</span><span>Paid</span>
+                            </div>
+                        </div>
+                        <div class="app-box-item">
+                            <div class="app-header">
+                                <strong>Application #6344</strong>
+                                <span>(19 Feb, 2026)</span>
+                                <span class="status-badge status-paid">Docs Required</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-bar-custom status-paid " style="width:100%"></div>
+                            </div>
+                            <div class="status-labels">
+                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
+                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
+                                <span>Submitted to Supplier</span><span>Cost Objected</span>
+                                <span>Live</span><span>Rejected</span><span>Paid</span>
+                            </div>
+                        </div>
+                        <div class="app-box-item">
+                            <div class="app-header">
+                                <strong>Application #635</strong>
+                                <span>(18 Feb, 2026)</span>
+                                <span class="status-badge status-done">Cot Done</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-bar-custom status-done" style="width:45%"></div>
+                            </div>
+                            <div class="status-labels">
+                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
+                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
+                                <span>Submitted to Supplier</span><span>Cost Objected</span>
+                                <span>Live</span><span>Rejected</span><span>Paid</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
 
 
-                <style>
-                    /* ===== Application Box ===== */
-                    .app-box {
-                        padding: 10px 0;
-                    }
-
-                    /* ===== Header ===== */
-                    .app-header {
-                        display: flex;
-                        gap: 10px;
-                        align-items: center;
-                        font-size: 13px;
-                        margin-bottom: 6px;
-                    }
-
-                    .app-header .status-text {
-                        margin-left: auto;
-                        font-weight: 600;
-                        color: #444;
-                    }
-
-                    /* ===== Progress Bar ===== */
-                    .progress-track {
-                        width: 100%;
-                        height: 12px;
-                        background: #e5e5e5;
-                        border-radius: 20px;
-                        overflow: hidden;
-                        margin-bottom: 6px;
-                    }
-
-                    /* Default Grey (completed/inactive look) */
-                    .progress-bar-custom {
-                        height: 100%;
-                        background: repeating-linear-gradient(45deg,
-                                #bdbdbd,
-                                #bdbdbd 8px,
-                                #9e9e9e 8px,
-                                #9e9e9e 16px);
-                    }
-
-                    /* Active (Purple striped like image) */
-                    .progress-bar-custom.active {
-                        background: repeating-linear-gradient(45deg,
-                                #d05ce3,
-                                #d05ce3 8px,
-                                #ba68c8 8px,
-                                #ba68c8 16px);
-                    }
-
-                    /* Base Style */
-                    .progress-bar-custom {
-                        height: 100%;
-                        transition: background 0.3s ease;
-                        /* Smooth color change */
-                    }
-
-                    /* 1. App Sent - Light Blue */
-                    .progress-bar-custom.status-app {
-                        background: repeating-linear-gradient(45deg, #4fc3f7, #4fc3f7 8px, #29b6f6 8px, #29b6f6 16px);
-                    }
-
-                    /* 2. Docs Required - Amber/Yellow */
-                    .progress-bar-custom.status-docs {
-                        background: repeating-linear-gradient(45deg, #ffd54f, #ffd54f 8px, #ffca28 8px, #ffca28 16px);
-                    }
-
-                    /* 3. Cot in process - Purple */
-                    .progress-bar-custom.status-cot {
-                        background: repeating-linear-gradient(45deg, #ba68c8, #ba68c8 8px, #ab47bc 8px, #ab47bc 16px);
-                    }
-
-                    /* 4. Awaiting Signature - Orange */
-                    .progress-bar-custom.status-await {
-                        background: repeating-linear-gradient(45deg, #ffb74d, #ffb74d 8px, #ffa726 8px, #ffa726 16px);
-                    }
-
-                    /* 5. Cot Done - Teal */
-                    .progress-bar-custom.status-done {
-                        background: repeating-linear-gradient(45deg, #4db6ac, #4db6ac 8px, #26a69a 8px, #26a69a 16px);
-                    }
-
-                    /* 6. Signed - Indigo */
-                    .progress-bar-custom.status-signed {
-                        background: repeating-linear-gradient(45deg, #7986cb, #7986cb 8px, #5c6bc0 8px, #5c6bc0 16px);
-                    }
-
-                    /* 7. Submitted to Supplier - Deep Blue */
-                    .progress-bar-custom.status-submit {
-                        background: repeating-linear-gradient(45deg, #64b5f6, #64b5f6 8px, #42a5f5 8px, #42a5f5 16px);
-                    }
-
-                    /* 8. Cost Objected - Pink/Alert */
-                    .progress-bar-custom.status-object {
-                        background: repeating-linear-gradient(45deg, #f06292, #f06292 8px, #ec407a 8px, #ec407a 16px);
-                    }
-
-                    /* 9. Live - Green (Success) */
-                    .progress-bar-custom.status-live {
-                        background: repeating-linear-gradient(45deg, #81c784, #81c784 8px, #66bb6a 8px, #66bb6a 16px);
-                    }
-
-                    /* 10. Rejected - Red (Error) */
-                    .progress-bar-custom.status-reject {
-                        background: repeating-linear-gradient(45deg, #e57373, #e57373 8px, #ef5350 8px, #ef5350 16px);
-                    }
-
-                    /* 11. Paid - Gold/Bright Green */
-                    .progress-bar-custom.status-paid {
-                        background: repeating-linear-gradient(45deg, #aed581, #aed581 8px, #9ccc65 8px, #9ccc65 16px);
-                    }
-
-                    /* Default Grey (Inactive) */
-                    .progress-bar-custom.inactive {
-                        background: repeating-linear-gradient(45deg, #bdbdbd, #bdbdbd 8px, #9e9e9e 8px, #9e9e9e 16px);
-                    }
-
-                    /* ===== Status Labels ===== */
-                    .status-labels {
-                        display: flex;
-                        justify-content: space-between;
-                        font-size: 10px;
-                        flex-wrap: wrap;
-                        gap: 5px;
-                    }
-
-                    /* ===== Optional: Active Highlight ===== */
-                    .status-active {
-                        font-weight: 700;
-                        text-decoration: underline;
-                    }
-                </style>
 
 
 
@@ -594,95 +298,71 @@
                     }
                 }
             });
+
+
         </script>
 
-        <style>
-            /* Premium Minimalist Dashboard V3 */
-            .premium-card {
-                background: #ffffff;
-                border-radius: 12px;
-                padding: 1.5rem;
-                border: 1px solid #f0f2f5;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                height: 100%;
-                display: flex;
-                align-items: center;
-                gap: 1.25rem;
-            }
 
-            .premium-card:hover {
-                box-shadow: 0 10px 30px -10px rgba(0, 155, 64, 0.63);
-                transform: translateY(-3px);
-                rgba(8, 177, 78, 0.15)rgb(8, 177, 78)rgb(38, 255, 129)
-            }
 
-            /* Icon Box: Rounded Square (Not Circle) for Modern Look */
-            .icon-box {
-                width: 56px;
-                height: 56px;
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-                font-size: 24px;
-            }
 
-            .data-section {
-                flex-grow: 1;
-            }
+{{-- pending sales status section script --}}
 
-            .stat-label {
-                color: #64748b;
-                font-size: 0.85rem;
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.8px;
-                margin-bottom: 4px;
-                display: block;
-            }
+<script>
 
-            .stat-number {
-                font-size: 1.75rem;
-                font-weight: 700;
-                color: #0f172a;
-                line-height: 1.2;
-            }
+    function toggleMinimize() {
+    const container = document.getElementById('scrollContainer');
+    if (container.style.display === "none") {
+        container.style.display = "block";
+    } else {
+        container.style.display = "none";
+    }
+}
 
-            /* Professional Muted Colors */
-            .bg-total {
-                background-color: #f1f5f9;
-                color: #0e522a;
-            }
+function toggleFullscreen() {
+    // Sirf is specific section ko target karna hai
+    const section = document.getElementById('pendingSalesSection');
+    section.classList.toggle('fullscreen-mode');
 
-            /* Neutral Greenish Gray */
-            .bg-pending {
-                background-color: #fff7ed;
-                color: #f59e0b;
-            }
+    // Dashboard ke baaki content ko disturb kiye baghair scroll lock karna
+    if(section.classList.contains('fullscreen-mode')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = 'auto';
+    }
+}
 
-            /* Soft Amber */
-            .bg-live {
-                background-color: #f0fdf4;
-                color: #10b981;
-            }
+function closeWidget() {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to close the Pending Sales Status section?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, close it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const section = document.getElementById('pendingSalesSection');
 
-            /* Soft Emerald */
-            .bg-rejected {
-                background-color: #fef2f2;
-                color: #ef4444;
-            }
+            // Adding a smooth fade-out effect
+            section.style.transition = "opacity 0.4s ease";
+            section.style.opacity = "0";
 
-            /* Soft Rose */
+            setTimeout(() => {
+                section.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Reset scroll if closed in fullscreen
+            }, 400);
 
-            /* Small Trend Indicator (Optional but looks premium) */
-            .trend-text {
-                font-size: 0.75rem;
-                font-weight: 600;
-                margin-top: 4px;
-                display: flex;
-                align-items: center;
-                gap: 4px;
-            }
-        </style>
+            // Success message
+            Swal.fire(
+                'Closed!',
+                'The section has been hidden.',
+                'success'
+            )
+        }
+    })
+}
+
+</script>
     @endsection
