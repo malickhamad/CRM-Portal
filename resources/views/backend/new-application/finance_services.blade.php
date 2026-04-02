@@ -40,7 +40,7 @@
                         </div>
 
                         <!-- Finance -->
-                        <div class="card border-0 shadow-sm service-card" data-service="finance">
+                        <div class="card border-0 shadow-sm service-card" data-service="loan">
 
                             <div class="service-img-box">
                                 <img src="{{ asset('asset/crm/services/loan.png') }}" class="img-fluid service-img">
@@ -49,7 +49,7 @@
                         </div>
 
                         <!-- Utilities -->
-                        <div class="card border-0 shadow-sm service-card" data-service="utilities">
+                        <div class="card border-0 shadow-sm service-card" data-service="open_banking">
 
                             <div class="service-img-box">
                                 <img src="{{ asset('asset/crm/services/open_banking.png') }}" class="img-fluid service-img">
@@ -97,15 +97,15 @@
                     return;
                 }
 
-                if (service === "finance") {
-                    window.location.href = "{{ route('admin.finance_services') }}";
+                if (service === "loan") {
+                    window.location.href = "{{ route('admin.loan') }}";
                 }
                 if (service === "card_machine") {
                     window.location.href = "{{ route('admin.card_machine') }}";
                 }
 
-                if (service === "utilities") {
-                    window.location.href = "{{ route('admin.utilities_services') }}";
+                if (service === "open_banking") {
+                    window.location.href = "{{ route('admin.open_banking') }}";
                 }
             });
 

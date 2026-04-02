@@ -22,7 +22,7 @@
                 <!-- HEADER -->
                 <div class="mb-3 px-3 py-2 bg-white border rounded" >
                     <h6 class="fw-bold mb-0 green_color">
-                        <i class="bi bi-ui-checks-grid me-1"></i> Application Form
+                        <i class="bi bi-ui-checks-grid me-1"></i> Application Form (Broadband)
                     </h6>
                 </div>
 
@@ -252,7 +252,7 @@
                             <div class="col-md-2"><label>Service</label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" value="Card Machine" readonly>
+                                <input class="form-control border-end-0" value="Broadband" readonly>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-credit-card"></i>
                                 </span>
@@ -628,7 +628,7 @@
             .form-control:focus,
             .form-select:focus {
                 border-color: #14532d;
-                box-shadow: 0 0 0 2px rgba(58, 123, 213, 0.08);
+                box-shadow: 0 0 0 2px rgba(54, 177, 85, 0.25) !important;
             }
 
             .btn-primary {
