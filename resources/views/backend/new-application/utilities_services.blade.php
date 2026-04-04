@@ -36,7 +36,7 @@
                         <div class="card border-0 shadow-sm service-card_utilities" data-service="water">
 
                             <div class="service-img-box">
-                                <img src="{{ asset('asset/crm/services/card_machine.png') }}" class="img-fluid service-img">
+                                <img src="{{ asset('asset/crm/services/utilities_water.png') }}" class="img-fluid service-img">
                             </div>
                             <h6 class="fs-15 fw-semibold text-secondary small mb-0">Water</h6>
                         </div>
@@ -45,7 +45,7 @@
                         <div class="card border-0 shadow-sm service-card_utilities" data-service="broadband">
 
                             <div class="service-img-box">
-                                <img src="{{ asset('asset/crm/services/loan.png') }}" class="img-fluid service-img">
+                                <img src="{{ asset('asset/crm/services/utilities_broadband.png') }}" class="img-fluid service-img">
                             </div>
                             <h6 class="fs-15 fw-semibold text-secondary small mb-0">Broadband</h6>
                         </div>
@@ -54,7 +54,7 @@
                         <div class="card border-0 shadow-sm service-card_utilities" data-service="telecom">
 
                             <div class="service-img-box">
-                                <img src="{{ asset('asset/crm/services/open_banking.png') }}" class="img-fluid service-img">
+                                <img src="{{ asset('asset/crm/services/utilities_telecom.png') }}" class="img-fluid service-img">
                             </div>
                             <h6 class="fs-15 fw-semibold text-secondary small mb-0">Telecom</h6>
                         </div>
