@@ -308,7 +308,7 @@
                             <div class="col-md-2"><label>Delivery Address</label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0"></input>
+                                <input class="form-control border-end-0">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-geo-alt"></i>
                                 </span>
