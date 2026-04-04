@@ -6,7 +6,7 @@
     <main class="dashboard-main">
         @include('backend.layouts.partials.header')
 
-                  <div class="dashboard-main-body bg-light position-relative pt-5">
+        <div class="dashboard-main-body bg-light position-relative pt-5">
 
             <!-- ⭐ Attractive Back Button (Bootstrap only) -->
             <div class="position-absolute top-0 start-0 mt-3 ms-3">
@@ -16,17 +16,17 @@
                     ← Back
                 </a>
             </div>
-            
+
             <div class="container-fluid bg-white px-3 py-5">
 
                 <!-- HEADER -->
-                <div class="mb-3 px-3 py-2 bg-white border rounded" >
+                <div class="mb-3 px-3 py-2 bg-white border rounded">
                     <h6 class="fw-bold mb-0 green_color">
                         <i class="bi bi-ui-checks-grid me-1"></i> Application Form (Gas)
                     </h6>
                 </div>
 
-                 <form>
+                <form>
                     <!-- APPLICATION Form -->
                     <div class="form-section mb-3">
                         <div class="section-title"><span>Application Form</span></div>
@@ -59,47 +59,56 @@
                                 </span>
                             </div>
 
-                            <div class="col-md-2"><label>Landline No <span class="text-danger">:*</span></label></div>
+                            <div class="col-md-2"><label>Trading Name <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" placeholder="Enter landline number">
+                                <input type="text" class="form-control border-end-0">
                                 <span class="icon-box border-start-0">
-                                    <i class="bi bi-telephone"></i>
+                                    <i class="bi bi-pencil"></i>
                                 </span>
                             </div>
                         </div>
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
-                            <div class="col-md-2"><label>Contact Person Name <span class="text-danger">:*</span></label>
+                            <div class="col-md-2"><label>Business Entity <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <select class="form-select">
+                                    <option disabled selected>Please Select</option>
+                                </select>
                             </div>
 
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" placeholder="Enter person name">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-person"></i>
-                                </span>
-                            </div>
+                            <div class="col-md-2"><label>Business Nature <span class="text-danger">:*</span></label></div>
 
-                            <div class="col-md-2"><label>Company Reg No <span class="text-danger">:*</span></label></div>
-
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" placeholder="Enter company reg no">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-hash"></i>
-                                </span>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control border-end-0">
                             </div>
                         </div>
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
-                            <div class="col-md-2"><label>Business Address <span class="text-danger">:*</span></label>
+                            <div class="col-md-2"><label>Title <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <select class="form-select">
+                                    <option disabled selected>Please Select</option>
+                                </select>
                             </div>
 
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0"
-                                    placeholder="Enter business address">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-geo-alt"></i>
-                                </span>
+                            <div class="col-md-2"><label>Merchant Full Name <span class="text-danger">:*</span></label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <input type="text" class="form-control border-end-0">
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+                            <div class="col-md-2"><label>Position <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <select class="form-select">
+                                    <option disabled selected>Please Select</option>
+                                </select>
                             </div>
 
                             <div class="col-md-2"><label>Email Address <span class="text-danger">:*</span></label></div>
@@ -113,42 +122,51 @@
                         </div>
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
-                            <div class="col-md-2"><label>Unit <span class="text-danger">:*</span></label></div>
+                            <div class="col-md-2"><label>Phone Number <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" placeholder="Enter unit">
+                                <input type="text" class="form-control border-end-0">
                                 <span class="icon-box border-start-0">
-                                    <i class="bi bi-building"></i>
+                                    <i class="bi bi-telephone"></i>
                                 </span>
                             </div>
 
-                            <div class="col-md-2"><label>Home Address <span class="text-danger">:*</span></label></div>
+                            <div class="col-md-2"><label>Companies House Number <span class="text-danger">:*</span></label>
+                            </div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" placeholder="Enter home address">
+                                <input type="text" class="form-control border-end-0">
                                 <span class="icon-box border-start-0">
-                                    <i class="bi bi-house"></i>
+                                    <i class="bi bi-building"></i>
                                 </span>
                             </div>
                         </div>
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
-                            <div class="col-md-2"><label>Director DOB <span class="text-danger">:*</span></label></div>
+                            <div class="col-md-2"><label>VAT/TAX Number <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" class="form-control border-end-0">
+                                <input type="text" class="form-control border-end-0">
                                 <span class="icon-box border-start-0">
-                                    <i class="bi bi-calendar"></i>
+                                    <i class="bi bi-hash"></i>
                                 </span>
                             </div>
 
-                            <div class="col-md-2"><label>Mobile No <span class="text-danger">:*</span></label></div>
+                            <div class="col-md-2"><label>Trading Address <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" placeholder="03XXXXXXXXX">
+                                <input type="text" class="form-control border-end-0">
                                 <span class="icon-box border-start-0">
-                                    <i class="bi bi-telephone"></i>
+                                    <i class="bi bi-geo-alt"></i>
                                 </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+                            <div class="col-md-2"><label>Postal Code <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <input type="text" class="form-control border-end-0">
                             </div>
                         </div>
 
@@ -160,8 +178,7 @@
                         <div class="section-title"><span>Application Detail</span></div>
 
                         <div class="row g-3 align-items-center mb-2">
-                            <div class="col-md-2"><label>Application Num <span class="text-danger">:*</span></label>
-                            </div>
+                            <div class="col-md-2"><label>Application Num <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" class="form-control border-end-0" value="AUTO-001" readonly>
@@ -191,24 +208,68 @@
                                 </span>
                             </div>
 
-                           <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
+                            <div class="col-md-2"><label>Annual Consumption <span class="text-danger">:*</span></label>
+                            </div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <select class="form-select border-end-0">
+                                <input type="text" class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-lightning"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-md-2"><label>Renewal Date <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <input type="date" class="form-control border-end-0">
+                            </div>
+
+                            <div class="col-md-2"><label>Gas Email <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="email" class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-md-2"><label>Company Registration No <span
+                                        class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-hash"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Commercial/Resident <span class="text-danger">:*</span></label>
+                            </div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-building"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <select class="form-select">
                                     <option disabled selected>Select Brand</option>
                                     <option>Verifone</option>
                                     <option>Ingenico</option>
                                     <option>PAX</option>
                                 </select>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-bag"></i>
-                                </span>
                             </div>
-                        </div>
 
-                 
-
-                        <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Comment</label></div>
 
                             <div class="col-md-10 d-flex align-items-center">
@@ -221,6 +282,128 @@
 
                     </div>
 
+
+
+
+                    <!-- Gas DETAILS -->
+                    <div class="form-section mb-3">
+                        <div class="section-title"><span>Gas Details</span></div>
+
+                        <div class="row gy-1 gx-3 align-items-center">
+
+                            <div class="row">
+    <div class="col-auto">
+        <p class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0">
+            Meter #1
+        </p>
+    </div>
+</div>
+                            <!-- Supplier Name -->
+                            <div class="col-md-2"><label>Supplier Name</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                            </div>
+
+                            <!-- MPRN No -->
+                            <div class="col-md-2"><label>MPRN No</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-hash"></i>
+                                </span>
+                            </div>
+
+                            <!-- Offer Rate -->
+                            <div class="col-md-2"><label>Offer Rate</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-tag"></i>
+                                </span>
+                            </div>
+
+                            <!-- Contract Duration -->
+                            <div class="col-md-2"><label>Con. Duration</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-clock"></i>
+                                </span>
+                            </div>
+
+                            <!-- Uplift -->
+                            <div class="col-md-2"><label>Uplift</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-percent"></i>
+                                </span>
+                            </div>
+
+                            <!-- Customer No -->
+                            <div class="col-md-2"><label>Customer No</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-card-text"></i>
+                                </span>
+                            </div>
+
+                            <!-- Name Appears On Bill -->
+                            <div class="col-md-2"><label>Name Appears On Bill</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                            </div>
+
+                            <!-- Current Meter Read -->
+                            <div class="col-md-2"><label>Current Meter Read</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-droplet"></i>
+                                </span>
+                            </div>
+
+                            <!-- Meter Serial No -->
+                            <div class="col-md-2"><label>Meter Serial No</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-upc-scan"></i>
+                                </span>
+                            </div>
+
+                            <!-- Last Bill Amount -->
+                            <div class="col-md-2"><label>Last Bill Amount</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-currency-dollar"></i>
+                                </span>
+                            </div>
+
+                            <!-- Mode -->
+                            <div class="col-md-2"><label>Mode</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-credit-card"></i>
+                                </span>
+                            </div>
+
+                                   <div class="mt-3">
+                                <button type="button" class="btn btn-primary bg_green_color">
+                                    <i class="bi bi-plus-circle me-1"></i> Add More Meter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
 
 
@@ -289,6 +472,81 @@
                     </div>
 
 
+                    <!-- OTHER DETAILS -->
+                    <div class="form-section mb-3">
+                        <div class="section-title"><span>Other Details</span></div>
+
+                        <div class="row gy-1 gx-3 align-items-center">
+
+                            <!-- Bill Payment Method -->
+                            <div class="col-md-2"><label>Bill Payment Method</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-credit-card"></i>
+                                </span>
+                            </div>
+
+                            <!-- Landlord Name -->
+                            <div class="col-md-2"><label>Landlord Name</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-person-badge"></i>
+                                </span>
+                            </div>
+
+                            <!-- Director D.O.B -->
+                            <div class="col-md-2"><label>Director D.O.B</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="date" class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-calendar"></i>
+                                </span>
+                            </div>
+
+                            <!-- Name Of New Customer -->
+                            <div class="col-md-2"><label>Name Of New Customer</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                            </div>
+
+                            <!-- Status Taken Date -->
+                            <div class="col-md-2"><label>Status Taken Date</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="date" class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-calendar-check"></i>
+                                </span>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="col-md-2"><label>Password</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="password" class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                            </div>
+
+                            <!-- Customer History -->
+                            <div class="col-md-2"><label>Customer History</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-clock-history"></i>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
                     <!-- KYC VERIFICATION SECTION -->
                     <div class="card shadow-sm border-0 mt-4">
                         <div class="card-body">
@@ -347,6 +605,19 @@
                                     </div>
                                 </div>
 
+                                <!-- Additional Uploads Statement -->
+                                <div class="col-md-6">
+                                    <label class="fw-semibold mb-2">
+                                        <i class="bi bi-bank me-1 text-info"></i> Additional Uploads
+                                    </label>
+
+                                    <div class="kyc-upload-box"
+                                        onclick="document.getElementById('additionalUploads').click();">
+                                        <p class="text-muted mb-0">Drop files here to upload</p>
+                                        <input type="file" id="additionalUploads" name="bank_statement" hidden>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -371,16 +642,15 @@
         </div>
 
         <style>
-       
             .green_color {
                 color: #14532d !important;
             }
 
-              .bg_green_color {
+            .bg_green_color {
                 background-color: #14532d !important;
                 color: white !important;
             }
-            
+
 
             .form-section {
                 background: #fff;
