@@ -33,6 +33,7 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
  Route::get('/services', [ApplicationController::class, 'services'])->name('services');
  Route::get('/finance_services', [ApplicationController::class, 'finance_services'])->name('finance_services');
  Route::get('/utilities_services', [ApplicationController::class, 'utilities_services'])->name('utilities_services');
+ Route::get('/applications', [ApplicationController::class, 'applications'])->name('applications');
 
 
 Route::prefix('finance')->group(function () {
