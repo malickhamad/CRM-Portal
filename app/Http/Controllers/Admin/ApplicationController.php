@@ -53,4 +53,8 @@ class ApplicationController extends Controller
     public function electric_gas() {
         return view('backend.new-application.utilities_services.electric_gas');
     }
+
+       public function applications() {
+        return view('backend.applications.applications');
+    }
 }
