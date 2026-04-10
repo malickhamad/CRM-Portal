@@ -110,7 +110,6 @@
                         </div>
                         <div>
                             <p class="text-muted mb-1">Total Customers</p>
-                            <h6 class="fw-bold mb-0">{{ $subusersCount ?? 1,284 }}</h6>
                             <small class="text-success"><i class="fas fa-user-plus me-1"></i>+48 new</small>
                         </div>
                     </div>
