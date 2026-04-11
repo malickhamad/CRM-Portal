@@ -133,8 +133,6 @@
 
 .form-section {
     background: #fff;
-    border: 1px solid #e2e5ea;
-    border-radius: 6px;
     padding: 12px;
 }
 
@@ -147,23 +145,7 @@
     margin-bottom: 14px;
 }
 
-.section-title::before,
-.section-title::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 32%;
-    height: 1px;
-    background: #dcdfe4;
-}
 
-.section-title::before {
-    left: 0;
-}
-
-.section-title::after {
-    right: 0;
-}
 
 .section-title span {
     background: #fff;
@@ -185,7 +167,7 @@ textarea.form-control {
 }
 
 label {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     color: #444;
     margin-bottom: 0;
@@ -213,7 +195,7 @@ label {
     display: flex;
     align-items: center;
     border-radius: 0 4px 4px 0;
-    font-size: 12px;
+    font-size: 16px;
 }
 
 .switcBtn {
@@ -241,3 +223,16 @@ label {
     border-color: #14532d;
     background: #fafffc;
 }
+
+
+/* leads and sales info cards */
+ .stat-card {
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .stat-card:hover {
+        transform: scale(1.05);
+        shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        z-index: 10;
+    }
