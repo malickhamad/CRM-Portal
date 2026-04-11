@@ -49,7 +49,7 @@
 
             <div class="container-fluid bg-white px-3 py-5">
 
-                 <div class="mb-5  py-2 bg-white ">
+                <div class="mb-5  py-2 bg-white ">
 
                     <h6 class="fw-bold mb-0 green_color">
                         <i class="bi bi-ui-checks-grid me-1"></i>New Application (Electric Gas)
@@ -104,7 +104,7 @@
 
 
 
-  <form>
+                <form>
                     <!-- APPLICATION Form -->
                     <div class="form-section mb-3">
                         <div class="section-title"><span>Application Form</span></div>
@@ -209,7 +209,8 @@
                                 </span>
                             </div>
 
-                            <div class="col-md-2"><label>Companies House Number <span class="text-danger">:*</span></label>
+                            <div class="col-md-2"><label>Companies House Number <span
+                                        class="text-danger">:*</span></label>
                             </div>
 
                             <div class="col-md-4 d-flex align-items-center">
@@ -350,7 +351,7 @@
 
                             <div class="col-md-2"><label>Comment</label></div>
 
-                            <div class="col-md-10 d-flex align-items-center">
+                            <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" class="form-control border-end-0">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-chat-left-text"></i>
@@ -366,251 +367,195 @@
                     <div class="form-section mb-3">
                         <div class="section-title"><span>Electricity Details</span></div>
 
-                        <!-- Row 1 -->
-                        <div class="row gy-1 gx-3 align-items-center">
+                        <div id="elec-meter-container">
+                            <div class="elec-meter-block mb-4 border-bottom pb-3">
+                                <div class="row mb-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-2S">
+                                        <p
+                                            class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0 elec-meter-label">
+                                            Meter #1
+                                        </p>
+                                        <button type="button" class="btn btn-danger btn-sm ms-2 remove-elec-btn d-none"
+                                            style="padding: 2px 8px; font-size: 12px;">
+                                            <i class="bi bi-trash"></i> Remove
+                                        </button>
+                                    </div>
+                                </div>
 
-                                 <div class="row">
-                                <div class="col-auto">
-                                    <p class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0">
-                                        Meter #1
-                                    </p>
+                                <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>Supplier Name *</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control">
+                                        <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
+                                    </div>
+                                    <div class="col-md-2"><label>MPAN Top Line</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control">
+                                        <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>MPAN Bottom Line</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control">
+                                        <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
+                                    </div>
+                                    <div class="col-md-2"><label>Con. Duration</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control">
+                                        <span class="icon-box border-start-0"><i class="bi bi-clock"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>Offer Rate</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control">
+                                        <span class="icon-box border-start-0"><i class="bi bi-tag"></i></span>
+                                    </div>
+                                    <div class="col-md-2"><label>Name Appears On Bill</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control">
+                                        <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>Customer No.</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control">
+                                        <span class="icon-box border-start-0"><i class="bi bi-card-text"></i></span>
+                                    </div>
+                                    <div class="col-md-2"><label>Meter Serial No.</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control">
+                                        <span class="icon-box border-start-0"><i class="bi bi-upc-scan"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>Current Meter Read</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control">
+                                        <span class="icon-box border-start-0"><i class="bi bi-lightning"></i></span>
+                                    </div>
+                                    <div class="col-md-2"><label>Mode</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control">
+                                        <span class="icon-box border-start-0"><i class="bi bi-credit-card"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>Last Bill Amount</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control">
+                                        <span class="icon-box border-start-0"><i class="bi bi-currency-dollar"></i></span>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-2"><label>Supplier Name *</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-person"></i>
-                                </span>
-                            </div>
-
-                            <div class="col-md-2"><label>MPAN Top Line</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-hash"></i>
-                                </span>
-                            </div>
                         </div>
 
-                        <!-- Row 2 -->
-                        <div class="row gy-1 gx-3 align-items-center">
-
-                            <div class="col-md-2"><label>MPAN Bottom Line</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-hash"></i>
-                                </span>
-                            </div>
-
-
-                            <div class="col-md-2"><label>Con. Duration</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-clock"></i>
-                                </span>
-                            </div>
+                        <div class="mt-3">
+                            <button type="button" id="add-elec-meter-btn" class="btn btn-primary bg_green_color">
+                                <i class="bi bi-plus-circle me-1"></i> Add More Meter
+                            </button>
                         </div>
-
-                        <!-- Row 3 -->
-                        <div class="row gy-1 gx-3 align-items-center">
-                            <div class="col-md-2"><label>Offer Rate</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-tag"></i>
-                                </span>
-                            </div>
-
-                            <div class="col-md-2"><label>Name Appears On Bill</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-person"></i>
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Row 4 -->
-                        <div class="row gy-1 gx-3 align-items-center">
-                            <div class="col-md-2"><label>Customer No.</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-card-text"></i>
-                                </span>
-                            </div>
-
-                            <div class="col-md-2"><label>Meter Serial No.</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-upc-scan"></i>
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Row 5 -->
-                        <div class="row gy-1 gx-3 align-items-center">
-                            <div class="col-md-2"><label>Current Meter Read</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-lightning"></i>
-                                </span>
-                            </div>
-
-                            <div class="col-md-2"><label>Mode</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-credit-card"></i>
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Row 6 -->
-                        <div class="row gy-1 gx-3 align-items-center">
-                            <div class="col-md-2"><label>Last Bill Amount</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-currency-dollar"></i>
-                                </span>
-                            </div>
-                        </div>
-
-                            <div class="mt-3">
-                                <button type="button" class="btn btn-primary bg_green_color">
-                                    <i class="bi bi-plus-circle me-1"></i> Add More Meter
-                                </button>
-                            </div>
                     </div>
+
 
 
                     <!-- Gas DETAILS -->
                     <div class="form-section mb-3">
                         <div class="section-title"><span>Gas Details</span></div>
 
-                        <div class="row gy-1 gx-3 align-items-center">
-
-                            <div class="row">
-                                <div class="col-auto">
-                                    <p class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0">
+                        <div id="meter-container">
+                            <div class="meter-block mb-3 border-bottom pb-2">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <p class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0 meter-label">
                                         Meter #1
                                     </p>
+                                    <button type="button" class="btn btn-danger btn-sm remove-meter-btn d-none"
+                                        style="padding: 2px 8px; font-size: 12px;">
+                                        <i class="bi bi-trash"></i> Remove
+                                    </button>
+                                </div>
+
+                                <div class="row  align-items-center">
+                                    <div class="col-md-2"><label class="mb-0">Supplier Name</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0">
+                                        <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">MPRN No</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0">
+                                        <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Offer Rate</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0">
+                                        <span class="icon-box border-start-0"><i class="bi bi-tag"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Con. Duration</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0">
+                                        <span class="icon-box border-start-0"><i class="bi bi-clock"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Uplift</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0">
+                                        <span class="icon-box border-start-0"><i class="bi bi-percent"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Customer No</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0">
+                                        <span class="icon-box border-start-0"><i class="bi bi-card-text"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Name Appears On Bill</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0">
+                                        <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Current Meter Read</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0">
+                                        <span class="icon-box border-start-0"><i class="bi bi-droplet"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Meter Serial No</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0">
+                                        <span class="icon-box border-start-0"><i class="bi bi-upc-scan"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Last Bill Amount</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0">
+                                        <span class="icon-box border-start-0"><i class="bi bi-currency-dollar"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Mode</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0">
+                                        <span class="icon-box border-start-0"><i class="bi bi-credit-card"></i></span>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- Supplier Name -->
-                            <div class="col-md-2"><label>Supplier Name</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-person"></i>
-                                </span>
-                            </div>
+                        </div>
 
-                            <!-- MPRN No -->
-                            <div class="col-md-2"><label>MPRN No</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-hash"></i>
-                                </span>
-                            </div>
-
-                            <!-- Offer Rate -->
-                            <div class="col-md-2"><label>Offer Rate</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-tag"></i>
-                                </span>
-                            </div>
-
-                            <!-- Contract Duration -->
-                            <div class="col-md-2"><label>Con. Duration</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-clock"></i>
-                                </span>
-                            </div>
-
-                            <!-- Uplift -->
-                            <div class="col-md-2"><label>Uplift</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-percent"></i>
-                                </span>
-                            </div>
-
-                            <!-- Customer No -->
-                            <div class="col-md-2"><label>Customer No</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-card-text"></i>
-                                </span>
-                            </div>
-
-                            <!-- Name Appears On Bill -->
-                            <div class="col-md-2"><label>Name Appears On Bill</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-person"></i>
-                                </span>
-                            </div>
-
-                            <!-- Current Meter Read -->
-                            <div class="col-md-2"><label>Current Meter Read</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-droplet"></i>
-                                </span>
-                            </div>
-
-                            <!-- Meter Serial No -->
-                            <div class="col-md-2"><label>Meter Serial No</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-upc-scan"></i>
-                                </span>
-                            </div>
-
-                            <!-- Last Bill Amount -->
-                            <div class="col-md-2"><label>Last Bill Amount</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-currency-dollar"></i>
-                                </span>
-                            </div>
-
-                            <!-- Mode -->
-                            <div class="col-md-2"><label>Mode</label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-credit-card"></i>
-                                </span>
-                            </div>
-
-
-                            <div class="mt-3">
-                                <button type="button" class="btn btn-primary bg_green_color">
-                                    <i class="bi bi-plus-circle me-1"></i> Add More Meter
-                                </button>
-                            </div>
-
-
+                        <div class="mt-2">
+                            <button type="button" id="add-meter-btn" class="btn btn-primary bg_green_color">
+                                <i class="bi bi-plus-circle me-1"></i> Add More Meter
+                            </button>
                         </div>
                     </div>
 
@@ -824,9 +769,6 @@
                         </div>
 
 
-
-
-
                 </form>
 
 
@@ -834,6 +776,66 @@
             </div>
 
 
+   <script>
+                document.getElementById('add-elec-meter-btn').addEventListener('click', function() {
+                    const container = document.getElementById('elec-meter-container');
+                    const firstBlock = container.querySelector('.elec-meter-block');
+
+                    // Clone logic
+                    const newBlock = firstBlock.cloneNode(true);
+
+                    // Inputs clear karein
+                    newBlock.querySelectorAll('input').forEach(input => input.value = '');
+
+                    // Remove button handle karein
+                    const removeBtn = newBlock.querySelector('.remove-elec-btn');
+                    removeBtn.classList.remove('d-none');
+                    removeBtn.onclick = function() {
+                        newBlock.remove();
+                        updateElecIndexes();
+                    };
+
+                    container.appendChild(newBlock);
+                    updateElecIndexes();
+                });
+
+                function updateElecIndexes() {
+                    const blocks = document.querySelectorAll('.elec-meter-block');
+                    blocks.forEach((block, index) => {
+                        block.querySelector('.elec-meter-label').innerText = `Meter #${index + 1}`;
+                    });
+                }
+
+
+                        document.getElementById('add-meter-btn').addEventListener('click', function() {
+                    const container = document.getElementById('meter-container');
+                    const firstBlock = container.querySelector('.meter-block');
+
+                    // Clone
+                    const newBlock = firstBlock.cloneNode(true);
+
+                    // Reset values
+                    newBlock.querySelectorAll('input').forEach(input => input.value = '');
+
+                    // Manage Remove Button
+                    const removeBtn = newBlock.querySelector('.remove-meter-btn');
+                    removeBtn.classList.remove('d-none');
+                    removeBtn.onclick = function() {
+                        newBlock.remove();
+                        updateMeterIndexes();
+                    };
+
+                    container.appendChild(newBlock);
+                    updateMeterIndexes();
+                });
+
+                function updateMeterIndexes() {
+                    const blocks = document.querySelectorAll('.meter-block');
+                    blocks.forEach((block, index) => {
+                        block.querySelector('.meter-label').innerText = `Meter #${index + 1}`;
+                    });
+                }
+            </script>
 
 
 

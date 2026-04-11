@@ -49,7 +49,7 @@
 
             <div class="container-fluid bg-white px-3 py-5">
 
-                 <div class="mb-5  py-2 bg-white ">
+                <div class="mb-5  py-2 bg-white ">
 
                     <h6 class="fw-bold mb-0 green_color">
                         <i class="bi bi-ui-checks-grid me-1"></i>New Application (Loan)
@@ -102,12 +102,13 @@
                 </div>
                 <!-- HEADER -->
 
-    <form>
+                <form>
                     <!-- APPLICATION Form -->
                     <div class="form-section mb-3">
                         <div class="section-title"><span>Application Form</span></div>
                         <div class="row g-3 align-items-center">
-                            <div class="col-md-3 "><label>Application Agent <span class="text-danger">:*</span></label></div>
+                            <div class="col-md-3 "><label>Application Agent <span class="text-danger">:*</span></label>
+                            </div>
                             <div class="col-md-9">
                                 <select class="form-select">
                                     <option disabled selected>Please Select</option>
@@ -180,7 +181,8 @@
                                 </span>
                             </div>
 
-                            <div class="col-md-2"><label>Merchant Full Name <span class="text-danger">:*</span></label></div>
+                            <div class="col-md-2"><label>Merchant Full Name <span class="text-danger">:*</span></label>
+                            </div>
 
                             <div class="col-md-4 d-flex align-items-center">
                                 <input class="form-control border-end-0" placeholder="Enter full name">
@@ -224,7 +226,8 @@
                                 </span>
                             </div>
 
-                            <div class="col-md-2"><label>Companies House Number <span class="text-danger">:*</span></label></div>
+                            <div class="col-md-2"><label>Companies House Number <span
+                                        class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
                                 <input class="form-control border-end-0">
@@ -256,69 +259,68 @@
                     </div>
 
 
-                    <!-- DIRECTOR DETAILS -->
+                    <!-- DIRECTOR DETAIL -->
                     <div class="form-section mb-3">
-                        <div class="section-title"><span>Director Details</span></div>
+                        <div class="section-title"><span>Director Detail</span></div>
 
-                        <div class="director-block">
-
-                            <p class="bg-dark fs-14 text-white fw-semibold px-3 py-2 d-inline-block rounded">
-                                Director #1
-                            </p>
-                            <div class="row g-3 align-items-center mb-2 pb-2">
-                                <div class="col-md-2"><label>Director Name</label></div>
-                                <div class="col-md-4 d-flex align-items-center">
-                                    <input class="form-control border-end-0" placeholder="Enter Director Name">
-                                    <span class="icon-box border-start-0">
-                                        <i class="bi bi-person"></i>
-                                    </span>
+                        <div id="director-container">
+                            <div class="director-block mb-4 border-bottom pb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <p
+                                        class="bg-dark fs-14 text-white fw-semibold px-3 py-2 d-inline-block rounded director-label mb-0">
+                                        Director #1
+                                    </p>
+                                    <button type="button" class="btn btn-danger btn-sm remove-director-btn d-none">
+                                        <i class="bi bi-trash"></i> Remove
+                                    </button>
                                 </div>
 
-                                <div class="col-md-2"><label>Date Of Birth <span class="text-danger">:*</span></label></div>
-                                <div class="col-md-4 d-flex align-items-center">
-                                    <input type="date" class="form-control border-end-0">
-                                    <span class="icon-box border-start-0">
-                                        <i class="bi bi-calendar-date"></i>
-                                    </span>
+                                <div class="row g-3 align-items-center mb-2 pb-2">
+                                    <div class="col-md-2"><label>Director Name <span class="text-danger">:*</span></label>
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control border-end-0" placeholder="Enter Director Name">
+                                        <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
+                                    </div>
+                                    <div class="col-md-2"><label>Date Of Birth <span class="text-danger">:*</span></label>
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input type="date" class="form-control border-end-0">
+                                        <span class="icon-box border-start-0"><i class="bi bi-calendar-date"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 align-items-center mb-2 pb-2">
+                                    <div class="col-md-2"><label>Phone No <span class="text-danger">:*</span></label>
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control border-end-0" placeholder="Enter Phone Number">
+                                        <span class="icon-box border-start-0"><i class="bi bi-telephone"></i></span>
+                                    </div>
+                                    <div class="col-md-2"><label>Email Address <span class="text-danger">:*</span></label>
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input type="email" class="form-control border-end-0"
+                                            placeholder="Enter Email">
+                                        <span class="icon-box border-start-0"><i class="bi bi-envelope"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 align-items-center mb-2 pb-2">
+                                    <div class="col-md-2"><label>Home Address <span class="text-danger">:*</span></label>
+                                    </div>
+                                    <div class="col-md-10 d-flex align-items-center">
+                                        <input class="form-control border-end-0" placeholder="Enter Home Address">
+                                        <span class="icon-box border-start-0"><i class="bi bi-geo-alt"></i></span>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="row g-3 align-items-center mb-2 pb-2">
-                                <div class="col-md-2"><label>Phone No</label></div>
-                                <div class="col-md-4 d-flex align-items-center">
-                                    <input class="form-control border-end-0" placeholder="Enter Phone Number">
-                                    <span class="icon-box border-start-0">
-                                        <i class="bi bi-telephone"></i>
-                                    </span>
-                                </div>
-
-                                <div class="col-md-2"><label>Email </label></div>
-                                <div class="col-md-4 d-flex align-items-center">
-                                    <input type="email" class="form-control border-end-0" placeholder="Enter Email">
-                                    <span class="icon-box border-start-0">
-                                        <i class="bi bi-envelope"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="row g-3 align-items-center mb-2 pb-2">
-                                <div class="col-md-2"><label>Home Address</label></div>
-                                <div class="col-md-10 d-flex align-items-center">
-                                    <input class="form-control border-end-0" placeholder="Enter Home Address">
-                                    <span class="icon-box border-start-0">
-                                        <i class="bi bi-geo-alt"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-
-                            <div class="mt-3">
-                                <button type="button" class="btn btn-primary bg_green_color">
-                                    <i class="bi bi-plus-circle me-1"></i> Add Director
-                                </button>
-                            </div>
-
-
+                        <div class="mt-3">
+                            <button type="button" id="add-director-btn" class="btn btn-primary bg_green_color">
+                                <i class="bi bi-plus-circle me-1"></i> Add Director
+                            </button>
                         </div>
                     </div>
 
@@ -328,7 +330,6 @@
 
                         <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Application Num <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input class="form-control border-end-0" value="AUTO-001" readonly>
                                 <span class="icon-box border-start-0">
@@ -337,7 +338,6 @@
                             </div>
 
                             <div class="col-md-2"><label>Service</label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input class="form-control border-end-0" value="Loan" readonly>
                                 <span class="icon-box border-start-0">
@@ -347,8 +347,8 @@
                         </div>
 
                         <div class="row g-3 align-items-center mb-2">
-                            <div class="col-md-2"><label>Application Date <span class="text-danger">:*</span></label></div>
-
+                            <div class="col-md-2"><label>Application Date <span class="text-danger">:*</span></label>
+                            </div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="date" class="form-control border-end-0">
                                 <span class="icon-box border-start-0">
@@ -357,7 +357,6 @@
                             </div>
 
                             <div class="col-md-2"><label>Renewal Date <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="date" class="form-control border-end-0">
                                 <span class="icon-box border-start-0">
@@ -365,10 +364,9 @@
                                 </span>
                             </div>
                         </div>
+
                         <div class="row g-3 align-items-center mb-2">
-
                             <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <select class="form-select border-end-0">
                                     <option disabled selected>Please Select</option>
@@ -381,26 +379,34 @@
                                 </span>
                             </div>
 
-
+                            <div class="col-md-2"><label>Card Machine Details</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0" placeholder="Which one are you using?">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-cpu"></i>
+                                </span>
+                            </div>
                         </div>
 
-
-                        <p class="fs-13 my-2"> Have you using Card Machine.If yes which one</p>
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-md-2"><label>Existing Funding</label></div>
+                            <div class="col-md-10 d-flex align-items-center">
+                                <input type="text" class="form-control border-end-0" placeholder="If yes, how much?">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-currency-dollar"></i>
+                                </span>
+                            </div>
+                        </div>
 
                         <div class="row g-3 align-items-center mb-2">
-
-
                             <div class="col-md-2"><label>Comment</label></div>
-
                             <div class="col-md-10 d-flex align-items-center">
-                                <input class="form-control border-end-0">
+                                <input class="form-control border-end-0" placeholder="Enter your comments">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-chat-left-text"></i>
                                 </span>
                             </div>
                         </div>
-
-
                     </div>
 
 
@@ -567,6 +573,39 @@
             </div>
 
 
+
+            <script>
+                // Add Director Logic
+                document.getElementById('add-director-btn').addEventListener('click', function() {
+                    const container = document.getElementById('director-container');
+                    const firstBlock = container.querySelector('.director-block');
+
+                    // Clone logic
+                    const newBlock = firstBlock.cloneNode(true);
+
+                    newBlock.querySelectorAll('input').forEach(input => input.value = '');
+
+                    const removeBtn = newBlock.querySelector('.remove-director-btn');
+                    removeBtn.classList.remove('d-none');
+
+                    // Remove button click event
+                    removeBtn.addEventListener('click', function() {
+                        newBlock.remove();
+                        updateIndexes(); // Numbers update karein
+                    });
+
+                    container.appendChild(newBlock);
+                    updateIndexes();
+                });
+
+
+                function updateIndexes() {
+                    const blocks = document.querySelectorAll('.director-block');
+                    blocks.forEach((block, index) => {
+                        block.querySelector('.director-label').innerText = `Director #${index + 1}`;
+                    });
+                }
+            </script>
 
 
 
