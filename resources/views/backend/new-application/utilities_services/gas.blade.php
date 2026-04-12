@@ -687,9 +687,12 @@
 
                 </form> --}}
 
-                <form id="gasForm" action="{{ route('admin.applications.store') }}" method="POST"
-                    enctype="multipart/form-data">
-                    @csrf <!-- APPLICATION Form -->
+                   <form id="applicationForm" action="{{ route('admin.applications.store') }}" method="POST"
+                    enctype="multipart/form-data" novalidate>
+                    @csrf
+<!-- APPLICATION Form -->
+<input type="hidden" name="service_type" value="Gas">
+
                     <div class="form-section mb-3">
                         <div class="section-title"><span>Application Form</span></div>
                         <div class="row g-3 align-items-center">
@@ -738,7 +741,10 @@
                             <div class="col-md-4">
                                 <select class="form-select" name="business_entity" required>
                                     <option disabled selected>Please Select</option>
+                                    <option  selected>Entity 1</option>
+                                    <option  selected>Entity 2</option>
                                 </select>
+
                             </div>
 
                             <div class="col-md-2"><label>Business Nature <span class="text-danger">:*</span></label></div>
@@ -754,6 +760,8 @@
                             <div class="col-md-4">
                                 <select class="form-select" name="title" required>
                                     <option disabled selected>Please Select</option>
+                                    <option  selected>Mr.</option>
+                                    <option  selected>Ms.</option>
                                 </select>
                             </div>
 
@@ -771,6 +779,8 @@
                             <div class="col-md-4">
                                 <select class="form-select" name="position" required>
                                     <option disabled selected>Please Select</option>
+                                    <option  selected>Position 1</option>
+                                    <option  selected>Position 2</option>
                                 </select>
                             </div>
 
