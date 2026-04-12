@@ -82,187 +82,99 @@
                                     </div>
 
                                 </div>
+<div class="table-responsive">
+    <table class="table bordered-table mb-0 text-start" id="dataTable" data-page-length='10'>
+        <thead>
+            <tr>
+                <th scope="col" class="text-start">
+                    <label class="form-check-label">S.L</label>
+                </th>
+                <th>App #</th>
+                <th>Action</th>
+                <th>Date</th>
+                <th>Service</th> {{-- Naya Column --}}
+                <th>Sale By</th>
+                <th>Status</th>
+                <th>Company / Merchant</th>
+                <th>Product / Brand</th>
+                <th>Qty</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($applications as $key => $item)
+                <tr>
+                    {{-- Serial Number --}}
+                    <td class="text-start">{{ $key + 1 }}</td>
 
-                                <div class="table-responsive scroll-lg">
-                                    <table class="table bordered-table mb-0 text-start table-hover table-sm" id="dataTable"
-                                        data-page-length='10'>
-                                        <thead>
-                                            <tr>
+                    {{-- 1. Application Number --}}
+                    <td class="text-start fw-bold text-primary-600">
+                        {{ $item->application_num }}
+                    </td>
 
-                                                <th> No</th>
-                                                <th>Action</th>
-                                                <th class="text-start">Date</th>
-                                                <th>Sale By</th>
-                                                <th>Status</th>
-                                                <th>Company / Merchant</th>
-                                                <th>Product / Brand</th>
-                                                <th>Qty</th>
-                                            </tr>
-                                        </thead>
+                    {{-- 2. Action --}}
+                    <td class="text-start">
+                        <div class="d-flex align-items-center gap-2">
+                            <a href="{{ route('admin.applications.edit', $item->id) }}"
+                               class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center"
+                               data-bs-toggle="tooltip" title="View">
+                                <iconify-icon icon="lucide:eye"></iconify-icon>
+                            </a>
 
-                                        <tbody>
-                                            @php
-                                                $rows = [
-                                                    [
-                                                        'date' => '2026-04-01',
-                                                        'sale_by' => 'Ali Ahmed',
-                                                        'status' => 'Active',
-                                                        'company' => 'ABC Traders ',
-                                                        'product' => 'Nike Shoes',
-                                                        'qty' => 5,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-02',
-                                                        'sale_by' => 'Usman Khan',
-                                                        'status' => 'Pending',
-                                                        'company' => 'XYZ Mart',
-                                                        'product' => 'Adidas T-Shirt',
-                                                        'qty' => 3,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-03',
-                                                        'sale_by' => 'Sara Malik',
-                                                        'status' => 'Inactive',
-                                                        'company' => 'Global Store',
-                                                        'product' => 'Samsung Mobile',
-                                                        'qty' => 2,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-04',
-                                                        'sale_by' => 'Ahmed Raza',
-                                                        'status' => 'Active',
-                                                        'company' => 'Tech Hub',
-                                                        'product' => 'Dell Laptop',
-                                                        'qty' => 1,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-05',
-                                                        'sale_by' => 'Hina Noor',
-                                                        'status' => 'Pending',
-                                                        'company' => 'City Mall',
-                                                        'product' => 'Apple iPhone',
-                                                        'qty' => 4,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-01',
-                                                        'sale_by' => 'Ali Ahmed',
-                                                        'status' => 'Active',
-                                                        'company' => 'ABC Traders',
-                                                        'product' => 'Nike Shoes',
-                                                        'qty' => 5,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-02',
-                                                        'sale_by' => 'Usman Khan',
-                                                        'status' => 'Pending',
-                                                        'company' => 'XYZ Mart',
-                                                        'product' => 'Adidas T-Shirt',
-                                                        'qty' => 3,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-03',
-                                                        'sale_by' => 'Sara Malik',
-                                                        'status' => 'Inactive',
-                                                        'company' => 'Global Store',
-                                                        'product' => 'Samsung Mobile',
-                                                        'qty' => 2,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-04',
-                                                        'sale_by' => 'Ahmed Raza',
-                                                        'status' => 'Active',
-                                                        'company' => 'Tech Hub',
-                                                        'product' => 'Dell Laptop',
-                                                        'qty' => 1,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-05',
-                                                        'sale_by' => 'Hina Noor',
-                                                        'status' => 'Pending',
-                                                        'company' => 'City Mall',
-                                                        'product' => 'Apple iPhone',
-                                                        'qty' => 4,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-01',
-                                                        'sale_by' => 'Ali Ahmed',
-                                                        'status' => 'Active',
-                                                        'company' => 'ABC Traders',
-                                                        'product' => 'Nike Shoes',
-                                                        'qty' => 5,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-02',
-                                                        'sale_by' => 'Usman Khan',
-                                                        'status' => 'Pending',
-                                                        'company' => 'XYZ Mart',
-                                                        'product' => 'Adidas T-Shirt',
-                                                        'qty' => 3,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-03',
-                                                        'sale_by' => 'Sara Malik',
-                                                        'status' => 'Inactive',
-                                                        'company' => 'Global Store',
-                                                        'product' => 'Samsung Mobile',
-                                                        'qty' => 2,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-04',
-                                                        'sale_by' => 'Ahmed Raza',
-                                                        'status' => 'Active',
-                                                        'company' => 'Tech Hub',
-                                                        'product' => 'Dell Laptop',
-                                                        'qty' => 1,
-                                                    ],
-                                                    [
-                                                        'date' => '2026-04-05',
-                                                        'sale_by' => 'Hina Noor',
-                                                        'status' => 'Pending',
-                                                        'company' => 'City Mall',
-                                                        'product' => 'Apple iPhone',
-                                                        'qty' => 4,
-                                                    ],
-                                                ];
-                                            @endphp
+                            <form action="{{ route('admin.applications.destroy', $item->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                        class="btn-delete w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center border-0"
+                                        onclick="return confirm('Are you sure?')">
+                                    <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
 
-                                            @foreach ($rows as $index => $row)
-                                                <tr>
-                                                    <td class= "text-nowrap">{{ $index + 1 }}</td>
+                    {{-- 3. Date --}}
+                    <td class="text-start text-nowrap">
+                        {{ $item->created_at->format('d-m-Y') }}
+                    </td>
 
-                                                    <td class= "text-nowrap d-flex gap-1">
-                                                        <a href="#"
-                                                            class="w-32-px h-32-px bg-success-focus text-success green_color-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                                            <iconify-icon icon="lucide:eye"></iconify-icon>
-                                                        </a>
-                                                        <a href="#"
-                                                            class="w-32-px h-32-px bg-success-focus text-success green_color-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                                            <iconify-icon icon="lucide:edit"></iconify-icon>
-                                                        </a>
-                                                        <a href="#"
-                                                            class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                                            <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                                                        </a>
-                                                    </td>
+                    {{-- 4. Service (Identifies the form type) --}}
+                    <td class="text-start">
+                        <span class="badge bg-info-focus text-info-main px-2 py-1">
+                            {{ $item->service_type }}
+                        </span>
+                    </td>
 
-                                                    <td class= "text-nowrap">{{ $row['date'] }}</td>
-                                                    <td class= "text-nowrap">{{ $row['sale_by'] }}</td>
+                    {{-- 5. Sale By --}}
+                    <td class="text-start">
+                        {{ $item->application_agent ?? 'N/A' }}
+                    </td>
 
-                                                    <td class= "text-nowrap">
-                                                        <span
-                                                            class="badge bg-{{ $row['status'] == 'Active' ? 'success' : ($row['status'] == 'Pending' ? 'warning' : 'danger') }}">
-                                                            {{ $row['status'] }}
-                                                        </span>
-                                                    </td>
+                    {{-- 6. Status --}}
+                    <td class="text-start">
+                        <span class="badge bg-warning-focus text-warning-main px-2 py-1">
+                            Pending
+                        </span>
+                    </td>
 
-                                                    <td class= "text-nowrap">{{ $row['company'] }}</td>
-                                                    <td class= "text-nowrap">{{ $row['product'] }}</td>
-                                                    <td class= "text-nowrap">{{ $row['qty'] }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                    {{-- 7. Company / Merchant --}}
+                    <td class="text-start">
+                        {{ $item->company_name ?? $item->merchant_full_name }}
+                    </td>
+
+                    {{-- 8. Product / Brand --}}
+                    <td class="text-start">
+                        {{ $item->brand ?? 'N/A' }}
+                    </td>
+
+                    {{-- 9. Quantity --}}
+                    <td class="text-start">
+                        {{ $item->qty ?? '1' }}
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
                             </div>
 
                         </div>

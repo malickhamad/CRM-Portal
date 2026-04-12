@@ -29,6 +29,11 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('users', UserController::class);
 
 
+// new application create routes...
+    Route::post('/applications/store', [ApplicationController::class, 'store'])->name('applications.store');
+    Route::get('/applications/{id}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
+    Route::put('/applications/{id}/update', [ApplicationController::class, 'update'])->name('applications.update');
+    Route::delete('/applications/{id}/destroy', [ApplicationController::class, 'destroy'])->name('applications.destroy');
 
 
 
