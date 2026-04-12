@@ -58,6 +58,9 @@ class ApplicationController extends Controller
         return view('backend.new-application.utilities_services.electric_gas');
     }
 
+     public function notepad() {
+        return view('backend.notepad.notepad');
+    }
 
 public function applications() {
     $applications = Application::latest()->get();
@@ -257,6 +260,8 @@ private function getNextApplicationNumber() {
         $number = preg_replace('/[^0-9]/', '', $lastApplication->application_num);
         return "" . str_pad((int)$number + 1, 3, '0', STR_PAD_LEFT);
     }
+
+      
 }
 
 }

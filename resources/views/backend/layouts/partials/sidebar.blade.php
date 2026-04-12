@@ -49,7 +49,7 @@
 
 
     <li>
-        <a href="{{ route('admin.users.index') }}">
+        <a href="{{ route('admin.notepad') }}">
             <iconify-icon icon="mdi:note-outline" class="menu-icon"></iconify-icon>
             <span>Notepad</span>
         </a>
