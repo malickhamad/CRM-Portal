@@ -1,3 +1,5 @@
+<script src="{{asset('asset/backend/js/adrash.js')}}"></script>
+
 <!-- JavaScript Libraries -->
 <script src="{{ asset('asset/backend/js/iconify.min.js') }}"></script>
 <!-- jQuery library js -->
@@ -34,6 +36,7 @@
 
 <!-- main js -->
 <script src="{{ asset('asset/backend/js/app.js') }}"></script>
+
 
 <!-- main js -->
 <script>

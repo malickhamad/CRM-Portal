@@ -102,7 +102,9 @@
                 </div>
                 <!-- HEADER -->
 
-                <form>
+                {{-- <form id="openBankingForm" action="{{ route('admin.applications.store') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
                     <!-- APPLICATION Form -->
                     <div class="form-section mb-3">
                         <div class="section-title"><span>Application Form</span></div>
@@ -125,30 +127,6 @@
                         <div class="section-title"><span>Customer Details</span></div>
 
 
-
-                        {{-- <div class="row g-3 align-items-center mb-2 pb-2">
-                            <div class="col-md-2"><label>Business Entity <span class="text-danger"><span class="text-danger">:*</span></span></label></div>
-
-                            <div class="col-md-4 d-flex align-items-center">
-                                <select class="form-select border-end-0">
-                                    <option>Select</option>
-                                </select>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-diagram-3"></i>
-                                </span>
-                            </div>
-
-                            <div class="col-md-2"><label>Business Nature <span class="text-danger">:*</span></label></div>
-
-                            <div class="col-md-4 d-flex align-items-center">
-                                <select class="form-select border-end-0">
-                                    <option>Select</option>
-                                </select>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-briefcase"></i>
-                                </span>
-                            </div>
-                        </div> --}}
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Title <span class="text-danger">:*</span></label></div>
@@ -335,16 +313,221 @@
 
 
 
+                </form> --}}
+
+
+
+
+                <form id="openBankingForm" action="{{ route('admin.applications.store') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+
+                    <!-- APPLICATION Form -->
+                    <div class="form-section mb-3">
+                        <div class="section-title"><span>Application Form</span></div>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-3 "><label>Application Agent <span class="text-danger">:*</span></label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-select" name="application_agent" required>
+                                    <option disabled selected>Please Select</option>
+                                    <option>Ali Hassan</option>
+                                    <option>Usman Khan</option>
+                                    <option>Sara Ahmed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Name DETAILS -->
+                    <div class="form-section mb-3">
+                        <div class="section-title"><span>Customer Details</span></div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+                            <div class="col-md-2"><label>Title <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <select class="form-select border-end-0" name="title" required>
+                                    <option>Mr</option>
+                                    <option>Mrs</option>
+                                </select>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-person-badge"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Merchant/Customer Full Name <span
+                                        class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0" name="full_name" required
+                                    placeholder="Enter full name">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+                            <div class="col-md-2"><label>First Name <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0" name="first_name" required
+                                    placeholder="Enter First name">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-building"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Last Name <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0" name="last_name" required
+                                    placeholder="Enter Last name">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-shop"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+
+                            <div class="col-md-2"><label>Email <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="email" class="form-control border-end-0" name="email" required
+                                    placeholder="example@email.com">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Mobile No<span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0" name="mobile_no" required
+                                    placeholder="03XXXXXXXXX">
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-telephone"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+                            <div class="col-md-2"><label>Business/Company Number <span
+                                        class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0" name="business_number" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-receipt"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Business Address <span class="text-danger">:*</span></label>
+                            </div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0" name="business_address" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-geo-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- APPLICATION DETAIL -->
+                    <div class="form-section mb-3">
+                        <div class="section-title"><span>Application Detail</span></div>
+
+                        <div class="row g-3 align-items-center mb-2">
+
+                            <div class="col-md-2"><label>Application Num <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0" name="application_num" value="AUTO-001" readonly
+                                    required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-hash"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Service</label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control border-end-0" name="service_type" value="Open Banking"
+                                    readonly required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-credit-card"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2">
+
+                            <div class="col-md-2"><label>Application Date <span class="text-danger">:*</span></label>
+                            </div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="date" class="form-control border-end-0" name="application_date" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-calendar"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Renewal Date <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="date" class="form-control border-end-0" name="renewal_date" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-calendar-event"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2">
+
+                            <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <select class="form-select border-end-0" name="brand" required>
+                                    <option disabled selected>Please Select</option>
+                                    <option>Verifone</option>
+                                    <option>Ingenico</option>
+                                    <option>PAX</option>
+                                </select>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-bag"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2">
+
+                            <div class="col-md-2"><label>Comment</label></div>
+
+                            <div class="col-md-10 d-flex align-items-center">
+                                <input class="form-control border-end-0" name="comment" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-chat-left-text"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBMIT BUTTON -->
+                    <div class="mt-3 ">
+                        <button class="btn btn-primary bg_green_color">
+                            <i class="bi bi-send me-1"></i> Save
+                        </button>
+                    </div>
+
                 </form>
-
-
-
 
             </div>
 
 
-
-
+            <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
         </div>
     @endsection

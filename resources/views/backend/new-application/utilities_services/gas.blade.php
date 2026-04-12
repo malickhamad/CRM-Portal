@@ -103,8 +103,9 @@
                 <!-- HEADER -->
 
 
-                <form>
-                    <!-- APPLICATION Form -->
+                {{-- <form id="gasForm" action="{{ route('admin.applications.store') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf <!-- APPLICATION Form -->
                     <div class="form-section mb-3">
                         <div class="section-title"><span>Application Form</span></div>
                         <div class="row g-3 align-items-center">
@@ -268,7 +269,7 @@
                             <div class="col-md-2"><label>Service</label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control " value="Gas" readonly>
+                                <input type="text" class="form-control " value="Gas" name="service_type" readonly>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-credit-card"></i>
                                 </span>
@@ -684,6 +685,575 @@
 
 
 
+                </form> --}}
+
+                <form id="gasForm" action="{{ route('admin.applications.store') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf <!-- APPLICATION Form -->
+                    <div class="form-section mb-3">
+                        <div class="section-title"><span>Application Form</span></div>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-3 "><label>Application Agent <span class="text-danger">:*</span></label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-select" name="application_agent" required>
+                                    <option disabled selected>Select Agent</option>
+                                    <option>Ali Hassan</option>
+                                    <option>Usman Khan</option>
+                                    <option>Sara Ahmed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- CUSTOMER DETAIL -->
+                    <div class="form-section mb-3">
+                        <div class="section-title"><span>Customer Detail</span></div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+                            <div class="col-md-2"><label>Company Name <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" placeholder="Enter company name"
+                                    name="company_name" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-building"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Trading Name <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" name="trading_name" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-pencil"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+                            <div class="col-md-2"><label>Business Entity <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <select class="form-select" name="business_entity" required>
+                                    <option disabled selected>Please Select</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2"><label>Business Nature <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="business_nature" required>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+                            <div class="col-md-2"><label>Title <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <select class="form-select" name="title" required>
+                                    <option disabled selected>Please Select</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2"><label>Merchant Full Name <span class="text-danger">:*</span></label>
+                            </div>
+
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="merchant_full_name" required>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+                            <div class="col-md-2"><label>Position <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <select class="form-select" name="position" required>
+                                    <option disabled selected>Please Select</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2"><label>Email Address <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="email" class="form-control" placeholder="example@email.com"
+                                    name="email" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+                            <div class="col-md-2"><label>Phone Number <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" name="phone_number" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-telephone"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Companies House Number <span
+                                        class="text-danger">:*</span></label>
+                            </div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" name="companies_house_number" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-building"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+                            <div class="col-md-2"><label>VAT/TAX Number <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" name="vat_tax_number" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-hash"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Trading Address <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" name="trading_address" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-geo-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+                            <div class="col-md-2"><label>Postal Code <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="postal_code" required>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- APPLICATION DETAIL -->
+                    <div class="form-section mb-3">
+                        <div class="section-title"><span>Application Detail</span></div>
+
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-md-2"><label>Application Num <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" value="AUTO-001" name="application_num"
+                                    readonly required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-hash"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Service</label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" value="Gas" name="service_type" readonly
+                                    required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-credit-card"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-md-2"><label>Application Date <span class="text-danger">:*</span></label>
+                            </div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="date" class="form-control" name="application_date" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-calendar"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Annual Consumption <span class="text-danger">:*</span></label>
+                            </div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" name="annual_consumption" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-lightning"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-md-2"><label>Renewal Date <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <input type="date" class="form-control" name="renewal_date" required>
+                            </div>
+
+                            <div class="col-md-2"><label>Gas Email <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="email" class="form-control" name="gas_email" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-md-2"><label>Company Registration No <span
+                                        class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" name="company_registration_no" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-hash"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Commercial/Resident <span class="text-danger">:*</span></label>
+                            </div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" name="commercial_resident" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-building"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
+
+                            <div class="col-md-4">
+                                <select class="form-select" name="brand" required>
+                                    <option disabled selected>Select Brand</option>
+                                    <option>Verifone</option>
+                                    <option>Ingenico</option>
+                                    <option>PAX</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2"><label>Comment</label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" name="comment" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-chat-left-text"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- GAS DETAILS -->
+                    <div class="form-section mb-3">
+                        <div class="section-title"><span>Gas Details</span></div>
+
+                        <div id="meter-container">
+                            <div class="meter-block mb-3 border-bottom pb-2">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <p class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0 meter-label">
+                                        Meter #1
+                                    </p>
+                                    <button type="button" class="btn btn-danger btn-sm remove-meter-btn d-none"
+                                        style="padding: 2px 8px; font-size: 12px;" required>
+                                        <i class="bi bi-trash"></i> Remove
+                                    </button>
+                                </div>
+
+                                <div class="row align-items-center">
+
+                                    <div class="col-md-2"><label class="mb-0">Supplier Name</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0" name="meters[][supplier_name]" required>
+                                        <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">MPRN No</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0" name="meters[][mprn_no]" required>
+                                        <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Offer Rate</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0" name="meters[][offer_rate]" required>
+                                        <span class="icon-box border-start-0"><i class="bi bi-tag"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Con. Duration</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0" name="meters[][contract_duration]"
+                                            required>
+                                        <span class="icon-box border-start-0"><i class="bi bi-clock"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Uplift</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0" name="meters[][uplift]" required>
+                                        <span class="icon-box border-start-0"><i class="bi bi-percent"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Customer No</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0" name="meters[][customer_no]" required>
+                                        <span class="icon-box border-start-0"><i class="bi bi-card-text"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Name Appears On Bill</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0" name="meters[][bill_name]" required>
+                                        <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Current Meter Read</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0" name="meters[][current_meter_read]"
+                                            required>
+                                        <span class="icon-box border-start-0"><i class="bi bi-droplet"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Meter Serial No</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0" name="meters[][meter_serial_no]"
+                                            required>
+                                        <span class="icon-box border-start-0"><i class="bi bi-upc-scan"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Last Bill Amount</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0" name="meters[][last_bill_amount]"
+                                            required>
+                                        <span class="icon-box border-start-0"><i class="bi bi-currency-dollar"></i></span>
+                                    </div>
+
+                                    <div class="col-md-2"><label class="mb-0">Mode</label></div>
+                                    <div class="col-md-4 d-flex align-items-center mb-1">
+                                        <input class="form-control border-end-0" name="meters[][mode]" required>
+                                        <span class="icon-box border-start-0"><i class="bi bi-credit-card"></i></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-2">
+                            <button type="button" id="add-meter-btn" class="btn btn-primary bg_green_color" required>
+                                <i class="bi bi-plus-circle me-1"></i> Add More Meter
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <!-- BANK DETAILS AT BOTTOM -->
+                    <div class="form-section mb-3">
+                        <div class="section-title"><span>Bank Details</span></div>
+
+                        <div class="row gy-1 gx-3 align-items-center">
+
+                            <div class="col-md-2"><label>Name On Account</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control" placeholder="Enter Name On Account" name="name_on_account"
+                                    required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Account Number</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control" placeholder="Enter Account Number" name="account_number"
+                                    required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-hash"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Sort Code</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control" placeholder="Enter Sort Code" name="sort_code" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-diagram-3"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>IBAN</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control" placeholder="Enter IBAN" name="iban" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-credit-card-2-front"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>BIC</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control" placeholder="Enter BIC" name="bic" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-bank"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Name Of Bank</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control" placeholder="Enter Bank Name" name="bank_name" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-building"></i>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <!-- OTHER DETAILS -->
+                    <div class="form-section mb-3">
+                        <div class="section-title"><span>Other Details</span></div>
+
+                        <div class="row gy-1 gx-3 align-items-center">
+
+                            <div class="col-md-2"><label>Bill Payment Method</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control" name="bill_payment_method" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-credit-card"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Landlord Name</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control" name="landlord_name" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-person-badge"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Director D.O.B</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="date" class="form-control" name="director_dob" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-calendar"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Name Of New Customer</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control" name="new_customer_name" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Status Taken Date</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="date" class="form-control" name="status_taken_date" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-calendar-check"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Password</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="password" class="form-control" name="password" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                            </div>
+
+                            <div class="col-md-2"><label>Customer History</label></div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input class="form-control" name="customer_history" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-clock-history"></i>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <!-- KYC VERIFICATION SECTION -->
+                    <div class="card shadow-sm border-0 mt-4">
+                        <div class="card-body">
+
+                            <div class="section-title"><span>KYC Verification</span></div>
+
+                            <div class="row g-4">
+
+                                <div class="col-md-6">
+                                    <label class="fw-semibold mb-2">
+                                        <i class="bi bi-person-badge me-1 text-primary"></i> Picture ID
+                                    </label>
+
+                                    <div class="kyc-upload-box" onclick="document.getElementById('pictureId').click();">
+                                        <p class="text-muted mb-0">Drop files here to upload</p>
+                                        <input type="file" id="pictureId" name="picture_id" hidden required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="fw-semibold mb-2">
+                                        <i class="bi bi-building me-1 text-success"></i> Inside/Outside pics
+                                    </label>
+
+                                    <div class="kyc-upload-box" onclick="document.getElementById('insidePics').click();">
+                                        <p class="text-muted mb-0">Drop files here to upload</p>
+                                        <input type="file" id="insidePics" name="inside_outside_pics" hidden required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="fw-semibold mb-2">
+                                        <i class="bi bi-receipt me-1 text-warning"></i> Bill
+                                    </label>
+
+                                    <div class="kyc-upload-box" onclick="document.getElementById('billUpload').click();">
+                                        <p class="text-muted mb-0">Drop files here to upload</p>
+                                        <input type="file" id="billUpload" name="bill" hidden required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="fw-semibold mb-2">
+                                        <i class="bi bi-bank me-1 text-info"></i> Bank Statement
+                                    </label>
+
+                                    <div class="kyc-upload-box"
+                                        onclick="document.getElementById('bankStatement').click();">
+                                        <p class="text-muted mb-0">Drop files here to upload</p>
+                                        <input type="file" id="bankStatement" name="bank_statement" hidden required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="fw-semibold mb-2">
+                                        <i class="bi bi-bank me-1 text-info"></i> Additional Uploads
+                                    </label>
+
+                                    <div class="kyc-upload-box"
+                                        onclick="document.getElementById('additionalUploads').click();">
+                                        <p class="text-muted mb-0">Drop files here to upload</p>
+                                        <input type="file" id="additionalUploads" name="bank_statement" hidden
+                                            required>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- SUBMIT BUTTON -->
+                    <div class="mt-3 ">
+                        <button class="btn btn-primary bg_green_color" required>
+                            <i class="bi bi-send me-1"></i> Save
+                        </button>
+                    </div>
+
                 </form>
 
             </div>
@@ -718,6 +1288,7 @@
                 }
             </script>
 
+            <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 
         </div>
