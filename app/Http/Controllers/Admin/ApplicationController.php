@@ -71,11 +71,6 @@ class ApplicationController extends Controller
         return view('backend.new-application.utilities_services.electric_gas');
     }
 
-    public function notepad()
-    {
-        return view('backend.notepad.notepad');
-    }
-
     public function applications()
     {
         $applications = Application::latest()->get();
