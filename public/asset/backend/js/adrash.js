@@ -122,7 +122,7 @@ $(document).ready(function () {
 
 });
 
-// for all for handling kyc section last section of form 
+// for all for handling kyc section last section of form
 
 $(document).ready(function () {
 

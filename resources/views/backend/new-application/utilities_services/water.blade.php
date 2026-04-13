@@ -420,7 +420,7 @@
 
                                     <div class="kyc-upload-box" onclick="document.getElementById('billUpload').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="billUpload" name="bill" hidden>
+                                        <input type="file" id="billUpload" name="bill_upload" hidden>
                                     </div>
                                 </div>
 
@@ -457,7 +457,7 @@
 
 
                 <form id="waterForm" action="{{ route('admin.applications.store') }}" method="POST"
-                    enctype="multipart/form-data">
+                    enctype="multipart/form-data" novalidate>
                     @csrf
 
                     <!-- APPLICATION Form -->
@@ -576,7 +576,7 @@
                             <div class="col-md-2"><label>Director DOB <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" name="director_dob" class="form-control border-end-0" required>
+                                <input type="date" name="director_dob_single" class="form-control border-end-0" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar"></i>
                                 </span>
@@ -663,7 +663,7 @@
                             <div class="col-md-2"><label>Comment</label></div>
 
                             <div class="col-md-10 d-flex align-items-center">
-                                <input type="text" name="comment" class="form-control border-end-0" required>
+                                <input type="text" name="comment" class="form-control border-end-0">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-chat-left-text"></i>
                                 </span>
@@ -716,7 +716,7 @@
 
                             <div class="col-md-2"><label>BIC</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input name="bic" class="form-control border-end-0" placeholder="Enter BIC" required>
+                                <input name="bic" class="form-control border-end-0" placeholder="Enter BIC">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-bank"></i>
                                 </span>
@@ -746,7 +746,7 @@
                                     <label class="fw-semibold mb-2">Picture ID</label>
                                     <div class="kyc-upload-box" onclick="document.getElementById('pictureId').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="pictureId" name="picture_id" hidden required>
+                                        <input type="file" id="pictureId" name="picture_id" hidden>
                                     </div>
                                 </div>
 
@@ -754,7 +754,7 @@
                                     <label class="fw-semibold mb-2">Inside/Outside pics</label>
                                     <div class="kyc-upload-box" onclick="document.getElementById('insidePics').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="insidePics" name="inside_outside_pics" hidden required>
+                                        <input type="file" id="insidePics" name="inside_outside_pics" hidden>
                                     </div>
                                 </div>
 
@@ -762,7 +762,7 @@
                                     <label class="fw-semibold mb-2">Bill</label>
                                     <div class="kyc-upload-box" onclick="document.getElementById('billUpload').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="billUpload" name="bill" hidden required>
+                                        <input type="file" id="billUpload" name="bill_upload" hidden>
                                     </div>
                                 </div>
 
@@ -771,7 +771,7 @@
                                     <div class="kyc-upload-box"
                                         onclick="document.getElementById('bankStatement').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="bankStatement" name="bank_statement" hidden required>
+                                        <input type="file" id="bankStatement" name="bank_statement" hidden>
                                     </div>
                                 </div>
 

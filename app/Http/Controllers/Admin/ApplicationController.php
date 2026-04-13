@@ -1,115 +1,132 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Application;
 use App\Models\ApplicationDirector;
 use App\Models\ApplicationMeter;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class ApplicationController extends Controller
 {
-    public function services() {
-        return view('backend.new-application.services');
-    }
-    public function finance_services() {
-        return view('backend.new-application.finance_services');
-    }
-    public function utilities_services() {
-        return view('backend.new-application.utilities_services');
-    }
+    public function services() { return view('backend.new-application.services'); }
+    public function finance_services() { return view('backend.new-application.finance_services'); }
+    public function utilities_services() { return view('backend.new-application.utilities_services'); }
+
     public function card_machine() {
         $nextNum = $this->getNextApplicationNumber();
         return view('backend.new-application.finance_services.card_machine', compact('nextNum'));
     }
+
     public function loan() {
-        return view('backend.new-application.finance_services.loan');
+        $nextNum = $this->getNextApplicationNumber();
+        return view('backend.new-application.finance_services.loan', compact('nextNum'));
     }
+
     public function open_banking() {
-        return view('backend.new-application.finance_services.open_banking');
+        $nextNum = $this->getNextApplicationNumber();
+        return view('backend.new-application.finance_services.open_banking', compact('nextNum'));
     }
 
-    // Utilities Services Pages
     public function water() {
-        return view('backend.new-application.utilities_services.water');
-    }
-    public function broadband() {
-        return view('backend.new-application.utilities_services.broadband');
-    }
-    public function telecom() {
-        return view('backend.new-application.utilities_services.telecom');
-    }
-    public function gas() {
-        return view('backend.new-application.utilities_services.gas');
-    }
-    public function electricity() {
-        return view('backend.new-application.utilities_services.electricity');
-    }
-    public function electric_gas() {
-        return view('backend.new-application.utilities_services.electric_gas');
+        $nextNum = $this->getNextApplicationNumber();
+        return view('backend.new-application.utilities_services.water', compact('nextNum'));
     }
 
-    public function applications()
-    {
+    public function broadband() {
+        $nextNum = $this->getNextApplicationNumber();
+        return view('backend.new-application.utilities_services.broadband', compact('nextNum'));
+    }
+
+    public function telecom() {
+        $nextNum = $this->getNextApplicationNumber();
+        return view('backend.new-application.utilities_services.telecom', compact('nextNum'));
+    }
+
+    public function gas() {
+        $nextNum = $this->getNextApplicationNumber();
+        return view('backend.new-application.utilities_services.gas', compact('nextNum'));
+    }
+
+    public function electricity() {
+        $nextNum = $this->getNextApplicationNumber();
+        return view('backend.new-application.utilities_services.electricity', compact('nextNum'));
+    }
+
+    public function electric_gas() {
+        $nextNum = $this->getNextApplicationNumber();
+        return view('backend.new-application.utilities_services.electric_gas', compact('nextNum'));
+    }
+
+    public function applications() {
         $applications = Application::latest()->get();
         return view('backend.applications.applications', compact('applications'));
     }
 
-    // ====== DYNAMIC VALIDATION LOGIC ======
-    private function getValidationRules($serviceType)
+    private function normalizeServiceType(?string $serviceType): string
     {
-        // Base rules jo har form me required hain
+        $value = strtolower(trim((string) $serviceType));
+        return match ($value) {
+            'card machine', 'card_machine' => 'Card Machine',
+            'loan' => 'Loan',
+            'open banking', 'open_banking' => 'Open Banking',
+            'water' => 'Water',
+            'broadband' => 'Broadband',
+            'telecom' => 'Telecom',
+            'gas' => 'Gas',
+            'electricity' => 'Electricity',
+            'electric gas', 'electric_gas' => 'Electric Gas',
+            default => $serviceType ?: '',
+        };
+    }
+
+    private function getValidationRules(string $serviceType): array
+    {
         $rules = [
-            'application_agent' => 'required|string|max:255',
-            'service_type'      => 'required|string',
-            'application_num'   => 'required|string',
-            'application_date'  => 'required|date',
+            'application_agent' => ['required', 'string', 'max:255'],
+            'service_type' => ['required', 'string'],
+            'application_num' => ['required', 'string', 'max:255'],
+            'application_date' => ['required', 'date'],
         ];
 
-        // Service ke hisaab se rules dynamically add karein
         switch ($serviceType) {
             case 'Card Machine':
-            case 'Loan':
+                $rules += $this->financeCommonRules();
                 $rules += [
-                    'company_name'           => 'required|string|max:255',
-                    'trading_name'           => 'required|string|max:255',
-                    'business_entity'        => 'required|string',
-                    'business_nature'        => 'required|string',
-                    'title'                  => 'required|string',
-                    'merchant_full_name'     => 'required|string|max:255',
-                    'position'               => 'required|string',
-                    'email_address'          => 'required|email',
-                    'phone_number'           => 'required|string',
-                    'companies_house_number' => 'required|string',
-                    'vat_tax_number'         => 'required|string',
-                    'trading_address'        => 'required|string',
-                    'brand'                  => 'required|string',
-                    'renewal_date'           => 'required|date',
+                    'qty' => ['required', 'integer', 'min:1'],
+                    'director_name' => ['required', 'array', 'min:1'],
+                    'director_name.*' => ['required', 'string', 'max:255'],
+                    'director_dob_array' => ['required', 'array', 'min:1'],
+                    'director_dob_array.*' => ['required', 'date'],
+                    'director_phone' => ['required', 'array', 'min:1'],
+                    'director_phone.*' => ['required', 'string', 'max:255'],
+                    'director_email' => ['required', 'array', 'min:1'],
+                    'director_email.*' => ['required', 'email', 'max:255'],
+                    'director_home_address' => ['required', 'array', 'min:1'],
+                    'director_home_address.*' => ['required', 'string'],
                 ];
-                if($serviceType == 'Card Machine') {
-                    $rules['qty'] = 'required|integer|min:1';
-                    // Directors Array Validation
-                    $rules['director_name.*']         = 'required|string';
-                    $rules['director_dob_array.*']    = 'required|date';
-                    $rules['director_phone.*']        = 'required|string';
-                    $rules['director_email.*']        = 'required|email';
-                    $rules['director_home_address.*'] = 'required|string';
-                }
+                break;
+
+            case 'Loan':
+                $rules += $this->financeCommonRules();
                 break;
 
             case 'Open Banking':
                 $rules += [
-                    'title'                  => 'required|string',
-                    'merchant_full_name'     => 'required|string|max:255',
-                    'first_name'             => 'required|string|max:255',
-                    'last_name'              => 'required|string|max:255',
-                    'email_address'          => 'required|email',
-                    'mobile_no'              => 'required|string',
-                    'companies_house_number' => 'required|string',
-                    'business_address'       => 'required|string',
-                    'brand'                  => 'required|string',
-                    'renewal_date'           => 'required|date',
+                    'title' => ['required', 'string', 'max:50'],
+                    'merchant_full_name' => ['required', 'string', 'max:255'],
+                    'first_name' => ['required', 'string', 'max:255'],
+                    'last_name' => ['required', 'string', 'max:255'],
+                    'email_address' => ['required', 'email', 'max:255'],
+                    'mobile_no' => ['required', 'string', 'max:255'],
+                    'companies_house_number' => ['required', 'string', 'max:255'],
+                    'business_address' => ['required', 'string'],
+                    'renewal_date' => ['required', 'date'],
+                    'brand' => ['required', 'string', 'max:255'],
                 ];
                 break;
 
@@ -117,20 +134,20 @@ class ApplicationController extends Controller
             case 'Broadband':
             case 'Telecom':
                 $rules += [
-                    'company_name'        => 'required|string|max:255',
-                    'landline_no'         => 'required|string',
-                    'contact_person_name' => 'required|string|max:255',
-                    'company_reg_no'      => 'required|string',
-                    'business_address'    => 'required|string',
-                    'email_address'       => 'required|email',
-                    'unit'                => 'required|string',
-                    'home_address'        => 'required|string',
-                    'director_dob_single' => 'required|date',
-                    'mobile_no'           => 'required|string',
-                    'brand'               => 'required|string',
+                    'company_name' => ['required', 'string', 'max:255'],
+                    'landline_no' => ['required', 'string', 'max:255'],
+                    'contact_person_name' => ['required', 'string', 'max:255'],
+                    'company_reg_no' => ['required', 'string', 'max:255'],
+                    'business_address' => ['required', 'string'],
+                    'email_address' => ['required', 'email', 'max:255'],
+                    'unit' => ['required', 'string', 'max:255'],
+                    'home_address' => ['required', 'string'],
+                    'director_dob_single' => ['required', 'date'],
+                    'mobile_no' => ['required', 'string', 'max:255'],
+                    'brand' => ['required', 'string', 'max:255'],
                 ];
-                if($serviceType == 'Water') {
-                    $rules['spid'] = 'required|numeric';
+                if ($serviceType === 'Water') {
+                    $rules['spid'] = ['required', 'numeric'];
                 }
                 break;
 
@@ -138,25 +155,25 @@ class ApplicationController extends Controller
             case 'Electricity':
             case 'Electric Gas':
                 $rules += [
-                    'company_name'           => 'required|string|max:255',
-                    'trading_name'           => 'required|string|max:255',
-                    'business_entity'        => 'required|string',
-                    'business_nature'        => 'required|string',
-                    'title'                  => 'required|string',
-                    'merchant_full_name'     => 'required|string|max:255',
-                    'position'               => 'required|string',
-                    'email_address'          => 'required|email',
-                    'phone_number'           => 'required|string',
-                    'companies_house_number' => 'required|string',
-                    'vat_tax_number'         => 'required|string',
-                    'trading_address'        => 'required|string',
-                    'postal_code'            => 'required|string',
-                    'annual_consumption'     => 'required|string',
-                    'renewal_date'           => 'required|date',
-                    'utility_email'          => 'required|email',
-                    'company_reg_no'         => 'required|string',
-                    'commercial_resident'    => 'required|string',
-                    'brand'                  => 'required|string',
+                    'company_name' => ['required', 'string', 'max:255'],
+                    'trading_name' => ['required', 'string', 'max:255'],
+                    'business_entity' => ['required', 'string', 'max:255'],
+                    'business_nature' => ['required', 'string', 'max:255'],
+                    'title' => ['required', 'string', 'max:50'],
+                    'merchant_full_name' => ['required', 'string', 'max:255'],
+                    'position' => ['required', 'string', 'max:255'],
+                    'email_address' => ['required', 'email', 'max:255'],
+                    'phone_number' => ['required', 'string', 'max:255'],
+                    'companies_house_number' => ['required', 'string', 'max:255'],
+                    'vat_tax_number' => ['required', 'string', 'max:255'],
+                    'trading_address' => ['required', 'string'],
+                    'postal_code' => ['required', 'string', 'max:255'],
+                    'annual_consumption' => ['required', 'string', 'max:255'],
+                    'renewal_date' => ['required', 'date'],
+                    'utility_email' => ['required', 'email', 'max:255'],
+                    'company_reg_no' => ['required', 'string', 'max:255'],
+                    'commercial_resident' => ['required', 'string', 'max:255'],
+                    'brand' => ['required', 'string', 'max:255'],
                 ];
                 break;
         }
@@ -164,158 +181,84 @@ class ApplicationController extends Controller
         return $rules;
     }
 
+    private function financeCommonRules(): array
+    {
+        return [
+            'company_name' => ['required', 'string', 'max:255'],
+            'trading_name' => ['required', 'string', 'max:255'],
+            'business_entity' => ['required', 'string', 'max:255'],
+            'business_nature' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:50'],
+            'merchant_full_name' => ['required', 'string', 'max:255'],
+            'position' => ['required', 'string', 'max:255'],
+            'email_address' => ['required', 'email', 'max:255'],
+            'phone_number' => ['required', 'string', 'max:255'],
+            'companies_house_number' => ['required', 'string', 'max:255'],
+            'vat_tax_number' => ['required', 'string', 'max:255'],
+            'trading_address' => ['required', 'string'],
+            'renewal_date' => ['required', 'date'],
+            'brand' => ['required', 'string', 'max:255'],
+        ];
+    }
+
+    private function prepareRequestData(Request $request): array
+    {
+        $data = $request->all();
+
+        $serviceType = $this->normalizeServiceType($request->input('service_type'));
+        $data['service_type'] = $serviceType;
+
+        $aliases = [
+            'email' => 'email_address',
+            'full_name' => 'merchant_full_name',
+            'business_number' => 'companies_house_number',
+            'phone' => 'phone_number',
+            'director_dob' => 'director_dob_single',
+            'company_registration_no' => 'company_reg_no',
+            'gas_email' => 'utility_email',
+            'electric_email' => 'utility_email',
+            'bank_name' => 'name_of_bank',
+            'bill' => 'bill_upload',
+            'account_name' => 'name_on_account',
+        ];
+
+        foreach ($aliases as $from => $to) {
+            if (!isset($data[$to]) && $request->filled($from)) {
+                $data[$to] = $request->input($from);
+            }
+        }
+
+        if (!isset($data['director_dob_array']) && isset($data['director_dob']) && is_array($data['director_dob'])) {
+            $data['director_dob_array'] = $data['director_dob'];
+        }
+
+        if (!isset($data['director_home_address']) && isset($data['director_address']) && is_array($data['director_address'])) {
+            $data['director_home_address'] = $data['director_address'];
+        }
+
+        return $data;
+    }
 
     public function store(Request $request)
     {
-        // 1. DYNAMIC VALIDATION CHECK
-        // Agar service_type hidden field me nahi aayi to validation wahi ruk jayegi
-        $rules = $this->getValidationRules($request->input('service_type'));
-
-        $validatedData = $request->validate($rules, [
-            'qty.required' => 'The quantity field is required for Card Machine.',
-            'director_name.*.required' => 'Each director must have a name.',
-            // Aap yahan custom messages add kar sakte hain agr chahain
-        ]);
+        $prepared = $this->prepareRequestData($request);
+        $serviceType = $prepared['service_type'] ?? '';
+        $validated = validator($prepared, $this->getValidationRules($serviceType))->validate();
 
         DB::beginTransaction();
         try {
+            $application = new Application();
+            $this->fillApplication($application, $request, $prepared, true);
+            $application->save();
 
-            $app = new Application();
-
-            // Core & Customer Detail
-            $app->application_agent = $request->application_agent;
-            $app->application_num = $request->application_num ?? 'APP-' . time();
-            $app->service_type = $request->service_type; // Isko blade mein readonly/hidden field se bhejein
-
-            $app->company_name = $request->company_name;
-            $app->trading_name = $request->trading_name;
-            $app->business_entity = $request->business_entity;
-            $app->business_nature = $request->business_nature;
-            $app->title = $request->title;
-            $app->merchant_full_name = $request->merchant_full_name;
-            $app->first_name = $request->first_name;
-            $app->last_name = $request->last_name;
-            $app->position = $request->position;
-            $app->email_address = $request->email_address;
-            $app->phone_number = $request->phone_number;
-            $app->mobile_no = $request->mobile_no;
-            $app->landline_no = $request->landline_no;
-            $app->contact_person_name = $request->contact_person_name;
-            $app->companies_house_number = $request->companies_house_number;
-            $app->company_reg_no = $request->company_reg_no;
-            $app->vat_tax_number = $request->vat_tax_number;
-            $app->trading_address = $request->trading_address;
-            $app->business_address = $request->business_address;
-            $app->unit = $request->unit;
-            $app->home_address = $request->home_address;
-            $app->postal_code = $request->postal_code;
-            $app->director_dob_single = $request->director_dob_single;
-
-            // App Specific Details
-            $app->application_date = $request->application_date;
-            $app->renewal_date = $request->renewal_date;
-            $app->brand = $request->brand;
-            $app->card_machine_details = $request->card_machine_details;
-            $app->existing_funding = $request->existing_funding;
-            $app->annual_consumption = $request->annual_consumption;
-            // Dheyan rakhein form me 'electric_email', 'gas_email' ki jaga name="utility_email" rakhein
-            $app->utility_email = $request->utility_email ?? $request->electric_email ?? $request->gas_email;
-            $app->commercial_resident = $request->commercial_resident;
-            $app->spid = $request->spid;
-            $app->qty = $request->qty;
-            $app->delivery_address = $request->delivery_address;
-            $app->epos_system = $request->has('epos_system') ? 1 : 0;
-            $app->comment = $request->comment;
-
-            // Monthly Rental (Card Machine)
-            $app->debit_card = $request->debit_card;
-            $app->credit_card = $request->credit_card;
-            $app->commercial_card = $request->commercial_card;
-            $app->authentication_fee = $request->authentication_fee;
-            $app->pci = $request->pci;
-            $app->rental = $request->rental;
-
-            // Bank Details
-            $app->name_on_account = $request->name_on_account;
-            $app->account_number = $request->account_number;
-            $app->sort_code = $request->sort_code;
-            $app->iban = $request->iban;
-            $app->bic = $request->bic;
-            $app->name_of_bank = $request->name_of_bank;
-
-            // Other Details
-            $app->bill_payment_method = $request->bill_payment_method;
-            $app->landlord_name = $request->landlord_name;
-            $app->name_of_new_customer = $request->name_of_new_customer;
-            $app->status_taken_date = $request->status_taken_date;
-            $app->password = $request->password;
-            $app->customer_history = $request->customer_history;
-
-            // --- FILE UPLOADS (KYC) ---
-            if ($request->hasFile('picture_id')) {
-                $app->picture_id = $request->file('picture_id')->store('kyc', 'public');
-            }
-            if ($request->hasFile('inside_outside_pics')) {
-                $app->inside_outside_pics = $request->file('inside_outside_pics')->store('kyc', 'public');
-            }
-            if ($request->hasFile('bill_upload')) {
-                $app->bill_upload = $request->file('bill_upload')->store('kyc', 'public');
-            }
-            if ($request->hasFile('bank_statement')) {
-                $app->bank_statement = $request->file('bank_statement')->store('kyc', 'public');
-            }
-            if ($request->hasFile('additional_uploads')) {
-                $app->additional_uploads = $request->file('additional_uploads')->store('kyc', 'public');
-            }
-
-            $app->save(); // Main table saved
-
-            // 2. SAVE DIRECTORS
-            if ($request->has('director_name') && is_array($request->director_name)) {
-                foreach ($request->director_name as $key => $name) {
-                    if (!empty($name)) {
-                        ApplicationDirector::create([
-                            'application_id' => $app->id,
-                            'director_name'  => $name,
-                            'date_of_birth'  => $request->director_dob_array[$key] ?? null,
-                            'phone_no'       => $request->director_phone[$key] ?? null,
-                            'email_address'  => $request->director_email[$key] ?? null,
-                            'home_address'   => $request->director_home_address[$key] ?? null,
-                        ]);
-                    }
-                }
-            }
-
-            // 3. SAVE METERS
-            if ($request->has('supplier_name') && is_array($request->supplier_name)) {
-                foreach ($request->supplier_name as $key => $supplier) {
-                    if (!empty($supplier)) {
-                        ApplicationMeter::create([
-                            'application_id'       => $app->id,
-                            'meter_type'           => $request->meter_type[$key] ?? null,
-                            'supplier_name'        => $supplier,
-                            'mpan_top'             => $request->mpan_top[$key] ?? null,
-                            'mpan_bottom'          => $request->mpan_bottom[$key] ?? null,
-                            'mprn_no'              => $request->mprn_no[$key] ?? null,
-                            'offer_rate'           => $request->offer_rate[$key] ?? null,
-                            'contract_duration'    => $request->contract_duration[$key] ?? null,
-                            'uplift'               => $request->uplift[$key] ?? null,
-                            'customer_no'          => $request->customer_no[$key] ?? null,
-                            'name_appears_on_bill' => $request->name_appears_on_bill[$key] ?? null,
-                            'current_meter_read'   => $request->current_meter_read[$key] ?? null,
-                            'meter_serial_no'      => $request->meter_serial_no[$key] ?? null,
-                            'last_bill_amount'     => $request->last_bill_amount[$key] ?? null,
-                            'mode'                 => $request->mode[$key] ?? null,
-                        ]);
-                    }
-                }
-            }
+            $this->syncDirectors($application, $prepared);
+            $this->syncMeters($application, $prepared);
 
             DB::commit();
             return back()->with('success', 'Application Submitted Successfully!');
-        } catch (\Exception $e) {
-            DB::rollback();
-            return back()->with('error', 'Error: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->withInput()->with('error', 'Error: ' . $e->getMessage());
         }
     }
 
@@ -327,20 +270,28 @@ class ApplicationController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validation during update
-        $rules = $this->getValidationRules($request->input('service_type'));
-        $validatedData = $request->validate($rules);
+        $prepared = $this->prepareRequestData($request);
+        $serviceType = $prepared['service_type'] ?? '';
+        validator($prepared, $this->getValidationRules($serviceType))->validate();
 
-        $app = Application::findOrFail($id);
+        DB::beginTransaction();
+        try {
+            $application = Application::findOrFail($id);
+            $this->fillApplication($application, $request, $prepared, false);
+            $application->save();
 
-        // Remove old dynamic fields data
-        $app->directors()->delete();
-        $app->meters()->delete();
+            $application->directors()->delete();
+            $application->meters()->delete();
 
-        // Aap yahan same store wala logic apply kar k db me save kar lein
-        // ...
+            $this->syncDirectors($application, $prepared);
+            $this->syncMeters($application, $prepared);
 
-        return back()->with('success', 'Application Updated Successfully!');
+            DB::commit();
+            return back()->with('success', 'Application Updated Successfully!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->withInput()->with('error', 'Error: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)
@@ -350,17 +301,164 @@ class ApplicationController extends Controller
         return back()->with('success', 'Application Deleted Successfully!');
     }
 
-    private function getNextApplicationNumber() {
-        $lastApplication = Application::latest('id')->first();
-        if (!$lastApplication) {
-            return "001";
-        } else {
-            $number = preg_replace('/[^0-9]/', '', $lastApplication->application_num);
-            return "AUTO-" . str_pad((int)$number + 1, 3, '0', STR_PAD_LEFT);
+    private function fillApplication(Application $app, Request $request, array $data, bool $isCreate): void
+    {
+        $fields = [
+            'application_agent', 'application_num', 'service_type',
+            'company_name', 'trading_name', 'business_entity', 'business_nature',
+            'title', 'merchant_full_name', 'first_name', 'last_name', 'position',
+            'email_address', 'phone_number', 'mobile_no', 'landline_no', 'contact_person_name',
+            'companies_house_number', 'company_reg_no', 'vat_tax_number',
+            'trading_address', 'business_address', 'unit', 'home_address', 'postal_code',
+            'director_dob_single', 'application_date', 'renewal_date', 'brand',
+            'card_machine_details', 'existing_funding', 'annual_consumption', 'utility_email',
+            'commercial_resident', 'spid', 'qty', 'delivery_address', 'comment',
+            'debit_card', 'credit_card', 'commercial_card', 'authentication_fee', 'pci', 'rental',
+            'name_on_account', 'account_number', 'sort_code', 'iban', 'bic', 'name_of_bank',
+            'bill_payment_method', 'landlord_name', 'name_of_new_customer', 'status_taken_date',
+            'password', 'customer_history',
+        ];
+
+        foreach ($fields as $field) {
+            $app->{$field} = $data[$field] ?? null;
         }
+
+        $app->epos_system = $request->boolean('epos_system');
+
+        $this->handleFile($request, $app, 'picture_id', $isCreate);
+        $this->handleFile($request, $app, 'inside_outside_pics', $isCreate);
+        $this->handleFile($request, $app, 'bill_upload', $isCreate, ['bill']);
+        $this->handleFile($request, $app, 'bank_statement', $isCreate);
+        $this->handleFile($request, $app, 'additional_uploads', $isCreate);
+    }
+
+    private function handleFile(Request $request, Application $app, string $field, bool $isCreate, array $aliases = []): void
+    {
+        $allNames = array_merge([$field], $aliases);
+        foreach ($allNames as $name) {
+            if ($request->hasFile($name)) {
+                if (!$isCreate && !empty($app->{$field})) {
+                    Storage::disk('public')->delete($app->{$field});
+                }
+                $app->{$field} = $request->file($name)->store('kyc', 'public');
+                return;
+            }
+        }
+    }
+
+    private function syncDirectors(Application $application, array $data): void
+    {
+        $names = $data['director_name'] ?? [];
+        if (!is_array($names)) {
+            return;
+        }
+
+        $dobs = $data['director_dob_array'] ?? [];
+        $phones = $data['director_phone'] ?? [];
+        $emails = $data['director_email'] ?? [];
+        $addresses = $data['director_home_address'] ?? [];
+
+        foreach ($names as $index => $name) {
+            if (blank($name)) {
+                continue;
+            }
+
+            ApplicationDirector::create([
+                'application_id' => $application->id,
+                'director_name' => $name,
+                'date_of_birth' => $dobs[$index] ?? null,
+                'phone_no' => $phones[$index] ?? null,
+                'email_address' => $emails[$index] ?? null,
+                'home_address' => $addresses[$index] ?? null,
+            ]);
+        }
+    }
+
+ private function syncMeters(Application $application, array $data): void
+{
+    $meters = [];
+
+    if (!empty($data['meters']) && is_array($data['meters'])) {
+        foreach ($data['meters'] as $meter) {
+            if (!is_array($meter)) continue;
+
+            $meters[] = array_merge(
+                ['meter_type' => 'gas'],
+                $this->mapMeterFields($meter)
+            );
+        }
+    }
+    if (!empty($data['elec_meters']) && is_array($data['elec_meters'])) {
+        foreach ($data['elec_meters'] as $meter) {
+            if (!is_array($meter)) continue;
+
+            $meters[] = array_merge(
+                ['meter_type' => 'electricity'],
+                $this->mapMeterFields($meter)
+            );
+        }
+    }
+
+    // ✅ SAVE
+    foreach ($meters as $meterData) {
+        foreach ($meterData as $key => $value) {
+            if (is_array($value)) {
+                $meterData[$key] = implode(', ', $value);
+            }
+        }
+
+        ApplicationMeter::create(array_merge([
+            'application_id' => $application->id
+        ], $meterData));
     }
 }
 
+// Helper function for structured data
+    private function mapMeterFields(array $meter): array {
+        return [
+            'meter_type'           => $meter['meter_type'] ?? null,
+            'supplier_name'        => $meter['supplier_name'] ?? null,
+            'mpan_top'             => $meter['mpan_top'] ?? ($meter['mpan_top_line'] ?? null),
+            'mpan_bottom'          => $meter['mpan_bottom'] ?? ($meter['mpan_bottom_line'] ?? null),
+            'mprn_no'              => $meter['mprn_no'] ?? null,
+            'offer_rate'           => $meter['offer_rate'] ?? null,
+            'contract_duration'    => $meter['contract_duration'] ?? ($meter['con_duration'] ?? null),
+            'uplift'               => $meter['uplift'] ?? null,
+            'customer_no'          => $meter['customer_no'] ?? null,
+            'name_appears_on_bill' => $meter['name_appears_on_bill'] ?? ($meter['bill_name'] ?? ($meter['name_on_bill'] ?? null)),
+            'current_meter_read'   => $meter['current_meter_read'] ?? null,
+            'meter_serial_no'      => $meter['meter_serial_no'] ?? null,
+            'last_bill_amount'     => $meter['last_bill_amount'] ?? null,
+            'mode'                 => $meter['mode'] ?? null,
+        ];
+    }
 
+    private function getNextApplicationNumber(): string
+    {
+        $lastApplication = Application::latest('id')->first();
 
+        if (!$lastApplication || empty($lastApplication->application_num)) {
+            return 'APP-001';
+        }
 
+        $number = preg_replace('/[^0-9]/', '', (string) $lastApplication->application_num);
+        return 'APP-' . str_pad(((int) $number) + 1, 3, '0', STR_PAD_LEFT);
+    }
+
+public function updateStatus(Request $request, $id)
+{
+    $request->validate([
+        'status' => ['string', 'max:50']
+    ]);
+
+    $application = Application::findOrFail($id);
+    $application->status = $request->status;
+    $application->save();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Status updated successfully'
+    ]);
+}
+
+}

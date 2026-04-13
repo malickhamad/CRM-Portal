@@ -380,8 +380,8 @@
 
 
                 <form id="telecomForm" action="{{ route('admin.applications.store') }}" method="POST"
-      enctype="multipart/form-data">
-    @csrf 
+      enctype="multipart/form-data" novalidate>
+    @csrf
 
     <!-- APPLICATION Form -->
     <div class="form-section mb-3">
@@ -464,7 +464,7 @@
         <div class="row g-3 align-items-center mb-2 pb-2">
             <div class="col-md-2"><label>Director DOB <span class="text-danger">:*</span></label></div>
             <div class="col-md-4 d-flex align-items-center">
-                <input type="date" name="director_dob" class="form-control border-end-0" required>
+                <input type="date" name="director_dob_single" class="form-control border-end-0" required>
                 <span class="icon-box border-start-0"><i class="bi bi-calendar"></i></span>
             </div>
 
@@ -516,7 +516,7 @@
         <div class="row g-3 align-items-center mb-2">
             <div class="col-md-2"><label>Comment</label></div>
             <div class="col-md-10 d-flex align-items-center">
-                <input type="text" name="comment" class="form-control border-end-0" required>
+                <input type="text" name="comment" class="form-control border-end-0">
                 <span class="icon-box border-start-0"><i class="bi bi-chat-left-text"></i></span>
             </div>
         </div>
@@ -530,37 +530,37 @@
 
             <div class="col-md-2"><label>Name On Account</label></div>
             <div class="col-md-4 d-flex align-items-center">
-                <input class="form-control border-end-0" name="name_on_account" placeholder="Enter Name On Account" required>
+                <input class="form-control border-end-0" name="name_on_account" placeholder="Enter Name On Account">
                 <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
             </div>
 
             <div class="col-md-2"><label>Account Number</label></div>
             <div class="col-md-4 d-flex align-items-center">
-                <input class="form-control border-end-0" name="account_number" placeholder="Enter Account Number" required>
+                <input class="form-control border-end-0" name="account_number" placeholder="Enter Account Number">
                 <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
             </div>
 
             <div class="col-md-2"><label>Sort Code</label></div>
             <div class="col-md-4 d-flex align-items-center">
-                <input class="form-control border-end-0" name="sort_code" placeholder="Enter Sort Code" required>
+                <input class="form-control border-end-0" name="sort_code" placeholder="Enter Sort Code">
                 <span class="icon-box border-start-0"><i class="bi bi-diagram-3"></i></span>
             </div>
 
             <div class="col-md-2"><label>IBAN</label></div>
             <div class="col-md-4 d-flex align-items-center">
-                <input class="form-control border-end-0" name="iban" placeholder="Enter IBAN" required>
+                <input class="form-control border-end-0" name="iban" placeholder="Enter IBAN">
                 <span class="icon-box border-start-0"><i class="bi bi-credit-card-2-front"></i></span>
             </div>
 
             <div class="col-md-2"><label>BIC</label></div>
             <div class="col-md-4 d-flex align-items-center">
-                <input class="form-control border-end-0" name="bic" placeholder="Enter BIC" required>
+                <input class="form-control border-end-0" name="bic" placeholder="Enter BIC">
                 <span class="icon-box border-start-0"><i class="bi bi-bank"></i></span>
             </div>
 
             <div class="col-md-2"><label>Name Of Bank</label></div>
             <div class="col-md-4 d-flex align-items-center">
-                <input class="form-control border-end-0" name="bank_name" placeholder="Enter Bank Name" required>
+                <input class="form-control border-end-0" name="name_of_bank" placeholder="Enter Bank Name">
                 <span class="icon-box border-start-0"><i class="bi bi-building"></i></span>
             </div>
 

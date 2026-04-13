@@ -1011,7 +1011,7 @@
                             <div class="col-md-4 d-flex align-items-center">
                                 <div class="form-check form-switch ms-1">
                                     <input class="form-check-input switcBtn mt-1" type="checkbox" id="eposSystem"
-                                        name="epos_system" value="1" required>
+                                        name="epos_system" value="1">
                                     <label class="form-check-label ms-2 text-muted" for="eposSystem">
                                         Enable
                                     </label>

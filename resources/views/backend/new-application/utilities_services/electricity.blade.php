@@ -644,7 +644,7 @@
 
                                     <div class="kyc-upload-box" onclick="document.getElementById('billUpload').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="billUpload" name="bill" hidden>
+                                        <input type="file" id="billUpload" name="bill_upload" hidden>
                                     </div>
                                 </div>
 
@@ -670,7 +670,7 @@
                                     <div class="kyc-upload-box"
                                         onclick="document.getElementById('additionalUploads').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="additionalUploads" name="bank_statement" hidden>
+                                        <input type="file" id="additionalUploads" name="additional_uploads" hidden>
                                     </div>
                                 </div>
 
@@ -692,7 +692,7 @@
                 </form> --}}
 
                 <form id="electricityForm" action="{{ route('admin.applications.store') }}" method="POST"
-                    enctype="multipart/form-data">
+                    enctype="multipart/form-data" novalidate>
                     @csrf
 
                     <!-- APPLICATION Form -->
@@ -737,6 +737,9 @@
                             <div class="col-md-4">
                                 <select class="form-select" name="business_entity" required>
                                     <option disabled selected>Please Select</option>
+                                                                        <option  selected>Business</option>
+                                    <option  selected>Individual</option>
+
                                 </select>
                             </div>
 
@@ -751,6 +754,9 @@
                             <div class="col-md-4">
                                 <select class="form-select" name="title" required>
                                     <option disabled selected>Please Select</option>
+                                    <option>Mr.</option>
+                                    <option>Mrs.</option>
+                                    <option>Miss.</option>
                                 </select>
                             </div>
 
@@ -766,13 +772,16 @@
                             <div class="col-md-4">
                                 <select class="form-select" name="position" required>
                                     <option disabled selected>Please Select</option>
+                                    <option>Owner</option>
+                                    <option>Manager</option>
+                                    <option>Employee</option>
                                 </select>
                             </div>
 
                             <div class="col-md-2"><label>Email Address <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="email" class="form-control" placeholder="example@email.com"
-                                    name="email" required>
+                                    name="email_address" required>
                                 <span class="icon-box border-start-0"><i class="bi bi-envelope"></i></span>
                             </div>
                         </div>
@@ -858,7 +867,7 @@
 
                             <div class="col-md-2"><label>Electric Email <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="email" class="form-control" name="electric_email" required>
+                                <input type="email" class="form-control" name="utility_email" required>
                                 <span class="icon-box border-start-0"><i class="bi bi-envelope"></i></span>
                             </div>
                         </div>
@@ -867,7 +876,7 @@
                             <div class="col-md-2"><label>Company Registration No <span
                                         class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control" name="company_registration_no" required>
+                                <input type="text" class="form-control" name="company_reg_no" required>
                                 <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
                             </div>
 
@@ -892,120 +901,109 @@
 
                             <div class="col-md-2"><label>Comment</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control" name="comment" required>
+                                <input type="text" class="form-control" name="comment">
                                 <span class="icon-box border-start-0"><i class="bi bi-chat-left-text"></i></span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Electricity DETAILS -->
-                    <div class="form-section mb-3">
-                        <div class="section-title"><span>Electricity Details</span></div>
+                 <!-- Electricity DETAILS -->
+<div class="form-section mb-3">
+    <div class="section-title"><span>Electricity Details</span></div>
 
-                        <div id="elec-meter-container">
-                            <div class="elec-meter-block mb-4 border-bottom pb-3">
+    <div id="elec-meter-container">
+        <div class="elec-meter-block mb-4 border-bottom pb-3">
 
-                                <div class="row mb-2">
-                                    <div class="col-auto d-flex align-items-center">
-                                        <p
-                                            class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0 elec-meter-label">
-                                            Meter #1
-                                        </p>
-                                        <button type="button" class="btn btn-danger btn-sm ms-2 remove-elec-btn d-none"
-                                            style="padding: 2px 8px; font-size: 12px;">
-                                            <i class="bi bi-trash"></i> Remove
-                                        </button>
-                                    </div>
-                                </div>
+            <div class="row mb-2">
+                <div class="col-auto d-flex align-items-center">
+                    <p class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0 elec-meter-label">
+                        Meter #1
+                    </p>
+                    <button type="button" class="btn btn-danger btn-sm ms-2 remove-elec-btn d-none"
+                        style="padding: 2px 8px; font-size: 12px;">
+                        <i class="bi bi-trash"></i> Remove
+                    </button>
+                </div>
+            </div>
 
-                                <div class="row gy-1 gx-3 align-items-center">
+            <div class="row gy-1 gx-3 align-items-center">
 
-                                    <div class="col-md-2"><label>Supplier Name *</label></div>
-                                    <div class="col-md-4 d-flex align-items-center">
-                                        <input class="form-control" name="supplier_name[]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
-                                    </div>
+                <div class="col-md-2"><label>Supplier Name *</label></div>
+                <div class="col-md-4 d-flex align-items-center">
+                    <input class="form-control" name="elec_meters[0][supplier_name]" required>
+                </div>
 
-                                    <div class="col-md-2"><label>MPAN Top Line</label></div>
-                                    <div class="col-md-4 d-flex align-items-center">
-                                        <input class="form-control" name="mpan_top_line[]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
-                                    </div>
-                                </div>
+                <div class="col-md-2"><label>MPAN Top Line</label></div>
+                <div class="col-md-4 d-flex align-items-center">
+                    <input class="form-control" name="elec_meters[0][mpan_top_line]" required>
+                </div>
+            </div>
 
-                                <div class="row gy-1 gx-3 align-items-center">
-                                    <div class="col-md-2"><label>MPAN Bottom Line</label></div>
-                                    <div class="col-md-4 d-flex align-items-center">
-                                        <input class="form-control" name="mpan_bottom_line[]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
-                                    </div>
+            <div class="row gy-1 gx-3 align-items-center">
+                <div class="col-md-2"><label>MPAN Bottom Line</label></div>
+                <div class="col-md-4 d-flex align-items-center">
+                    <input class="form-control" name="elec_meters[0][mpan_bottom_line]" required>
+                </div>
 
-                                    <div class="col-md-2"><label>Con. Duration</label></div>
-                                    <div class="col-md-4 d-flex align-items-center">
-                                        <input class="form-control" name="con_duration[]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-clock"></i></span>
-                                    </div>
-                                </div>
+                <div class="col-md-2"><label>Con. Duration</label></div>
+                <div class="col-md-4 d-flex align-items-center">
+                    <input class="form-control" name="elec_meters[0][con_duration]" required>
+                </div>
+            </div>
 
-                                <div class="row gy-1 gx-3 align-items-center">
-                                    <div class="col-md-2"><label>Offer Rate</label></div>
-                                    <div class="col-md-4 d-flex align-items-center">
-                                        <input class="form-control" name="offer_rate[]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-tag"></i></span>
-                                    </div>
+            <div class="row gy-1 gx-3 align-items-center">
+                <div class="col-md-2"><label>Offer Rate</label></div>
+                <div class="col-md-4 d-flex align-items-center">
+                    <input class="form-control" name="elec_meters[0][offer_rate]" required>
+                </div>
 
-                                    <div class="col-md-2"><label>Name Appears On Bill</label></div>
-                                    <div class="col-md-4 d-flex align-items-center">
-                                        <input class="form-control" name="name_on_bill[]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
-                                    </div>
-                                </div>
+                <div class="col-md-2"><label>Name Appears On Bill</label></div>
+                <div class="col-md-4 d-flex align-items-center">
+                    <input class="form-control" name="elec_meters[0][name_on_bill]" required>
+                </div>
+            </div>
 
-                                <div class="row gy-1 gx-3 align-items-center">
-                                    <div class="col-md-2"><label>Customer No.</label></div>
-                                    <div class="col-md-4 d-flex align-items-center">
-                                        <input class="form-control" name="customer_no[]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-card-text"></i></span>
-                                    </div>
+            <div class="row gy-1 gx-3 align-items-center">
+                <div class="col-md-2"><label>Customer No.</label></div>
+                <div class="col-md-4 d-flex align-items-center">
+                    <input class="form-control" name="elec_meters[0][customer_no]" required>
+                </div>
 
-                                    <div class="col-md-2"><label>Meter Serial No.</label></div>
-                                    <div class="col-md-4 d-flex align-items-center">
-                                        <input class="form-control" name="meter_serial_no[]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-upc-scan"></i></span>
-                                    </div>
-                                </div>
+                <div class="col-md-2"><label>Meter Serial No.</label></div>
+                <div class="col-md-4 d-flex align-items-center">
+                    <input class="form-control" name="elec_meters[0][meter_serial_no]" required>
+                </div>
+            </div>
 
-                                <div class="row gy-1 gx-3 align-items-center">
-                                    <div class="col-md-2"><label>Current Meter Read</label></div>
-                                    <div class="col-md-4 d-flex align-items-center">
-                                        <input class="form-control" name="current_meter_read[]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-lightning"></i></span>
-                                    </div>
+            <div class="row gy-1 gx-3 align-items-center">
+                <div class="col-md-2"><label>Current Meter Read</label></div>
+                <div class="col-md-4 d-flex align-items-center">
+                    <input class="form-control" name="elec_meters[0][current_meter_read]" required>
+                </div>
 
-                                    <div class="col-md-2"><label>Mode</label></div>
-                                    <div class="col-md-4 d-flex align-items-center">
-                                        <input class="form-control" name="mode[]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-credit-card"></i></span>
-                                    </div>
-                                </div>
+                <div class="col-md-2"><label>Mode</label></div>
+                <div class="col-md-4 d-flex align-items-center">
+                    <input class="form-control" name="elec_meters[0][mode]" required>
+                </div>
+            </div>
 
-                                <div class="row gy-1 gx-3 align-items-center">
-                                    <div class="col-md-2"><label>Last Bill Amount</label></div>
-                                    <div class="col-md-4 d-flex align-items-center">
-                                        <input class="form-control" name="last_bill_amount[]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-currency-dollar"></i></span>
-                                    </div>
-                                </div>
+            <div class="row gy-1 gx-3 align-items-center">
+                <div class="col-md-2"><label>Last Bill Amount</label></div>
+                <div class="col-md-4 d-flex align-items-center">
+                    <input class="form-control" name="elec_meters[0][last_bill_amount]" required>
+                </div>
+            </div>
 
-                            </div>
-                        </div>
+        </div>
+    </div>
 
-                        <div class="mt-3">
-                            <button type="button" id="add-elec-meter-btn" class="btn btn-primary bg_green_color">
-                                <i class="bi bi-plus-circle me-1"></i> Add More Meter
-                            </button>
-                        </div>
-                    </div>
+    <div class="mt-3">
+        <button type="button" id="add-elec-meter-btn" class="btn btn-primary bg_green_color">
+            <i class="bi bi-plus-circle me-1"></i> Add More Meter
+        </button>
+    </div>
+</div>
+
 
                     <!-- BANK DETAILS -->
                     <div class="form-section mb-3">
@@ -1015,37 +1013,37 @@
 
                             <div class="col-md-2"><label>Name On Account</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control" name="name_on_account" required>
+                                <input class="form-control" name="name_on_account">
                                 <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Account Number</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control" name="account_number" required>
+                                <input class="form-control" name="account_number">
                                 <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Sort Code</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control" name="sort_code" required>
+                                <input class="form-control" name="sort_code">
                                 <span class="icon-box border-start-0"><i class="bi bi-diagram-3"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>IBAN</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control" name="iban" required>
+                                <input class="form-control" name="iban">
                                 <span class="icon-box border-start-0"><i class="bi bi-credit-card-2-front"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>BIC</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control" name="bic" required>
+                                <input class="form-control" name="bic">
                                 <span class="icon-box border-start-0"><i class="bi bi-bank"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Name Of Bank</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control" name="bank_name" required>
+                                <input class="form-control" name="name_of_bank">
                                 <span class="icon-box border-start-0"><i class="bi bi-building"></i></span>
                             </div>
 
@@ -1060,12 +1058,12 @@
 
                             <div class="col-md-2"><label>Bill Payment Method</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control" name="bill_payment_method" required>
+                                <input class="form-control" name="bill_payment_method">
                             </div>
 
                             <div class="col-md-2"><label>Landlord Name</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control" name="landlord_name" required>
+                                <input class="form-control" name="landlord_name">
                             </div>
                         </div>
 
@@ -1073,7 +1071,7 @@
 
                             <div class="col-md-2"><label>Director D.O.B</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" class="form-control" name="director_dob" required>
+                                <input type="date" class="form-control" name="director_dob_single">
                             </div>
 
                             <div class="col-md-2"><label>Name Of New Customer</label></div>
@@ -1086,17 +1084,17 @@
 
                             <div class="col-md-2"><label>Status Taken Date</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" class="form-control" name="status_taken_date" required>
+                                <input type="date" class="form-control" name="status_taken_date">
                             </div>
 
                             <div class="col-md-2"><label>Password</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="password" class="form-control" name="password" required>
+                                <input type="password" class="form-control" name="password">
                             </div>
 
                             <div class="col-md-2"><label>Customer History</label></div>
                             <div class="col-md-10 d-flex align-items-center">
-                                <input class="form-control" name="customer_history" required>
+                                <input class="form-control" name="customer_history">
                             </div>
 
                         </div>
@@ -1114,7 +1112,7 @@
                                     <label>Picture ID</label>
                                     <div class="kyc-upload-box" onclick="document.getElementById('pictureId').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="pictureId" name="picture_id" required hidden>
+                                        <input type="file" id="pictureId" name="picture_id" hidden>
                                     </div>
                                 </div>
 
@@ -1122,7 +1120,7 @@
                                     <label>Inside/Outside pics</label>
                                     <div class="kyc-upload-box" onclick="document.getElementById('insidePics').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="insidePics" name="inside_outside_pics" required hidden>
+                                        <input type="file" id="insidePics" name="inside_outside_pics" hidden>
                                     </div>
                                 </div>
 
@@ -1130,7 +1128,7 @@
                                     <label>Bill</label>
                                     <div class="kyc-upload-box" onclick="document.getElementById('billUpload').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="billUpload" name="bill" required hidden>
+                                        <input type="file" id="billUpload" name="bill_upload" hidden>
                                     </div>
                                 </div>
 
@@ -1139,7 +1137,7 @@
                                     <div class="kyc-upload-box"
                                         onclick="document.getElementById('bankStatement').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="bankStatement" name="bank_statement" required hidden>
+                                        <input type="file" id="bankStatement" name="bank_statement" hidden>
                                     </div>
                                 </div>
 
@@ -1148,7 +1146,7 @@
                                     <div class="kyc-upload-box"
                                         onclick="document.getElementById('additionalUploads').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="additionalUploads" name="additional_uploads" required
+                                        <input type="file" id="additionalUploads" name="additional_uploads"
                                             hidden>
                                     </div>
                                 </div>
@@ -1169,35 +1167,42 @@
             </div>
 
             <script>
-                document.getElementById('add-elec-meter-btn').addEventListener('click', function() {
-                    const container = document.getElementById('elec-meter-container');
-                    const firstBlock = container.querySelector('.elec-meter-block');
+                  // --- Electricity Meters Logic ---
+    document.getElementById('add-elec-meter-btn').addEventListener('click', function () {
+        const container = document.getElementById('elec-meter-container');
+        const firstBlock = container.querySelector('.elec-meter-block');
+        const newBlock = firstBlock.cloneNode(true);
 
-                    // Clone logic
-                    const newBlock = firstBlock.cloneNode(true);
+        newBlock.querySelectorAll('input').forEach(input => input.value = '');
 
-                    // Inputs clear karein
-                    newBlock.querySelectorAll('input').forEach(input => input.value = '');
+        const removeBtn = newBlock.querySelector('.remove-elec-btn');
+        removeBtn.classList.remove('d-none');
+        removeBtn.onclick = function () {
+            newBlock.remove();
+            updateElecIndexes();
+        };
 
-                    // Remove button handle karein
-                    const removeBtn = newBlock.querySelector('.remove-elec-btn');
-                    removeBtn.classList.remove('d-none');
-                    removeBtn.onclick = function() {
-                        newBlock.remove();
-                        updateElecIndexes();
-                    };
+        container.appendChild(newBlock);
+        updateElecIndexes();
+    });
 
-                    container.appendChild(newBlock);
-                    updateElecIndexes();
-                });
+    function updateElecIndexes() {
+        const blocks = document.querySelectorAll('.elec-meter-block');
 
-                function updateElecIndexes() {
-                    const blocks = document.querySelectorAll('.elec-meter-block');
-                    blocks.forEach((block, index) => {
-                        block.querySelector('.elec-meter-label').innerText = `Meter #${index + 1}`;
-                    });
+        blocks.forEach((block, index) => {
+            block.querySelector('.elec-meter-label').innerText = `Meter #${index + 1}`;
+
+            block.querySelectorAll('input').forEach(input => {
+                let name = input.getAttribute('name');
+
+                if (name) {
+                    // Replace index correctly
+                    name = name.replace(/\[\d+\]/, `[${index}]`);
+                    input.setAttribute('name', name);
                 }
-            </script>
+            });
+        });
+    }               </script>
 
             <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 

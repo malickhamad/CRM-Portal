@@ -520,7 +520,7 @@
 
                                     <div class="kyc-upload-box" onclick="document.getElementById('billUpload').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="billUpload" name="bill" hidden>
+                                        <input type="file" id="billUpload" name="bill_upload" hidden>
                                     </div>
                                 </div>
 
@@ -546,7 +546,7 @@
                                     <div class="kyc-upload-box"
                                         onclick="document.getElementById('additionalUploads').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="additionalUploads" name="bank_statement" hidden>
+                                        <input type="file" id="additionalUploads" name="additional_uploads" hidden>
                                     </div>
                                 </div>
 
@@ -685,7 +685,7 @@
                             <div class="col-md-2"><label>Email Address <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="email" class="form-control border-end-0" name="email" required
+                                <input type="email" class="form-control border-end-0" name="email_address" required
                                     placeholder="example@email.com">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-envelope"></i>
@@ -697,7 +697,7 @@
                             <div class="col-md-2"><label>Phone Number<span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="phone" required
+                                <input class="form-control border-end-0" name="phone_number" required
                                     placeholder="03XXXXXXXXX">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-telephone"></i>
@@ -765,7 +765,7 @@
                                     <div class="col-md-2"><label>Date Of Birth <span class="text-danger">:*</span></label>
                                     </div>
                                     <div class="col-md-4 d-flex align-items-center">
-                                        <input type="date" class="form-control border-end-0" name="director_dob[]"
+                                        <input type="date" class="form-control border-end-0" name="director_dob_array[]"
                                             required>
                                         <span class="icon-box border-start-0"><i class="bi bi-calendar-date"></i></span>
                                     </div>
@@ -793,7 +793,7 @@
                                     <div class="col-md-2"><label>Home Address <span class="text-danger">:*</span></label>
                                     </div>
                                     <div class="col-md-10 d-flex align-items-center">
-                                        <input class="form-control border-end-0" name="director_address[]" required
+                                        <input class="form-control border-end-0" name="director_home_address[]" required
                                             placeholder="Enter Home Address">
                                         <span class="icon-box border-start-0"><i class="bi bi-geo-alt"></i></span>
                                     </div>
@@ -869,7 +869,7 @@
 
                             <div class="col-md-2"><label>Card Machine Details</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="card_machine_details" required
+                                <input class="form-control border-end-0" name="card_machine_details"
                                     placeholder="Which one are you using?">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-cpu"></i>
@@ -880,7 +880,7 @@
                         <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Existing Funding</label></div>
                             <div class="col-md-10 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" name="existing_funding" required
+                                <input type="text" class="form-control border-end-0" name="existing_funding"
                                     placeholder="If yes, how much?">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-currency-dollar"></i>
@@ -891,7 +891,7 @@
                         <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Comment</label></div>
                             <div class="col-md-10 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="comment" required
+                                <input class="form-control border-end-0" name="comment"
                                     placeholder="Enter your comments">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-chat-left-text"></i>
@@ -908,7 +908,7 @@
 
                             <div class="col-md-2"><label>Name On Account</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="account_name" required
+                                <input class="form-control border-end-0" name="name_on_account"
                                     placeholder="Enter Name On Account">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-person"></i>
@@ -917,7 +917,7 @@
 
                             <div class="col-md-2"><label>Account Number</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="account_number" required
+                                <input class="form-control border-end-0" name="account_number"
                                     placeholder="Enter Account Number">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-hash"></i>
@@ -926,7 +926,7 @@
 
                             <div class="col-md-2"><label>Sort Code</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="sort_code" required
+                                <input class="form-control border-end-0" name="sort_code"
                                     placeholder="Enter Sort Code">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-diagram-3"></i>
@@ -935,7 +935,7 @@
 
                             <div class="col-md-2"><label>IBAN</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="iban" required
+                                <input class="form-control border-end-0" name="iban"
                                     placeholder="Enter IBAN">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-credit-card-2-front"></i>
@@ -944,7 +944,7 @@
 
                             <div class="col-md-2"><label>BIC</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="bic" required placeholder="Enter BIC">
+                                <input class="form-control border-end-0" name="bic" placeholder="Enter BIC">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-bank"></i>
                                 </span>
@@ -952,7 +952,7 @@
 
                             <div class="col-md-2"><label>Name Of Bank</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="bank_name" required
+                                <input class="form-control border-end-0" name="name_of_bank"
                                     placeholder="Enter Bank Name">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-building"></i>
@@ -974,7 +974,7 @@
                                     <label class="fw-semibold mb-2">Picture ID</label>
                                     <div class="kyc-upload-box" onclick="document.getElementById('pictureId').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="pictureId" name="picture_id" required hidden>
+                                        <input type="file" id="pictureId" name="picture_id" hidden>
                                     </div>
                                 </div>
 
@@ -982,7 +982,7 @@
                                     <label class="fw-semibold mb-2">Inside/Outside pics</label>
                                     <div class="kyc-upload-box" onclick="document.getElementById('insidePics').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="insidePics" name="inside_outside_pics" required hidden>
+                                        <input type="file" id="insidePics" name="inside_outside_pics" hidden>
                                     </div>
                                 </div>
 
@@ -990,7 +990,7 @@
                                     <label class="fw-semibold mb-2">Bill</label>
                                     <div class="kyc-upload-box" onclick="document.getElementById('billUpload').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="billUpload" name="bill" required hidden>
+                                        <input type="file" id="billUpload" name="bill_upload" hidden>
                                     </div>
                                 </div>
 
@@ -999,7 +999,7 @@
                                     <div class="kyc-upload-box"
                                         onclick="document.getElementById('bankStatement').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="bankStatement" name="bank_statement" required hidden>
+                                        <input type="file" id="bankStatement" name="bank_statement" hidden>
                                     </div>
                                 </div>
 
@@ -1008,7 +1008,7 @@
                                     <div class="kyc-upload-box"
                                         onclick="document.getElementById('additionalUploads').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="additionalUploads" name="additional_uploads" required
+                                        <input type="file" id="additionalUploads" name="additional_uploads"
                                             hidden>
                                     </div>
                                 </div>

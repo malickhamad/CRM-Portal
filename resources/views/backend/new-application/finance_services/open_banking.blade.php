@@ -361,7 +361,7 @@
                                         class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="full_name" required
+                                <input class="form-control border-end-0" name="merchant_full_name" required
                                     placeholder="Enter full name">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-person"></i>
@@ -396,7 +396,7 @@
                             <div class="col-md-2"><label>Email <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="email" class="form-control border-end-0" name="email" required
+                                <input type="email" class="form-control border-end-0" name="email_address" required
                                     placeholder="example@email.com">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-envelope"></i>
@@ -419,7 +419,7 @@
                                         class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="business_number" required>
+                                <input class="form-control border-end-0" name="companies_house_number" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-receipt"></i>
                                 </span>
@@ -508,7 +508,7 @@
                             <div class="col-md-2"><label>Comment</label></div>
 
                             <div class="col-md-10 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="comment" required>
+                                <input class="form-control border-end-0" name="comment">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-chat-left-text"></i>
                                 </span>
