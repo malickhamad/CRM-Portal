@@ -318,9 +318,10 @@
 
 
 
-                <form id="openBankingForm" action="{{ route('admin.applications.store') }}" method="POST"
-                    enctype="multipart/form-data">
+                  <form id="applicationForm" action="{{ route('admin.applications.store') }}" method="POST"
+                    enctype="multipart/form-data" novalidate>
                     @csrf
+
 
                     <!-- APPLICATION Form -->
                     <div class="form-section mb-3">

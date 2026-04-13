@@ -12,7 +12,7 @@ return new class extends Migration {
 
             // --- Application & Agent Info ---
             $table->string('application_agent')->nullable();
-            // $table->string('application_num')->unique();
+            $table->string('application_num')->unique();
             $table->string('service_type'); // Loan, Gas, Water, etc.
 
             // --- Customer Details ---

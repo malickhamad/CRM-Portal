@@ -665,9 +665,8 @@
 
                 </form> --}}
 
-
                 <form id="applicationForm" action="{{ route('admin.applications.store') }}" method="POST"
-                    enctype="multipart/form-data">
+                    enctype="multipart/form-data" novalidate>
                     @csrf
 
                     <div class="form-section mb-3">
@@ -694,7 +693,7 @@
 
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="company_name" class="form-control border-end-0"
-                                    placeholder="Enter company name" required>
+                                    placeholder="Enter company name">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-building"></i>
                                 </span>
@@ -1161,7 +1160,7 @@
 
                                     <div class="kyc-upload-box" onclick="document.getElementById('pictureId').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="pictureId" name="picture_id" hidden required>
+                                        <input type="file" id="pictureId" name="picture_id" hidden>
                                     </div>
                                 </div>
 
@@ -1172,7 +1171,7 @@
 
                                     <div class="kyc-upload-box" onclick="document.getElementById('insidePics').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="insidePics" name="inside_outside_pics" hidden required>
+                                        <input type="file" id="insidePics" name="inside_outside_pics" hidden>
                                     </div>
                                 </div>
 
@@ -1183,7 +1182,7 @@
 
                                     <div class="kyc-upload-box" onclick="document.getElementById('billUpload').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="billUpload" name="bill_upload" hidden required>
+                                        <input type="file" id="billUpload" name="bill_upload" hidden>
                                     </div>
                                 </div>
 
@@ -1195,7 +1194,7 @@
                                     <div class="kyc-upload-box"
                                         onclick="document.getElementById('bankStatement').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="bankStatement" name="bank_statement" hidden required>
+                                        <input type="file" id="bankStatement" name="bank_statement" hidden>
                                     </div>
                                 </div>
 
@@ -1207,8 +1206,7 @@
                                     <div class="kyc-upload-box"
                                         onclick="document.getElementById('additionalUploads').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="additionalUploads" name="additional_uploads" hidden
-                                            required>
+                                        <input type="file" id="additionalUploads" name="additional_uploads" hidden>
                                     </div>
                                 </div>
                             </div>
@@ -1262,8 +1260,8 @@
 
 
             <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-     
 
-            
+
+
         </div>
     @endsection
