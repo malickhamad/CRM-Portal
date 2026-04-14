@@ -6,42 +6,31 @@
 
 
         <style>
+            .status-dropdown {
+                border: none;
+                padding: 5px 10px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 500;
+                cursor: pointer;
+            }
 
+            /* Colors */
+            .status-pending {
+                background-color: #fff3cd;
+                color: #856404;
+            }
 
-.status-badge {
-    border: none;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    outline: none;
-    cursor: pointer;
-    appearance: none;
-    text-align: center;
-}
+            .status-approved {
+                background-color: #d4edda;
+                color: #155724;
+            }
 
-/* Pending */
-.status-badge[value="Pending"],
-.status-badge option[value="Pending"]:checked {
-    background: #fff3cd;
-    color: #856404;
-}
-
-/* Approved */
-.status-badge[value="Approved"],
-.status-badge option[value="Approved"]:checked {
-    background: #d1e7dd;
-    color: #0f5132;
-}
-
-/* Rejected */
-.status-badge[value="Rejected"],
-.status-badge option[value="Rejected"]:checked {
-    background: #f8d7da;
-    color: #842029;
-}
-
-
+            .status-rejected {
+                background-color: #f8d7da;
+                color: #721c24;
+            }
+            }
         </style>
         <div class="dashboard-main-body bg-light position-relative pt-5">
 
@@ -107,13 +96,11 @@
                                         data-page-length='10'>
                                         <thead>
                                             <tr>
-                                                <th scope="col" class="text-start">
-                                                    <label class="form-check-label">S.L</label>
-                                                </th>
+
                                                 <th>App #</th>
                                                 <th>Action</th>
                                                 <th>Date</th>
-                                                <th>Service</th> {{-- Naya Column --}}
+                                                <th>Product/Brand</th>
                                                 <th>Sale By</th>
                                                 <th>Status</th>
                                                 <th>Company / Merchant</th>
@@ -125,7 +112,6 @@
                                             @foreach ($applications as $key => $item)
                                                 <tr>
                                                     {{-- Serial Number --}}
-                                                    <td class="text-start">{{ $key + 1 }}</td>
 
                                                     {{-- 1. Application Number --}}
                                                     <td class="text-start fw-bold text-primary-600">
@@ -147,8 +133,7 @@
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit"
-                                                                    class="btn-delete w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center border-0"
-                                                                    onclick="return confirm('Are you sure?')">
+                                                                    class="btn-delete w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center border-0">
                                                                     <iconify-icon
                                                                         icon="mingcute:delete-2-line"></iconify-icon>
                                                                 </button>
@@ -161,11 +146,9 @@
                                                         {{ $item->created_at->format('d-m-Y') }}
                                                     </td>
 
-                                                    {{-- 4. Service (Identifies the form type) --}}
+                                                    {{-- 4. product/brand --}}
                                                     <td class="text-start">
-                                                        <span class="badge bg-info-focus text-info-main px-2 py-1">
-                                                            {{ $item->service_type }}
-                                                        </span>
+                                                        {{ $item->service_type }}/{{ $item->brand ?? 'N/A' }}
                                                     </td>
 
                                                     {{-- 5. Sale By --}}
@@ -174,27 +157,23 @@
                                                     </td>
 
                                                     {{-- 6. Status --}}
-                                                   <td class="text-start">
-    <select class="status-badge status-dropdown"
-            data-id="{{ $item->id }}">
+                                                    <td class="text-start">
+                                                        <select
+                                                            class="status-dropdown
+        {{ $item->status == 'Pending' ? 'status-pending' : '' }}
+        {{ $item->status == 'Approved' ? 'status-approved' : '' }}
+        {{ $item->status == 'Rejected' ? 'status-rejected' : '' }}"
+                                                            data-id="{{ $item->id }}">
 
-        <option value="Pending" {{ $item->status == 'Pending' ? 'selected' : '' }}>
-            Pending
-        </option>
-
-        <option value="Approved" {{ $item->status == 'Approved' ? 'selected' : '' }}>
-            Approved
-        </option>
-
-        <option value="Rejected" {{ $item->status == 'Rejected' ? 'selected' : '' }}>
-            Rejected
-        </option>
-    </select>
-</td>
+                                                            <option value="Pending">Pending</option>
+                                                            <option value="Approved">Approved</option>
+                                                            <option value="Rejected">Rejected</option>
+                                                        </select>
+                                                    </td>
 
                                                     {{-- 7. Company / Merchant --}}
                                                     <td class="text-start">
-                                                        {{ $item->company_name ?? $item->merchant_full_name }}
+                                                        {{ $item->company_name  }} / {{ $item->merchant_full_name }}
                                                     </td>
 
                                                     {{-- 8. Product / Brand --}}
@@ -222,29 +201,72 @@
         </div>
 
         <script>
+            // Delete confirmation using SweetAlert2
+            document.querySelectorAll('.btn-delete').forEach(function(button) {
+                button.addEventListener('click', function(e) {
+
+                    e.preventDefault(); // ❌ form submit rok diya
+
+                    let form = this.closest('form'); // form get karo
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+
+                    });
+
+                });
+            });
+
+            // Status update using AJAX
             document.querySelectorAll('.status-dropdown').forEach(function(dropdown) {
                 dropdown.addEventListener('change', function() {
+
                     let status = this.value;
                     let id = this.getAttribute('data-id');
+                    let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                    fetch(`/applications/${id}/status`, {
+                    fetch(`/admin/applications/${id}/status`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                'X-CSRF-TOKEN': token
                             },
                             body: JSON.stringify({
                                 status: status
                             })
                         })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                // optional UI feedback
-                                console.log('Status updated');
+                        .then(async res => {
+                            let data = await res.json();
+
+                            if (!res.ok) {
+                                console.error(data);
+                                alert('Error updating status');
+                                return;
                             }
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: data.message,
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                });
+                            }
+
                         })
                         .catch(err => {
+                            console.error(err);
                             alert('Error updating status');
                         });
                 });

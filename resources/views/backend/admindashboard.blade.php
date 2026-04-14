@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="data-section">
                                     <span class="stat-label">Total Applications</span>
-                                    <div class="stat-number">{{ number_format($totalUsers) }}</div>
+                                    <div class="stat-number">434</div>
                                 </div>
                             </div>
                         </div>

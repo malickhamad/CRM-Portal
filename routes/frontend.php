@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Frontend\ContactController;
 use App\Http\Controllers\Frontend\HomeController;
-use App\Http\Controllers\Frontend\StripePaymentController;
 
 
 // frontend routes
@@ -37,9 +36,6 @@ Route::post('/contact/send', [ContactController::class, 'sendContactEmail'])->na
 
 
 // Stripe Payment
-Route::match(['get', 'post'], '/checkout/{planId}', [StripePaymentController::class, 'checkout'])->name('checkout');
- Route::get('/success', [StripePaymentController::class, 'success'])->name('stripe.success');
- Route::get('/cancel', [StripePaymentController::class, 'cancel'])->name('stripe.cancel');
 
 
 

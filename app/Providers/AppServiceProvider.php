@@ -6,7 +6,6 @@ use App\Models\Section;
 use App\Models\User;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
-use App\Models\StripePayment;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;

@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->string('application_agent')->nullable();
             $table->string('application_num')->nullable();
             $table->string('service_type')->nullable();
-             $table->string('status')->default('Pending');
+             $table->string('status')->nullable()->default('Pending');
 
             $table->string('company_name')->nullable();
             $table->string('trading_name')->nullable();

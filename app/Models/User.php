@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\StripePayment;
-use App\Models\SubscribtionPlan;
 use App\Models\Testimonial;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -59,11 +57,6 @@ class User extends Authenticatable
         return $this->hasMany(User::class, 'parent_id');
     }
 
-    // Stripe payments relationship
-    public function stripePayments(): HasMany
-    {
-        return $this->hasMany(StripePayment::class);
-    }
 
     // Testimonials relationship
     public function testimonials(): HasMany
@@ -78,18 +71,6 @@ class User extends Authenticatable
     }
 
     // Payment standards filtered by active stripe payments
-    public function paymentStandards(): BelongsToMany
-    {
-        return $this->belongsToMany(Standard::class, 'payment_standards')
-            ->withPivot(['stripe_payment_id', 'created_at'])
-            ->withTimestamps()
-            ->whereExists(function ($query) {
-                $query->select(DB::raw(1))
-                    ->from('stripe_payments')
-                    ->whereColumn('stripe_payments.id', 'payment_standards.stripe_payment_id')
-                    ->where('stripe_payments.is_active', true);
-            });
-    }
 
     // Activity log options
     public function getActivitylogOptions(): LogOptions
@@ -129,11 +110,7 @@ public function userAnswers()
 }
 
     // In your User model
-    public function activeSubscription()
-    {
-        return $this->hasOne(StripePayment::class)->where('is_active', true)->latest();
-    }
-
+ 
 
     public function canAccessSection($section)
     {

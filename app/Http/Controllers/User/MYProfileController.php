@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\StripePayment;
 use App\Models\Standard;
 use App\Models\SubscribtionPlan;
 use Illuminate\Http\Request;
@@ -93,16 +92,6 @@ class MYProfileController extends Controller
     public function showSubscription(Request $request)
     {
         $user = Auth::user();
-        $standards = Standard::all();
-        $plans = SubscribtionPlan::all();
-        $currentPayment = StripePayment::where('user_id', $user->id)->latest()->first();
-        $selectedStandards = $currentPayment ? $currentPayment->standards->pluck('id')->toArray() : [];
-
-        // 👇 یہ add کریں:
-        $selectedPlan = null;
-        if ($request->has('plan_id')) {
-            $selectedPlan = SubscribtionPlan::find($request->plan_id);
-        }
 
         return view('backend.user.my-profile.subscription', compact(
             'user',
@@ -110,7 +99,7 @@ class MYProfileController extends Controller
             'plans',
             'currentPayment',
             'selectedStandards',
-            'selectedPlan' // 👈 یہ بھی ساتھ بھیجیں
+            'selectedPlan'
         ));
     }
 
@@ -127,57 +116,7 @@ class MYProfileController extends Controller
             'cheque_number' => 'required_if:payment_method,cheque',
         ]);
 
-        $user = Auth::user();
-
-        // Deactivate any existing active subscriptions
-        StripePayment::where('user_id', $user->id)
-            ->where('is_active', true)
-            ->update(['is_active' => false]);
-
-        $payment = StripePayment::create([
-            'user_id' => $user->id,
-            'subscribtion_plan_id' => $request->plan_id,
-            'currency' => 'USD',
-            'is_active' => true,
-            'starts_at' => now(),
-            'ends_at' => $this->calculateEndDate($request->plan_id),
-            'payment_method' => $request->payment_method,
-            'transaction_reference' => $request->transaction_reference,
-            'cheque_number' => $request->cheque_number,
-        ]);
-
-        // Attach standards
-        $standardsWithUser = [];
-        foreach ($request->standards as $standardId) {
-            $standardsWithUser[$standardId] = ['user_id' => $user->id];
-        }
-        $payment->standards()->sync($standardsWithUser);
-
-
-        return redirect()->route('user.subscription')->with('success', 'Subscription updated successfully!');
     }
-
-    protected function calculateEndDate($planId)
-    {
-        $plan = SubscribtionPlan::findOrFail($planId);
-        $now = now();
-
-        switch ($plan->billing_cycle) {
-            case 'monthly':
-                return $now->addMonth();
-            case 'yearly':
-                return $now->addYear();
-            case 'weekly':
-                return $now->addWeek();
-            case 'daily':
-                return $now->addDay();
-            default:
-                return $now->addMonth();
-        }
-    }
-
-
-    // Show Account Settings
     public function showAccountSettings()
     {
         return view('backend.user.my-profile.account-settings');

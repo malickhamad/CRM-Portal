@@ -149,9 +149,6 @@ if ($isActive && $payment->subscriptionPlan && $payment->created_at) {
                                             </td>
                                             <td>${{ number_format($payment->amount, 2) }}</td>
                                             <td>
-                                                @php
-                                                    $latestPayment = $user->stripePayments->sortByDesc('created_at')->first();
-                                                @endphp
 
                                                 @if ($latestPayment)
                                                     <span class="badge bg-primary">

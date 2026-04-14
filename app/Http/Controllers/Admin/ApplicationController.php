@@ -452,7 +452,7 @@ public function updateStatus(Request $request, $id)
     ]);
 
     $application = Application::findOrFail($id);
-    $application->status = $request->status;
+$application->status = $request->input('status');
     $application->save();
 
     return response()->json([

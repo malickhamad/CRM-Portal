@@ -36,8 +36,8 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/applications/{id}/update', [ApplicationController::class, 'update'])->name('applications.update');
     Route::delete('/applications/{id}/destroy', [ApplicationController::class, 'destroy'])->name('applications.destroy');
 
-Route::post('/applications/{id}/status', [ApplicationController::class, 'updateStatus'])
-    ->name('admin.applications.status.update');
+
+Route::post('/applications/{id}/status', [ApplicationController::class, 'updateStatus']);
 
 
     //  profile routes

@@ -116,27 +116,23 @@
                                             <div class="d-flex align-items-center">
                                                 <div>
                                                     <p class="mb-0">{{ $user->name }}</p>
-                                                   
+
                                                 </div>
                                             </div>
                                         </td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->business_name ?? 'N/A' }}</td>
                                         <td>
-                                            @if ($user->stripePayments->first())
-                                                {{ $user->stripePayments->first()->subscriptionPlan->name ?? 'N/A' }}
-                                            @else
-                                                N/A
-                                            @endif
+                                       
                                         </td>
                                         <td>
                                             <div class="form-switch switch-success d-flex align-items-center gap-3">
-                                       
+
                                                     <input type="checkbox" class="form-check-input status-toggle"
                                                         data-user-id="{{ $user->id }}"
                                                         id="status-toggle-{{ $user->id }}"
                                                         {{ $user->status == 'active' ? 'checked' : '' }}>
-                                         
+
                                                 <span
                                                     class="badge {{ $user->status == 'active' ? 'bg-success' : 'bg-danger' }}">
                                                     {{ ucfirst($user->status) }}
