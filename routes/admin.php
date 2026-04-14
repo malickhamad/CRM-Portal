@@ -36,9 +36,12 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/applications/{id}/update', [ApplicationController::class, 'update'])->name('applications.update');
     Route::delete('/applications/{id}/destroy', [ApplicationController::class, 'destroy'])->name('applications.destroy');
 
-
+// Route to update application status
 Route::post('/applications/{id}/status', [ApplicationController::class, 'updateStatus']);
 
+// Notepad routes
+Route::post('notepad/upload-image', [NotepadController::class, 'uploadImage'])
+    ->name('notepad.upload.image');
 
     //  profile routes
     Route::get('/my-profile', [MYProfileController::class, 'showProfile'])->name('my-profile');

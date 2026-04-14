@@ -78,122 +78,126 @@
                 </div>
 
 
+                @php
+    $statusMap = [
+        'App Sent' => [
+            'class' => 'status-app',
+            'width' => '8%',
+            'step'  => 1,
+        ],
+        'Docs Required' => [
+            'class' => 'status-docs',
+            'width' => '15%',
+            'step'  => 2,
+        ],
+        'Cot in process' => [
+            'class' => 'status-cot',
+            'width' => '25%',
+            'step'  => 3,
+        ],
+        'Awaiting Signature' => [
+            'class' => 'status-await',
+            'width' => '35%',
+            'step'  => 4,
+        ],
+        'Cot Done' => [
+            'class' => 'status-done',
+            'width' => '45%',
+            'step'  => 5,
+        ],
+        'Signed' => [
+            'class' => 'status-signed',
+            'width' => '55%',
+            'step'  => 6,
+        ],
+        'Submitted to Supplier' => [
+            'class' => 'status-submit',
+            'width' => '70%',
+            'step'  => 7,
+        ],
+        'Cost Objected' => [
+            'class' => 'status-object',
+            'width' => '80%',
+            'step'  => 8,
+        ],
+        'Live' => [
+            'class' => 'status-live',
+            'width' => '90%',
+            'step'  => 9,
+        ],
+        'Rejected' => [
+            'class' => 'status-reject',
+            'width' => '100%',
+            'step'  => 10,
+        ],
+        'Paid' => [
+            'class' => 'status-paid',
+            'width' => '100%',
+            'step'  => 11,
+        ],
+    ];
+
+    $statusLabels = [
+        'App Sent',
+        'Docs Required',
+        'Cot in process',
+        'Awaiting Signature',
+        'Cot Done',
+        'Signed',
+        'Submitted to Supplier',
+        'Cost Objected',
+        'Live',
+        'Rejected',
+        'Paid',
+    ];
+@endphp
                 {{-- Pending sales status  --}}
-                <div id="pendingSalesSection" class=" mb-4">
+               <div id="pendingSalesSection" class="mb-4">
+    <div class="custom-card-header">
+        <div class="header-left">
+            <i class="fas fa-list-alt"></i>
+            <span class="header-title">Pending Sales Status</span>
+        </div>
+        <div class="header-right">
+            <button class="header-btn" title="Settings">&#9881;</button>
+            <button class="header-btn" onclick="toggleMinimize()" title="Minimize">&#8211;</button>
+            <button class="header-btn" onclick="toggleFullscreen()" title="Full View">&#9723;</button>
+            <button class="header-btn close-btn" onclick="closeWidget()" title="Close">&#10005;</button>
+        </div>
+    </div>
 
-                    <div class="custom-card-header">
-                        <div class="header-left">
-                            <i class="fas fa-list-alt"></i>
-                            <span class="header-title">Pending Sales Status</span>
-                        </div>
-                        <div class="header-right">
-                            <button class="header-btn" title="Settings">&#9881;</button>
-                            <button class="header-btn" onclick="toggleMinimize()" title="Minimize">&#8211;</button>
-                            <button class="header-btn" onclick="toggleFullscreen()" title="Full View">&#9723;</button>
-                            <button class="header-btn close-btn" onclick="closeWidget()" title="Close">&#10005;</button>
-                        </div>
-                    </div>
-                    <div id="scrollContainer" class="applications-container">
-                        <div class="app-box-item">
-                            <div class="app-header">
-                                <strong>Application #632</strong>
-                                <span>(19 Feb, 2026)</span>
-                                <span class="status-badge status-docs">Docs Required</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-bar-custom status-paid" style="width:15%"></div>
-                            </div>
-                            <div class="status-labels">
-                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                            </div>
-                        </div>
+    <div id="scrollContainer" class="applications-container">
+        @foreach($applications as $item)
+            @php
+                $currentStatus = $statusMap[$item->status] ?? [
+                    'class' => 'inactive',
+                    'width' => '0%',
+                    'step' => 0,
+                ];
+            @endphp
 
-                        <div class="app-box-item">
-                            <div class="app-header">
-                                <strong>Application #635</strong>
-                                <span>(18 Feb, 2026)</span>
-                                <span class="status-badge status-object">Cot Done</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-bar-custom status-object" style="width:45%"></div>
-                            </div>
-                            <div class="status-labels">
-                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                            </div>
-                        </div>
-                        <div class="app-box-item">
-                            <div class="app-header">
-                                <strong>Application #22</strong>
-                                <span>(19 Feb, 2026)</span>
-                                <span class="status-badge status-reject">Docs Required</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-bar-custom status-reject" style="width:90%"></div>
-                            </div>
-                            <div class="status-labels">
-                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                <span>Live</span><span>Reject</span><span>Paid</span>
-                            </div>
-                        </div>
-                        <div class="app-box-item">
-                            <div class="app-header">
-                                <strong>Application #635</strong>
-                                <span>(18 Feb, 2026)</span>
-                                <span class="status-badge status-done">Object</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-bar-custom status-done" style="width:45%"></div>
-                            </div>
-                            <div class="status-labels">
-                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                            </div>
-                        </div>
-                        <div class="app-box-item">
-                            <div class="app-header">
-                                <strong>Application #6344</strong>
-                                <span>(19 Feb, 2026)</span>
-                                <span class="status-badge status-paid">Docs Required</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-bar-custom status-paid " style="width:100%"></div>
-                            </div>
-                            <div class="status-labels">
-                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                            </div>
-                        </div>
-                        <div class="app-box-item">
-                            <div class="app-header">
-                                <strong>Application #635</strong>
-                                <span>(18 Feb, 2026)</span>
-                                <span class="status-badge status-done">Cot Done</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-bar-custom status-done" style="width:45%"></div>
-                            </div>
-                            <div class="status-labels">
-                                <span>App Sent</span><span>Docs Required</span><span>Cot in process</span>
-                                <span>Awaiting Signature</span><span>Cot Done</span><span>Signed</span>
-                                <span>Submitted to Supplier</span><span>Cost Objected</span>
-                                <span>Live</span><span>Rejected</span><span>Paid</span>
-                            </div>
-                        </div>
-                    </div>
+            <div class="app-box-item">
+                <div class="app-header">
+                    <strong>Application #{{ $item->id }}</strong>
+                    <span>({{ \Carbon\Carbon::parse($item->created_at)->format('d M, Y') }})</span>
+                    <span class="status-badge {{ $currentStatus['class'] }}">{{ $item->status }}</span>
                 </div>
 
+                <div class="progress-track">
+                    <div class="progress-bar-custom {{ $currentStatus['class'] }}" style="width:{{ $currentStatus['width'] }}"></div>
+                </div>
+
+                <div class="status-labels">
+                    @foreach($statusLabels as $index => $label)
+                        <span class="{{ ($index + 1) == $currentStatus['step'] ? 'status-active' : '' }}">
+                            {{ $label }}
+                        </span>
+                    @endforeach
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>  
 
 
 

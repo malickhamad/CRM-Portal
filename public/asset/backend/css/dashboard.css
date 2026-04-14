@@ -221,7 +221,112 @@
                         text-decoration: underline;
                     }
 
+                    .status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    display: inline-block;
+}
 
+/* Badge colors */
+.status-badge.status-app { background: #29b6f6; }
+.status-badge.status-docs { background: #ffca28; color: #222; }
+.status-badge.status-cot { background: #ab47bc; }
+.status-badge.status-await { background: #ffa726; }
+.status-badge.status-done { background: #26a69a; }
+.status-badge.status-signed { background: #5c6bc0; }
+.status-badge.status-submit { background: #42a5f5; }
+.status-badge.status-object { background: #ec407a; }
+.status-badge.status-live { background: #66bb6a; }
+.status-badge.status-reject { background: #ef5350; }
+.status-badge.status-paid { background: #9ccc65; color: #222; }
+
+.status-dropdown {
+    min-width: 170px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    font-size: 13px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    background: #f9fafb;
+    color: #344054;
+    transition: all 0.2s ease;
+}
+
+/* Soft badge-style status colors */
+.status-dropdown.status-app {
+    background: #e0f2fe !important;
+    color: #0369a1 !important;
+    border-color: #bae6fd !important;
+}
+
+.status-dropdown.status-docs {
+    background: #fef3c7 !important;
+    color: #b45309 !important;
+    border-color: #fde68a !important;
+}
+
+.status-dropdown.status-cot {
+    background: #f3e8ff !important;
+    color: #7e22ce !important;
+    border-color: #e9d5ff !important;
+}
+
+.status-dropdown.status-await {
+    background: #ffedd5 !important;
+    color: #c2410c !important;
+    border-color: #fdba74 !important;
+}
+
+.status-dropdown.status-done {
+    background: #ccfbf1 !important;
+    color: #0f766e !important;
+    border-color: #99f6e4 !important;
+}
+
+.status-dropdown.status-signed {
+    background: #e0e7ff !important;
+    color: #3730a3 !important;
+    border-color: #c7d2fe !important;
+}
+
+.status-dropdown.status-submit {
+    background: #dbeafe !important;
+    color: #1d4ed8 !important;
+    border-color: #93c5fd !important;
+}
+
+.status-dropdown.status-object {
+    background: #fce7f3 !important;
+    color: #be185d !important;
+    border-color: #f9a8d4 !important;
+}
+
+.status-dropdown.status-live {
+    background: #dcfce7 !important;
+    color: #15803d !important;
+    border-color: #86efac !important;
+}
+
+.status-dropdown.status-reject {
+    background: #fee2e2 !important;
+    color: #b91c1c !important;
+    border-color: #fca5a5 !important;
+}
+
+.status-dropdown.status-paid {
+    background: #ecfccb !important;
+    color: #4d7c0f !important;
+    border-color: #bef264 !important;
+}
+
+.status-dropdown:focus {
+    box-shadow: none !important;
+}
 
 
                     /* Container jo applications ko hold karega */

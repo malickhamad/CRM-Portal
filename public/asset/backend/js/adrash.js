@@ -8,100 +8,100 @@ $(document).ready(function () {
     | This function handles AJAX submit, validation errors, success message,
     | reset form, and file preview reset.
     */
-    function handleFormSubmit($form) {
+    // function handleFormSubmit($form) {
 
-        $form.on("submit", function (e) {
-            e.preventDefault();
+    //     $form.on("submit", function (e) {
+    //         e.preventDefault();
 
-            let formData = new FormData(this);
+    //         let formData = new FormData(this);
 
-            // REMOVE OLD VALIDATION ERRORS
-            $form.find(".is-invalid").removeClass("is-invalid");
+    //         // REMOVE OLD VALIDATION ERRORS
+    //         $form.find(".is-invalid").removeClass("is-invalid");
 
-            $.ajax({
-                url: $form.attr("action"), // same route for all forms
-                type: "POST",
-                data: formData,
-                processData: false,
-                contentType: false,
-                headers: {
-                    "X-CSRF-TOKEN": $("input[name='_token']").val(),
-                    "X-Requested-With": "XMLHttpRequest"
-                },
+    //         $.ajax({
+    //             url: $form.attr("action"), // same route for all forms
+    //             type: "POST",
+    //             data: formData,
+    //             processData: false,
+    //             contentType: false,
+    //             headers: {
+    //                 "X-CSRF-TOKEN": $("input[name='_token']").val(),
+    //                 "X-Requested-With": "XMLHttpRequest"
+    //             },
 
-                // DISABLE SUBMIT BUTTON BEFORE REQUEST
-                beforeSend: function () {
-                    $form.find("button[type='submit']").prop("disabled", true);
-                },
+    //             // DISABLE SUBMIT BUTTON BEFORE REQUEST
+    //             beforeSend: function () {
+    //                 $form.find("button[type='submit']").prop("disabled", true);
+    //             },
 
-                // SUCCESS RESPONSE
-                success: function (response) {
+    //             // SUCCESS RESPONSE
+    //             success: function (response) {
 
-                    $form.find("button[type='submit']").prop("disabled", false);
+    //                 $form.find("button[type='submit']").prop("disabled", false);
 
-                    // SUCCESS ALERT
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: response.message || 'Application submitted successfully',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
+    //                 // SUCCESS ALERT
+    //                 Swal.fire({
+    //                     icon: 'success',
+    //                     title: 'Success!',
+    //                     text: response.message || 'Application submitted successfully',
+    //                     timer: 2000,
+    //                     showConfirmButton: false
+    //                 });
 
-                    // RESET FORM AFTER SUCCESS
-                    $form[0].reset();
+    //                 // RESET FORM AFTER SUCCESS
+    //                 $form[0].reset();
 
-                    // RESET FILE UPLOAD PREVIEW BOXES
+    //                 // RESET FILE UPLOAD PREVIEW BOXES
 
-                    // reset all upload boxes
-                    resetUploader["#pictureId"]();
-                    resetUploader["#insidePics"]();
-                    resetUploader["#billUpload"]();
-                    resetUploader["#bankStatement"]();
-                    resetUploader["#additionalUploads"]();
-                },
+    //                 // reset all upload boxes
+    //                 resetUploader["#pictureId"]();
+    //                 resetUploader["#insidePics"]();
+    //                 resetUploader["#billUpload"]();
+    //                 resetUploader["#bankStatement"]();
+    //                 resetUploader["#additionalUploads"]();
+    //             },
 
-                // ERROR RESPONSE
-                error: function (xhr) {
+    //             // ERROR RESPONSE
+    //             error: function (xhr) {
 
-                    $form.find("button[type='submit']").prop("disabled", false);
+    //                 $form.find("button[type='submit']").prop("disabled", false);
 
-                    // VALIDATION ERRORS (422)
-                    if (xhr.status === 422) {
+    //                 // VALIDATION ERRORS (422)
+    //                 if (xhr.status === 422) {
 
-                        let errors = xhr.responseJSON.errors;
-                        let errorMsg = "";
+    //                     let errors = xhr.responseJSON.errors;
+    //                     let errorMsg = "";
 
-                        $.each(errors, function (field, messages) {
+    //                     $.each(errors, function (field, messages) {
 
-                            errorMsg += messages[0] + "\n";
+    //                         errorMsg += messages[0] + "\n";
 
-                            // HIGHLIGHT INVALID FIELD
-                            let $input = $form.find(`[name="${field}"]`);
-                            if ($input.length) {
-                                $input.addClass("is-invalid");
-                            }
-                        });
+    //                         // HIGHLIGHT INVALID FIELD
+    //                         let $input = $form.find(`[name="${field}"]`);
+    //                         if ($input.length) {
+    //                             $input.addClass("is-invalid");
+    //                         }
+    //                     });
 
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Validation Error',
-                            text: errorMsg
-                        });
+    //                     Swal.fire({
+    //                         icon: 'error',
+    //                         title: 'Validation Error',
+    //                         text: errorMsg
+    //                     });
 
-                    } else {
-                        // GENERIC SERVER ERROR
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Something went wrong. Please try again.'
-                        });
-                    }
-                }
-            });
+    //                 } else {
+    //                     // GENERIC SERVER ERROR
+    //                     Swal.fire({
+    //                         icon: 'error',
+    //                         title: 'Error',
+    //                         text: 'Something went wrong. Please try again.'
+    //                     });
+    //                 }
+    //             }
+    //         });
 
-        });
-    }
+    //     });
+    // }
 
     /*
     |--------------------------------------------------------------------------

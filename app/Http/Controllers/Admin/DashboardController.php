@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
+use App\Models\Application;
+use App\Models\StripePayment;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\StripePayment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -30,9 +31,9 @@ class DashboardController extends Controller
 
 public function index()
 {
+    $applications = Application::latest()->get(); // ya jo bhi table hai
 
-
-    return view('backend.admindashboard');
+    return view('backend.admindashboard', compact('applications'));
 }
 
 }

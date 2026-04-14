@@ -13,59 +13,147 @@ use Illuminate\Validation\Rule;
 
 class ApplicationController extends Controller
 {
-    public function services() { return view('backend.new-application.services'); }
-    public function finance_services() { return view('backend.new-application.finance_services'); }
-    public function utilities_services() { return view('backend.new-application.utilities_services'); }
 
-    public function card_machine() {
+private function getCommonStats()
+{
+    return [
+        'remainingLeads' => Application::whereNotIn('status', ['Paid', 'Rejected'])->count(),
+
+        'allSales' => Application::whereIn('status', ['Live', 'Paid'])->count(),
+
+        'thisMonthSales' => Application::whereIn('status', ['Live', 'Paid'])
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count(),
+
+        'todayApplications' => Application::whereDate('created_at', today())->count(),
+
+        'thisWeekApplications' => Application::whereBetween('created_at', [
+            now()->startOfWeek(),
+            now()->endOfWeek()
+        ])->count(),
+
+        'thisMonthApplications' => Application::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count(),
+
+        'allApplications' => Application::count(),
+    ];
+}
+
+private function viewWithStats($view, $data = [])
+{
+    return view($view, array_merge($data, $this->getCommonStats()));
+}
+
+    public function services()
+    {
+        return view('backend.new-application.services', $this->getCommonStats());
+    }
+
+    public function finance_services()
+    {
+        return view('backend.new-application.finance_services', $this->getCommonStats());
+    }
+
+    public function utilities_services()
+    {
+        return view('backend.new-application.utilities_services', $this->getCommonStats());
+    }
+    public function card_machine()
+    {
         $nextNum = $this->getNextApplicationNumber();
-        return view('backend.new-application.finance_services.card_machine', compact('nextNum'));
+        return view('backend.new-application.finance_services.card_machine', array_merge(
+            ['nextNum' => $nextNum],
+            $this->getCommonStats()
+        ));
     }
 
-    public function loan() {
+    public function loan()
+    {
         $nextNum = $this->getNextApplicationNumber();
-        return view('backend.new-application.finance_services.loan', compact('nextNum'));
+        return view('backend.new-application.finance_services.loan', array_merge(
+            ['nextNum' => $nextNum],
+            $this->getCommonStats()
+        ));
     }
 
-    public function open_banking() {
+    public function open_banking()
+    {
         $nextNum = $this->getNextApplicationNumber();
-        return view('backend.new-application.finance_services.open_banking', compact('nextNum'));
+        return view('backend.new-application.finance_services.open_banking', array_merge(
+            ['nextNum' => $nextNum],
+            $this->getCommonStats()
+        ));
     }
 
-    public function water() {
+    public function water()
+    {
         $nextNum = $this->getNextApplicationNumber();
-        return view('backend.new-application.utilities_services.water', compact('nextNum'));
+        return view('backend.new-application.utilities_services.water', array_merge(
+            ['nextNum' => $nextNum],
+            $this->getCommonStats()
+        ));
     }
 
-    public function broadband() {
+    public function broadband()
+    {
         $nextNum = $this->getNextApplicationNumber();
-        return view('backend.new-application.utilities_services.broadband', compact('nextNum'));
+        return view('backend.new-application.utilities_services.broadband', array_merge(
+            ['nextNum' => $nextNum],
+            $this->getCommonStats()
+        ));
     }
 
-    public function telecom() {
+    public function telecom()
+    {
         $nextNum = $this->getNextApplicationNumber();
-        return view('backend.new-application.utilities_services.telecom', compact('nextNum'));
+        return view('backend.new-application.utilities_services.telecom', array_merge(
+            ['nextNum' => $nextNum],
+            $this->getCommonStats()
+        ));
     }
 
-    public function gas() {
+    public function gas()
+    {
         $nextNum = $this->getNextApplicationNumber();
-        return view('backend.new-application.utilities_services.gas', compact('nextNum'));
+        return view('backend.new-application.utilities_services.gas', array_merge(
+            ['nextNum' => $nextNum],
+            $this->getCommonStats()
+        ));
     }
 
-    public function electricity() {
+    public function electricity()
+    {
         $nextNum = $this->getNextApplicationNumber();
-        return view('backend.new-application.utilities_services.electricity', compact('nextNum'));
+        return view('backend.new-application.utilities_services.electricity', array_merge(
+            ['nextNum' => $nextNum],
+            $this->getCommonStats()
+        ));
     }
 
-    public function electric_gas() {
+    public function electric_gas()
+    {
         $nextNum = $this->getNextApplicationNumber();
-        return view('backend.new-application.utilities_services.electric_gas', compact('nextNum'));
+        return view('backend.new-application.utilities_services.electric_gas', array_merge(
+            ['nextNum' => $nextNum],
+            $this->getCommonStats()
+        ));
     }
+ public function applications()
+{
+    $applications = Application::latest()->get();
+    $pendingApplications = Application::whereNotIn('status', ['Paid', 'Rejected'])->count();
+    $completedApplications = Application::whereIn('status', ['Live', 'Paid'])->count();
+    $rejectedApplications = Application::where('status', 'Rejected')->count();
 
-    public function applications() {
-        $applications = Application::latest()->get();
-        return view('backend.applications.applications', compact('applications'));
-    }
+    return view('backend.applications.applications', compact(
+        'applications',
+        'pendingApplications',
+        'completedApplications',
+        'rejectedApplications'
+    ));
+}
 
     private function normalizeServiceType(?string $serviceType): string
     {
@@ -304,19 +392,62 @@ class ApplicationController extends Controller
     private function fillApplication(Application $app, Request $request, array $data, bool $isCreate): void
     {
         $fields = [
-            'application_agent', 'application_num', 'service_type',
-            'company_name', 'trading_name', 'business_entity', 'business_nature',
-            'title', 'merchant_full_name', 'first_name', 'last_name', 'position',
-            'email_address', 'phone_number', 'mobile_no', 'landline_no', 'contact_person_name',
-            'companies_house_number', 'company_reg_no', 'vat_tax_number',
-            'trading_address', 'business_address', 'unit', 'home_address', 'postal_code',
-            'director_dob_single', 'application_date', 'renewal_date', 'brand',
-            'card_machine_details', 'existing_funding', 'annual_consumption', 'utility_email',
-            'commercial_resident', 'spid', 'qty', 'delivery_address', 'comment',
-            'debit_card', 'credit_card', 'commercial_card', 'authentication_fee', 'pci', 'rental',
-            'name_on_account', 'account_number', 'sort_code', 'iban', 'bic', 'name_of_bank',
-            'bill_payment_method', 'landlord_name', 'name_of_new_customer', 'status_taken_date',
-            'password', 'customer_history',
+            'application_agent',
+            'application_num',
+            'service_type',
+            'company_name',
+            'trading_name',
+            'business_entity',
+            'business_nature',
+            'title',
+            'merchant_full_name',
+            'first_name',
+            'last_name',
+            'position',
+            'email_address',
+            'phone_number',
+            'mobile_no',
+            'landline_no',
+            'contact_person_name',
+            'companies_house_number',
+            'company_reg_no',
+            'vat_tax_number',
+            'trading_address',
+            'business_address',
+            'unit',
+            'home_address',
+            'postal_code',
+            'director_dob_single',
+            'application_date',
+            'renewal_date',
+            'brand',
+            'card_machine_details',
+            'existing_funding',
+            'annual_consumption',
+            'utility_email',
+            'commercial_resident',
+            'spid',
+            'qty',
+            'delivery_address',
+            'comment',
+            'debit_card',
+            'credit_card',
+            'commercial_card',
+            'authentication_fee',
+            'pci',
+            'rental',
+            'name_on_account',
+            'account_number',
+            'sort_code',
+            'iban',
+            'bic',
+            'name_of_bank',
+            'bill_payment_method',
+            'landlord_name',
+            'name_of_new_customer',
+            'status_taken_date',
+            'password',
+            'customer_history',
         ];
 
         foreach ($fields as $field) {
@@ -374,62 +505,65 @@ class ApplicationController extends Controller
         }
     }
 
- private function syncMeters(Application $application, array $data): void
-{
-    $meters = [];
+    private function syncMeters(Application $application, array $data): void
+    {
+        $meters = [];
 
-    if (!empty($data['meters']) && is_array($data['meters'])) {
-        foreach ($data['meters'] as $meter) {
-            if (!is_array($meter)) continue;
+        if (!empty($data['meters']) && is_array($data['meters'])) {
+            foreach ($data['meters'] as $meter) {
+                if (!is_array($meter))
+                    continue;
 
-            $meters[] = array_merge(
-                ['meter_type' => 'gas'],
-                $this->mapMeterFields($meter)
-            );
+                $meters[] = array_merge(
+                    ['meter_type' => 'gas'],
+                    $this->mapMeterFields($meter)
+                );
+            }
         }
-    }
-    if (!empty($data['elec_meters']) && is_array($data['elec_meters'])) {
-        foreach ($data['elec_meters'] as $meter) {
-            if (!is_array($meter)) continue;
+        if (!empty($data['elec_meters']) && is_array($data['elec_meters'])) {
+            foreach ($data['elec_meters'] as $meter) {
+                if (!is_array($meter))
+                    continue;
 
-            $meters[] = array_merge(
-                ['meter_type' => 'electricity'],
-                $this->mapMeterFields($meter)
-            );
-        }
-    }
-
-    // ✅ SAVE
-    foreach ($meters as $meterData) {
-        foreach ($meterData as $key => $value) {
-            if (is_array($value)) {
-                $meterData[$key] = implode(', ', $value);
+                $meters[] = array_merge(
+                    ['meter_type' => 'electricity'],
+                    $this->mapMeterFields($meter)
+                );
             }
         }
 
-        ApplicationMeter::create(array_merge([
-            'application_id' => $application->id
-        ], $meterData));
-    }
-}
+        // ✅ SAVE
+        foreach ($meters as $meterData) {
+            foreach ($meterData as $key => $value) {
+                if (is_array($value)) {
+                    $meterData[$key] = implode(', ', $value);
+                }
+            }
 
-// Helper function for structured data
-    private function mapMeterFields(array $meter): array {
+            ApplicationMeter::create(array_merge([
+                'application_id' => $application->id
+            ], $meterData));
+        }
+    }
+
+    // Helper function for structured data
+    private function mapMeterFields(array $meter): array
+    {
         return [
-            'meter_type'           => $meter['meter_type'] ?? null,
-            'supplier_name'        => $meter['supplier_name'] ?? null,
-            'mpan_top'             => $meter['mpan_top'] ?? ($meter['mpan_top_line'] ?? null),
-            'mpan_bottom'          => $meter['mpan_bottom'] ?? ($meter['mpan_bottom_line'] ?? null),
-            'mprn_no'              => $meter['mprn_no'] ?? null,
-            'offer_rate'           => $meter['offer_rate'] ?? null,
-            'contract_duration'    => $meter['contract_duration'] ?? ($meter['con_duration'] ?? null),
-            'uplift'               => $meter['uplift'] ?? null,
-            'customer_no'          => $meter['customer_no'] ?? null,
+            'meter_type' => $meter['meter_type'] ?? null,
+            'supplier_name' => $meter['supplier_name'] ?? null,
+            'mpan_top' => $meter['mpan_top'] ?? ($meter['mpan_top_line'] ?? null),
+            'mpan_bottom' => $meter['mpan_bottom'] ?? ($meter['mpan_bottom_line'] ?? null),
+            'mprn_no' => $meter['mprn_no'] ?? null,
+            'offer_rate' => $meter['offer_rate'] ?? null,
+            'contract_duration' => $meter['contract_duration'] ?? ($meter['con_duration'] ?? null),
+            'uplift' => $meter['uplift'] ?? null,
+            'customer_no' => $meter['customer_no'] ?? null,
             'name_appears_on_bill' => $meter['name_appears_on_bill'] ?? ($meter['bill_name'] ?? ($meter['name_on_bill'] ?? null)),
-            'current_meter_read'   => $meter['current_meter_read'] ?? null,
-            'meter_serial_no'      => $meter['meter_serial_no'] ?? null,
-            'last_bill_amount'     => $meter['last_bill_amount'] ?? null,
-            'mode'                 => $meter['mode'] ?? null,
+            'current_meter_read' => $meter['current_meter_read'] ?? null,
+            'meter_serial_no' => $meter['meter_serial_no'] ?? null,
+            'last_bill_amount' => $meter['last_bill_amount'] ?? null,
+            'mode' => $meter['mode'] ?? null,
         ];
     }
 
@@ -445,20 +579,20 @@ class ApplicationController extends Controller
         return 'APP-' . str_pad(((int) $number) + 1, 3, '0', STR_PAD_LEFT);
     }
 
-public function updateStatus(Request $request, $id)
-{
-    $request->validate([
-        'status' => ['string', 'max:50']
-    ]);
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => ['string', 'max:50']
+        ]);
 
-    $application = Application::findOrFail($id);
-$application->status = $request->input('status');
-    $application->save();
+        $application = Application::findOrFail($id);
+        $application->status = $request->input('status');
+        $application->save();
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Status updated successfully'
-    ]);
-}
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully'
+        ]);
+    }
 
 }
