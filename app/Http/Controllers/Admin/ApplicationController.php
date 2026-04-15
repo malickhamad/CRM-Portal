@@ -10,41 +10,42 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use App\Models\User;
 
 class ApplicationController extends Controller
 {
 
-private function getCommonStats()
-{
-    return [
-        'remainingLeads' => Application::whereNotIn('status', ['Paid', 'Rejected'])->count(),
+    private function getCommonStats()
+    {
+        return [
+            'remainingLeads' => Application::whereNotIn('status', ['Paid', 'Rejected'])->count(),
 
-        'allSales' => Application::whereIn('status', ['Live', 'Paid'])->count(),
+            'allSales' => Application::whereIn('status', ['Live', 'Paid'])->count(),
 
-        'thisMonthSales' => Application::whereIn('status', ['Live', 'Paid'])
-            ->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->count(),
+            'thisMonthSales' => Application::whereIn('status', ['Live', 'Paid'])
+                ->whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->count(),
 
-        'todayApplications' => Application::whereDate('created_at', today())->count(),
+            'todayApplications' => Application::whereDate('created_at', today())->count(),
 
-        'thisWeekApplications' => Application::whereBetween('created_at', [
-            now()->startOfWeek(),
-            now()->endOfWeek()
-        ])->count(),
+            'thisWeekApplications' => Application::whereBetween('created_at', [
+                now()->startOfWeek(),
+                now()->endOfWeek()
+            ])->count(),
 
-        'thisMonthApplications' => Application::whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->count(),
+            'thisMonthApplications' => Application::whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->count(),
 
-        'allApplications' => Application::count(),
-    ];
-}
+            'allApplications' => Application::count(),
+        ];
+    }
 
-private function viewWithStats($view, $data = [])
-{
-    return view($view, array_merge($data, $this->getCommonStats()));
-}
+    private function viewWithStats($view, $data = [])
+    {
+        return view($view, array_merge($data, $this->getCommonStats()));
+    }
 
     public function services()
     {
@@ -140,18 +141,39 @@ private function viewWithStats($view, $data = [])
             $this->getCommonStats()
         ));
     }
- public function applications()
+ public function applications(Request $request)
 {
-    $applications = Application::latest()->get();
-    $pendingApplications = Application::whereNotIn('status', ['Paid', 'Rejected'])->count();
-    $completedApplications = Application::whereIn('status', ['Live', 'Paid'])->count();
-    $rejectedApplications = Application::where('status', 'Rejected')->count();
+    $selectedUserId = $request->user_id;
+
+    $query = Application::with(['user', 'comments.user'])->latest();
+
+    if (!empty($selectedUserId)) {
+        $query->where('user_id', $selectedUserId);
+    }
+
+    $applications = $query->get();
+
+    $pendingApplications = Application::when($selectedUserId, function ($q) use ($selectedUserId) {
+        $q->where('user_id', $selectedUserId);
+    })->whereNotIn('status', ['Paid', 'Rejected'])->count();
+
+    $completedApplications = Application::when($selectedUserId, function ($q) use ($selectedUserId) {
+        $q->where('user_id', $selectedUserId);
+    })->whereIn('status', ['Live', 'Paid'])->count();
+
+    $rejectedApplications = Application::when($selectedUserId, function ($q) use ($selectedUserId) {
+        $q->where('user_id', $selectedUserId);
+    })->where('status', 'Rejected')->count();
+
+    $users = \App\Models\User::orderBy('name')->get(['id', 'name']);
 
     return view('backend.applications.applications', compact(
         'applications',
         'pendingApplications',
         'completedApplications',
-        'rejectedApplications'
+        'rejectedApplications',
+        'users',
+        'selectedUserId'
     ));
 }
 
@@ -391,6 +413,10 @@ private function viewWithStats($view, $data = [])
 
     private function fillApplication(Application $app, Request $request, array $data, bool $isCreate): void
     {
+        if ($isCreate) {
+            $app->user_id = auth()->id();
+        }
+
         $fields = [
             'application_agent',
             'application_num',

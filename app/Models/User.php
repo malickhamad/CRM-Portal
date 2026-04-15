@@ -110,7 +110,7 @@ public function userAnswers()
 }
 
     // In your User model
- 
+
 
     public function canAccessSection($section)
     {
@@ -130,4 +130,7 @@ public function userAnswers()
 
         return false;
     }
+
+
+
 }

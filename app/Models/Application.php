@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Application extends Model
 {
@@ -13,6 +14,7 @@ class Application extends Model
     protected $table = 'applications';
 
     protected $fillable = [
+        'user_id',
         'application_agent', 'application_num', 'service_type',
         'company_name', 'trading_name', 'business_entity', 'business_nature',
         'title', 'merchant_full_name', 'first_name', 'last_name', 'position',
@@ -26,7 +28,7 @@ class Application extends Model
         'name_on_account', 'account_number', 'sort_code', 'iban', 'bic', 'name_of_bank',
         'bill_payment_method', 'landlord_name', 'name_of_new_customer', 'status_taken_date',
         'password', 'customer_history',
-        'picture_id', 'inside_outside_pics', 'bill_upload', 'bank_statement', 'additional_uploads' , 'status'
+        'picture_id', 'inside_outside_pics', 'bill_upload', 'bank_statement', 'additional_uploads', 'status'
     ];
 
     protected $casts = [
@@ -37,6 +39,11 @@ class Application extends Model
         'epos_system' => 'boolean',
     ];
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function directors(): HasMany
     {
         return $this->hasMany(ApplicationDirector::class, 'application_id');
@@ -45,5 +52,10 @@ class Application extends Model
     public function meters(): HasMany
     {
         return $this->hasMany(ApplicationMeter::class, 'application_id');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ApplicationComment::class, 'application_id')->latest();
     }
 }

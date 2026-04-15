@@ -54,11 +54,30 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card basic-data-table">
+<div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <h4 class="card-title text-success-1000 mb-0">All Applications</h4>
 
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title text-success-1000 ">All Applications</h4>
+    @if(auth()->user()->hasRole('Admin'))
+        <form method="GET" action="{{ route('admin.applications') }}" class="d-flex align-items-center gap-2">
+            <select name="user_id" class="form-select" onchange="this.form.submit()" style="min-width: 220px;">
 
-                        </div>
+                <option value="">All Users</option>
+
+                @foreach ($users as $user)
+
+                    <option value="{{ $user->id }}"
+                        {{ (string) $selectedUserId === (string) $user->id ? 'selected' : '' }}>
+                        {{ $user->name }}
+                    </option>
+                @endforeach
+            </select>
+
+            @if (!empty($selectedUserId))
+                <a href="{{ route('admin.applications') }}" class="btn btn-secondary btn-sm">Reset</a>
+            @endif
+        </form>
+    @endif
+</div>
 
                         <div class="card-body  ">
                             {{-- show here logs --}}
@@ -112,6 +131,14 @@
                                                             data-bs-toggle="tooltip" title="View">
                                                             <iconify-icon icon="lucide:eye"></iconify-icon>
                                                         </a>
+
+                                                        <button type="button"
+                                                            class="w-32-px h-32-px bg-info-focus text-info-main rounded-circle d-inline-flex align-items-center justify-content-center border-0"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#commentModal{{ $item->id }}"
+                                                            title="Comments">
+                                                            <iconify-icon icon="mdi:comment-text-outline"></iconify-icon>
+                                                        </button>
 
                                                         <form action="{{ route('admin.applications.destroy', $item->id) }}"
                                                             method="POST" class="d-inline">
@@ -167,7 +194,7 @@
                                                         <option value="Submitted to Supplier"
                                                             {{ $item->status ==
                                                             'Submitted to
-                                                                                                                                                                                                                                    Supplier'
+                                                                                                                                                                                                                                                                                                Supplier'
                                                                 ? 'selected'
                                                                 : '' }}>
                                                             Submitted to Supplier</option>
@@ -200,6 +227,152 @@
                                                     {{ $item->qty ?? '1' }}
                                                 </td>
                                             </tr>
+
+
+
+                                            <div class="modal fade" id="commentModal{{ $item->id }}" tabindex="-1"
+                                                aria-labelledby="commentModalLabel{{ $item->id }}" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                                                    <div class="modal-content border-0 shadow-lg  overflow-hidden">
+
+                                                        <div class="modal-header bg-white border-bottom py-3 px-4">
+                                                            <div>
+                                                                <h6 class="fw-semibold mb-0 text-success-1000"
+                                                                    id="commentModalLabel{{ $item->id }}">
+                                                                    Comments - {{ $item->application_num }}
+                                                                </h6>
+                                                            </div>
+                                                            <button type="button" class="btn-close fs-6"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+
+                                                        <div class="modal-body bg-light-subtle" style="padding: 10px">
+
+                                                            <form
+                                                                action="{{ route('admin.applications.comments.store', $item->id) }}"
+                                                                method="POST" enctype="multipart/form-data">
+                                                                @csrf
+
+                                                                <div class="row g-3 align-items-start mb-4">
+                                                                    <div class="col-md-7">
+                                                                        <label
+                                                                            class="form-label fw-semibold text-success-1000 mb-2">Comments</label>
+                                                                        <textarea name="comment" class="form-control rounded-3 shadow-sm" rows="3"
+                                                                            placeholder="Write comment here..."></textarea>
+                                                                    </div>
+
+                                                                    <div class="col-md-3">
+                                                                        <label
+                                                                            class="form-label fw-semibold text-success-1000 mb-2">Image</label>
+
+                                                                        <input type="file" name="image"
+                                                                            class="form-control rounded-3 shadow-sm comment-image-input"
+                                                                            accept="image/*"
+                                                                            data-preview="#previewImage{{ $item->id }}"
+                                                                            data-wrapper="#previewWrapper{{ $item->id }}">
+
+                                                                        <div id="previewWrapper{{ $item->id }}"
+                                                                            class="mt-3 d-none">
+                                                                            <div
+                                                                                class="border rounded-3 bg-white p-2 text-center shadow-sm">
+                                                                                <img id="previewImage{{ $item->id }}"
+                                                                                    src="" alt="Preview"
+                                                                                    class="img-fluid rounded-3"
+                                                                                    style="max-height: 120px; object-fit: cover;">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-2 d-flex align-items-start pt-md-4">
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary rounded-3 w-100 py-2 fw-semibold shadow-sm">
+                                                                            Add Comment
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+
+                                                            <div class="border-top pt-3"
+                                                                style="max-height: 420px; overflow-y: auto;">
+                                                                @forelse($item->comments as $comment)
+                                                                    <div
+                                                                        class="bg-white rounded-4 shadow-sm border p-3 mb-3">
+
+                                                                        <div
+                                                                            class="d-flex justify-content-between align-items-start gap-3">
+                                                                            <div class="d-flex align-items-start gap-3">
+                                                                                @php
+                                                                                    $profileImage =
+                                                                                        $comment->user &&
+                                                                                        $comment->user->profile_picture
+                                                                                            ? asset(
+                                                                                                'storage/' .
+                                                                                                    $comment->user
+                                                                                                        ->profile_picture,
+                                                                                            )
+                                                                                            : 'https://ui-avatars.com/api/?name=' .
+                                                                                                urlencode(
+                                                                                                    $comment->user
+                                                                                                        ->name ??
+                                                                                                        'User',
+                                                                                                ) .
+                                                                                                '&background=0D8ABC&color=fff';
+                                                                                @endphp
+
+                                                                                <img src="{{ $profileImage }}"
+                                                                                    alt="{{ $comment->user->name ?? 'User' }}"
+                                                                                    class="rounded-circle border shadow-sm"
+                                                                                    style="width: 48px; height: 48px; object-fit: cover;">
+
+                                                                                <div>
+                                                                                    <h6 class="mb-1 fw-bold text-primary">
+                                                                                        {{ $comment->user->name ?? 'User' }}
+                                                                                    </h6>
+
+                                                                                    @if (!empty($comment->comment))
+                                                                                        <p class="mb-2 text-dark"
+                                                                                            style="line-height: 1.6;">
+                                                                                            {{ $comment->comment }}
+                                                                                        </p>
+                                                                                    @endif
+
+                                                                                    @if (!empty($comment->image))
+                                                                                        <a href="{{ asset('storage/' . $comment->image) }}"
+                                                                                            target="_blank"
+                                                                                            class="d-inline-block mt-1">
+                                                                                            <img src="{{ asset('storage/' . $comment->image) }}"
+                                                                                                alt="comment image"
+                                                                                                class="rounded-3 border shadow-sm"
+                                                                                                style="width: 120px; height: 120px; object-fit: cover;">
+                                                                                        </a>
+                                                                                    @endif
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <small class="text-muted text-nowrap">
+                                                                                {{ $comment->created_at->format('d-m-Y h:i A') }}
+                                                                            </small>
+                                                                        </div>
+                                                                    </div>
+                                                                @empty
+                                                                    <div class="text-center py-5">
+                                                                        <div class="text-muted fw-medium">No comments found
+                                                                            for this application.</div>
+                                                                    </div>
+                                                                @endforelse
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-footer bg-white border-top px-4 py-3">
+                                                            <button type="button"
+                                                                class="btn btn-warning rounded-3 px-4 fw-semibold"
+                                                                data-bs-dismiss="modal">
+                                                                Close
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -213,6 +386,30 @@
 
 
             </div>
+            <script>
+                document.addEventListener('change', function(e) {
+                    if (e.target.classList.contains('comment-image-input')) {
+                        const input = e.target;
+                        const file = input.files[0];
+                        const previewSelector = input.getAttribute('data-preview');
+                        const wrapperSelector = input.getAttribute('data-wrapper');
+                        const previewImage = document.querySelector(previewSelector);
+                        const previewWrapper = document.querySelector(wrapperSelector);
+
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                previewImage.src = event.target.result;
+                                previewWrapper.classList.remove('d-none');
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            previewImage.src = '';
+                            previewWrapper.classList.add('d-none');
+                        }
+                    }
+                });
+            </script>
             <script>
                 document.querySelectorAll('.btn-delete').forEach(function(button) {
                     button.addEventListener('click', function(e) {

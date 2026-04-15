@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\{ CustomersController, DashboardController, FaqController, PermissionController, RoleController, UserController, };
+use App\Http\Controllers\Admin\{CustomersController, DashboardController, FaqController, PermissionController, RoleController, UserController, };
+use App\Http\Controllers\Admin\ApplicationCommentController;
 use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\LogsController;
@@ -30,18 +31,28 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('users', UserController::class);
 
 
-// new application create routes...
+    // new application create routes...
     Route::post('/applications/store', [ApplicationController::class, 'store'])->name('applications.store');
     Route::get('/applications/{id}/edit', [ApplicationController::class, 'edit'])->name('applications.edit');
     Route::put('/applications/{id}/update', [ApplicationController::class, 'update'])->name('applications.update');
     Route::delete('/applications/{id}/destroy', [ApplicationController::class, 'destroy'])->name('applications.destroy');
 
-// Route to update application status
-Route::post('/applications/{id}/status', [ApplicationController::class, 'updateStatus']);
+    // Route to update application status
+    Route::post('/applications/{id}/status', [ApplicationController::class, 'updateStatus']);
 
-// Notepad routes
-Route::post('notepad/upload-image', [NotepadController::class, 'uploadImage'])
-    ->name('notepad.upload.image');
+    // Notepad routes
+    Route::post('notepad/upload-image', [NotepadController::class, 'uploadImage'])
+        ->name('notepad.upload.image');
+
+
+// Application comments routes
+Route::get('/admin/applications', [ApplicationController::class, 'applications'])->name('admin.applications');
+
+Route::post('/admin/applications/{application}/comments', [ApplicationCommentController::class, 'store'])
+    ->name('applications.comments.store');
+
+
+
 
     //  profile routes
     Route::get('/my-profile', [MYProfileController::class, 'showProfile'])->name('my-profile');
@@ -54,41 +65,41 @@ Route::post('notepad/upload-image', [NotepadController::class, 'uploadImage'])
     // New Application routes
 
 
- Route::get('/services', [ApplicationController::class, 'services'])->name('services');
- Route::get('/finance_services', [ApplicationController::class, 'finance_services'])->name('finance_services');
- Route::get('/utilities_services', [ApplicationController::class, 'utilities_services'])->name('utilities_services');
- Route::get('/applications', [ApplicationController::class, 'applications'])->name('applications');
-//  Route::get('/notepad', [ApplicationController::class, 'notepad'])->name('notepad');
+    Route::get('/services', [ApplicationController::class, 'services'])->name('services');
+    Route::get('/finance_services', [ApplicationController::class, 'finance_services'])->name('finance_services');
+    Route::get('/utilities_services', [ApplicationController::class, 'utilities_services'])->name('utilities_services');
+    Route::get('/applications', [ApplicationController::class, 'applications'])->name('applications');
+    //  Route::get('/notepad', [ApplicationController::class, 'notepad'])->name('notepad');
 
 
-Route::resource('notepad', NotepadController::class);
+    Route::resource('notepad', NotepadController::class);
 
-Route::prefix('finance')->group(function () {
+    Route::prefix('finance')->group(function () {
 
-    Route::get('/card_machine', [ApplicationController::class, 'card_machine'])->name('card_machine');
+        Route::get('/card_machine', [ApplicationController::class, 'card_machine'])->name('card_machine');
 
-    Route::get('/loan', [ApplicationController::class, 'loan'])->name('loan');
+        Route::get('/loan', [ApplicationController::class, 'loan'])->name('loan');
 
-    Route::get('/open_banking', [ApplicationController::class, 'open_banking'])->name('open_banking');
+        Route::get('/open_banking', [ApplicationController::class, 'open_banking'])->name('open_banking');
 
-});
+    });
 
 
-Route::prefix('utilities')->group(function () {
+    Route::prefix('utilities')->group(function () {
 
-    Route::get('/water', [ApplicationController::class, 'water'])->name('water');
+        Route::get('/water', [ApplicationController::class, 'water'])->name('water');
 
-    Route::get('/broadband', [ApplicationController::class, 'broadband'])->name('broadband');
+        Route::get('/broadband', [ApplicationController::class, 'broadband'])->name('broadband');
 
-    Route::get('/telecom', [ApplicationController::class, 'telecom'])->name('telecom');
+        Route::get('/telecom', [ApplicationController::class, 'telecom'])->name('telecom');
 
-    Route::get('/gas', [ApplicationController::class, 'gas'])->name('gas');
+        Route::get('/gas', [ApplicationController::class, 'gas'])->name('gas');
 
-    Route::get('/electricity', [ApplicationController::class, 'electricity'])->name('electricity');
+        Route::get('/electricity', [ApplicationController::class, 'electricity'])->name('electricity');
 
-    Route::get('/electric_gas', [ApplicationController::class, 'electric_gas'])->name('electric_gas');
+        Route::get('/electric_gas', [ApplicationController::class, 'electric_gas'])->name('electric_gas');
 
-});
+    });
 
 
 
