@@ -71,3 +71,4 @@ Route::get('/chat', [ChatController::class, 'index']);
 Route::get('/chat/start/{userId}', [ChatController::class, 'startConversation'])->name('chat.start');
 Route::get('/chat/{conversationId}', [ChatController::class, 'showConversation'])->name('chat.show');
 Route::post('/chat/send/{conversationId}', [ChatController::class, 'sendMessage'])->name('chat.send');
+

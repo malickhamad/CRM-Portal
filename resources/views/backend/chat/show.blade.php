@@ -1,7 +1,7 @@
 @extends('backend.layouts.app')
 
 @section('content')
-   <main class="dashboard-main">
+    <main class="dashboard-main">
         @include('backend.layouts.partials.header')
         <div class="container">
             <div class="row">
@@ -9,9 +9,9 @@
                     <div class="card">
                         <div class="card-header">
                             <strong>
-                                Chat with 
-                                @foreach($conversation->users as $user)
-                                    @if($user->id != auth()->id())
+                                Chat with
+                                @foreach ($conversation->users as $user)
+                                    @if ($user->id != auth()->id())
                                         {{ $user->name }}
                                     @endif
                                 @endforeach
@@ -19,9 +19,28 @@
                         </div>
                         <div class="card-body" id="chat-box">
                             <!-- Display messages -->
-                            @foreach($conversation->messages as $message)
+                            @foreach ($conversation->messages as $message)
                                 <div class="{{ $message->user->id == auth()->id() ? 'sent' : 'received' }}">
                                     <strong>{{ $message->user->name }}:</strong> {{ $message->message }}
+
+                                    <!-- If there's a file, display it -->
+                                    @if ($message->file_path)
+                                        @if (in_array(pathinfo($message->file_path, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png']))
+                                            <img src="{{ asset($message->file_path) }}" alt="Image" style="max-width: 100%; height: auto;">
+                                        @elseif (in_array(pathinfo($message->file_path, PATHINFO_EXTENSION), ['mp4', 'avi', 'mkv']))
+                                            <video width="320" height="240" controls>
+                                                <source src="{{ asset($message->file_path) }}" type="video/{{ pathinfo($message->file_path, PATHINFO_EXTENSION) }}">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        @elseif (in_array(pathinfo($message->file_path, PATHINFO_EXTENSION), ['mp3']))
+                                            <audio controls>
+                                                <source src="{{ asset($message->file_path) }}" type="audio/{{ pathinfo($message->file_path, PATHINFO_EXTENSION) }}">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                        @else
+                                            <a href="{{ asset($message->file_path) }}" download>Download File</a>
+                                        @endif
+                                    @endif
                                 </div>
                             @endforeach
                         </div>
@@ -29,6 +48,7 @@
                             <form id="chat-form" method="POST" action="{{ route('chat.send', $conversation->id) }}" enctype="multipart/form-data">
                                 @csrf
                                 <input type="text" id="chat-input" name="message" class="form-control" placeholder="Type a message" required>
+                                <input type="file" name="file" class="form-control mt-2" accept="image/*,video/*,audio/*"> <!-- File input -->
                                 <button type="submit" class="btn btn-primary mt-2">Send</button>
                             </form>
                         </div>
@@ -42,41 +62,64 @@
         <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.11.3/dist/echo.js"></script>
         <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
-     <script>
-    // Send message using AJAX
-    $('#chat-form').submit(function(e) {
-        e.preventDefault();
+        <script>
+            // Send message using AJAX
+            $('#chat-form').submit(function(e) {
+                e.preventDefault();
 
-        var message = $('#chat-input').val();
-        var conversationId = {{ $conversation->id }}; // Pass the conversation ID
+                var message = $('#chat-input').val();
+                var file = $('input[name="file"]')[0].files[0]; // Get the file if present
+                var conversationId = {{ $conversation->id }}; // Pass the conversation ID
 
-        if (message) {
-            $.ajax({
-                url: '/chat/send/' + conversationId,  // Adjust the route URL if necessary
-                method: 'POST',
-                data: {
-                    message: message,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    // Clear the input after sending
-                    $('#chat-input').val('');
+                // Only send the message if there's either text or a file
+                if (message || file) {
+                    var formData = new FormData();
+                    formData.append('message', message);
+                    if (file) {
+                        formData.append('file', file);
+                    }
+                    formData.append('_token', '{{ csrf_token() }}');
+
+                    $.ajax({
+                        url: '/chat/send/' + conversationId, // Adjust the route URL if necessary
+                        method: 'POST',
+                        data: formData,
+                        processData: false, // Don't process the data
+                        contentType: false, // Don't set content type
+                        success: function(response) {
+                            $('#chat-input').val(''); // Clear the input after sending
+                            $('input[name="file"]').val(''); // Clear the file input
+                        }
+                    });
                 }
             });
-        }
-    });
 
-    // Laravel Echo listening for new messages for this specific conversation
-    Echo.private('conversation.' + {{ $conversation->id }})  // Listen to the specific conversation channel
-        .listen('MessageSent', (event) => {
-            console.log('New message received:', event.message);
+            // Laravel Echo listening for new messages for this specific conversation
+            Echo.private('conversation.' + {{ $conversation->id }}) // Listen to the specific conversation channel
+                .listen('MessageSent', (event) => {
+                    console.log('New message received:', event.message);
 
-            // Append the new message to the chat box
-            var newMessage = '<div class="message ' + (event.message.user.id == {{ auth()->id() }} ? 'sent' : 'received') + '"><strong>' + event.message.user.name + ':</strong> ' + event.message.message + '</div>';
-            $('#chat-box').append(newMessage);
+                    // Append the new message to the chat box
+                    var newMessage = '<div class="message ' + (event.message.user.id == {{ auth()->id() }} ? 'sent' : 'received') + '"><strong>' + event.message.user.name + ':</strong> ' + event.message.message + '</div>';
 
-            // Scroll to the bottom of the chat box
-            $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
-        });
-</script>
-@endsection
+                    // If there's a file
+                    if (event.message.file_path) {
+                        var fileExtension = event.message.file_path.split('.').pop();
+                        if (['jpg', 'jpeg', 'png'].includes(fileExtension)) {
+                            newMessage += '<img src="{{ asset('') }}' + event.message.file_path + '" alt="Image" style="max-width: 100%; height: auto;">';
+                        } else if (['mp4', 'avi', 'mkv'].includes(fileExtension)) {
+                            newMessage += '<video width="320" height="240" controls><source src="{{ asset('') }}' + event.message.file_path + '" type="video/' + fileExtension + '">Your browser does not support the video tag.</video>';
+                        } else if (fileExtension === 'mp3') {
+                            newMessage += '<audio controls><source src="{{ asset('') }}' + event.message.file_path + '" type="audio/mp3">Your browser does not support the audio element.</audio>';
+                        } else {
+                            newMessage += '<a href="{{ asset('') }}' + event.message.file_path + '" download>Download File</a>';
+                        }
+                    }
+
+                    $('#chat-box').append(newMessage);
+
+                    // Scroll to the bottom of the chat box
+                    $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+                });
+        </script>
+    @endsection
