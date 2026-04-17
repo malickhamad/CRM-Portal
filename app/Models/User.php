@@ -131,6 +131,9 @@ public function userAnswers()
         return false;
     }
 
-
+      public function conversations()
+    {
+        return $this->belongsToMany(Conversation::class, 'conversation_user', 'user_id', 'conversation_id');
+    }
 
 }
