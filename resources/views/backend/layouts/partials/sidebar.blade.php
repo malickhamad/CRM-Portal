@@ -46,6 +46,13 @@
         </a>
     </li>
 
+     <li>
+        <a href="{{ route('chat') }}">
+            <iconify-icon icon="mdi:magnify" class="menu-icon"></iconify-icon>
+            <span>chat</span>
+        </a>
+    </li>
+
 
 
     <li>
