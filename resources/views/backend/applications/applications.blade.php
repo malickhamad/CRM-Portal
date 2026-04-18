@@ -54,30 +54,32 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card basic-data-table">
-<div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
-    <h4 class="card-title text-success-1000 mb-0">All Applications</h4>
+                        <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
+                            <h4 class="card-title text-success-1000 mb-0">All Applications</h4>
 
-    @if(auth()->user()->hasRole('Admin'))
-        <form method="GET" action="{{ route('admin.applications') }}" class="d-flex align-items-center gap-2">
-            <select name="user_id" class="form-select" onchange="this.form.submit()" style="min-width: 220px;">
+                            @if (auth()->user()->hasRole('Admin'))
+                                <form method="GET" action="{{ route('admin.applications') }}"
+                                    class="d-flex align-items-center gap-2">
+                                    <select name="user_id" class="form-select" onchange="this.form.submit()"
+                                        style="min-width: 220px;">
 
-                <option value="">All Users</option>
+                                        <option value="">All Users</option>
 
-                @foreach ($users as $user)
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}"
+                                                {{ (string) $selectedUserId === (string) $user->id ? 'selected' : '' }}>
+                                                {{ $user->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
 
-                    <option value="{{ $user->id }}"
-                        {{ (string) $selectedUserId === (string) $user->id ? 'selected' : '' }}>
-                        {{ $user->name }}
-                    </option>
-                @endforeach
-            </select>
-
-            @if (!empty($selectedUserId))
-                <a href="{{ route('admin.applications') }}" class="btn btn-secondary btn-sm">Reset</a>
-            @endif
-        </form>
-    @endif
-</div>
+                                    @if (!empty($selectedUserId))
+                                        <a href="{{ route('admin.applications') }}"
+                                            class="btn btn-secondary btn-sm">Reset</a>
+                                    @endif
+                                </form>
+                            @endif
+                        </div>
 
                         <div class="card-body  ">
                             {{-- show here logs --}}
@@ -139,6 +141,13 @@
                                                             title="Comments">
                                                             <iconify-icon icon="mdi:comment-text-outline"></iconify-icon>
                                                         </button>
+                                                          {{-- Print Button --}}
+        <a href="{{ route('admin.applications.print', $item->id) }}"
+            target="_blank"
+            class="w-32-px h-32-px bg-warning-focus text-warning-main rounded-circle d-inline-flex align-items-center justify-content-center"
+            data-bs-toggle="tooltip" title="Print PDF">
+            <iconify-icon icon="mdi:printer-outline"></iconify-icon>
+        </a>
 
                                                         <form action="{{ route('admin.applications.destroy', $item->id) }}"
                                                             method="POST" class="d-inline">
@@ -194,7 +203,7 @@
                                                         <option value="Submitted to Supplier"
                                                             {{ $item->status ==
                                                             'Submitted to
-                                                                                                                                                                                                                                                                                                Supplier'
+                                                                                                                                                                                                                                                                                                                                                            Supplier'
                                                                 ? 'selected'
                                                                 : '' }}>
                                                             Submitted to Supplier</option>

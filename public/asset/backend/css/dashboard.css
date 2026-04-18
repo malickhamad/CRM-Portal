@@ -18,64 +18,10 @@
                 rgba(8, 177, 78, 0.15)rgb(8, 177, 78)rgb(38, 255, 129)
             }
 
-            /* Icon Box: Rounded Square (Not Circle) for Modern Look */
-            .icon-box {
-                width: 56px;
-                height: 56px;
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-                font-size: 24px;
-            }
 
-            .data-section {
-                flex-grow: 1;
-            }
 
-            .stat-label {
-                color: #64748b;
-                font-size: 0.85rem;
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.8px;
-                margin-bottom: 4px;
-                display: block;
-            }
 
-            .stat-number {
-                font-size: 1.75rem;
-                font-weight: 700;
-                color: #0f172a;
-                line-height: 1.2;
-            }
 
-            /* Professional Muted Colors */
-            .bg-total {
-                background-color: #f1f5f9;
-                color: #0e522a;
-            }
-
-            /* Neutral Greenish Gray */
-            .bg-pending {
-                background-color: #fff7ed;
-                color: #f59e0b;
-            }
-
-            /* Soft Amber */
-            .bg-live {
-                background-color: #f0fdf4;
-                color: #10b981;
-            }
-
-            /* Soft Emerald */
-            .bg-rejected {
-                background-color: #fef2f2;
-                color: #ef4444;
-            }
-
-            /* Soft Rose */
 
             /* Small Trend Indicator (Optional but looks premium) */
             .trend-text {

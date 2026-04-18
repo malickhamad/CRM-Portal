@@ -6,11 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\ApplicationDirector;
 use App\Models\ApplicationMeter;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use App\Models\User;
 
 class ApplicationController extends Controller
 {
@@ -620,5 +621,23 @@ class ApplicationController extends Controller
             'message' => 'Status updated successfully'
         ]);
     }
+
+
+public function print($id)
+{
+   $application = Application::with(['directors', 'meters'])->findOrFail($id);
+
+// Load the PDF view with the application data
+$pdf = Pdf::loadView('backend.applications.print', compact('application'))
+    ->setPaper('a4', 'portrait');
+
+// Stream the PDF and set headers to force open in a new tab
+return response($pdf->output())
+    ->header('Content-Type', 'application/pdf')
+    ->header('Content-Disposition', 'inline; filename="application-' . $application->application_num . '.pdf"')
+    ->header('Cache-Control', 'private, max-age=0, must-revalidate') // Add cache control
+    ->header('Pragma', 'public') // Add pragma
+    ->header('Expires', '0'); // Disable caching
+}
 
 }

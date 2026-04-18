@@ -69,10 +69,11 @@ Route::post('/admin/applications/{application}/comments', [ApplicationCommentCon
     Route::get('/finance_services', [ApplicationController::class, 'finance_services'])->name('finance_services');
     Route::get('/utilities_services', [ApplicationController::class, 'utilities_services'])->name('utilities_services');
     Route::get('/applications', [ApplicationController::class, 'applications'])->name('applications');
+
     //  Route::get('/notepad', [ApplicationController::class, 'notepad'])->name('notepad');
 
-
     Route::resource('notepad', NotepadController::class);
+
 
     Route::prefix('finance')->group(function () {
 
@@ -83,6 +84,7 @@ Route::post('/admin/applications/{application}/comments', [ApplicationCommentCon
         Route::get('/open_banking', [ApplicationController::class, 'open_banking'])->name('open_banking');
 
     });
+
 
 
     Route::prefix('utilities')->group(function () {
@@ -101,7 +103,10 @@ Route::post('/admin/applications/{application}/comments', [ApplicationCommentCon
 
     });
 
+// Route to print application as PDF
 
+Route::get('/admin/applications/{id}/print', [ApplicationController::class, 'print'])
+    ->name('applications.print');
 
     // logs
 
