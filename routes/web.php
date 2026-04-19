@@ -74,3 +74,4 @@ Route::post('/chat/send/{conversationId}', [ChatController::class, 'sendMessage'
 
 // Define the route for deleting multiple messages
 Route::delete('/chat/delete-messages', [ChatController::class, 'deleteMultipleMessages'])->name('chat.delete.multiple');
+    Route::get('/chat/start/{userId}', [ChatController::class, 'startConversation'])->name('chat.startConversation');
