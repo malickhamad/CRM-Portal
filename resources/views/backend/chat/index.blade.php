@@ -1,4 +1,3 @@
-
 @php
     function userAvatar($user, $size = 40)
     {
@@ -43,7 +42,7 @@
 
     <style>
         body {
-            background-color: #27ae60;
+            background-color: #35443b;
             font-family: 'Source Sans Pro', sans-serif;
             font-size: 0.9em;
             color: #32465a;
@@ -267,7 +266,7 @@
         .message-input button:hover,
         .attachment:hover,
         .microphone:hover {
-            background: #0056b3;
+            background: #3b5a3d;
         }
 
         @media screen and (max-width: 768px) {
@@ -303,7 +302,8 @@
         .user_overview {
             margin-left: 10px;
         }
-           .message-select {
+
+        .message-select {
             margin-right: 10px;
         }
 
@@ -451,9 +451,46 @@
                             class="fa fa-trash"></i></button>
                 </div>
             @else
-                <div class="card">
-                    <div class="card-body">
-                        <p>Select a conversation to start chatting!</p>
+                <div class="card border-0 shadow-sm h-100">
+                    <div
+                        class="card-body d-flex flex-column align-items-center justify-content-center text-center py-5 px-4">
+
+                        <!-- Icon Circle -->
+                        <div class="d-flex align-items-center justify-content-center rounded-circle mb-4"
+                            style="width: 110px; height: 110px; background-color: rgba(0, 0, 207, 0.1);">
+                            <i class="fas fa-comments text-success" style="font-size: 42px;"></i>
+                        </div>
+
+                        <!-- Heading -->
+                        <h2 class="fw-bold text-dark mb-2">Welcome to Chat</h2>
+
+                        <!-- Divider -->
+                        <div class="bg-success rounded-pill mb-4" style="width: 70px; height: 4px;"></div>
+
+                        <!-- Description -->
+                        <p class="text-muted fs-5 mb-4">
+                            Select a conversation from the left to start messaging
+                        </p>
+
+                        <div class="d-flex justify-content-center align-items-center flex-wrap mt-3">
+
+                            <div class="d-flex align-items-center mx-1">
+                                <i class="fas fa-lock text-success mx-1"></i>
+                                <span class="text-muted">Secure</span>
+                            </div>
+
+                            <div class="d-flex align-items-center mx-1">
+                                <i class="fas fa-bolt text-success mx-1"></i>
+                                <span class="text-muted">Fast</span>
+                            </div>
+
+                            <div class="d-flex align-items-center mx-1">
+                                <i class="fas fa-user-friends text-success mx-1"></i>
+                                <span class="text-muted">Easy</span>
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
             @endif
