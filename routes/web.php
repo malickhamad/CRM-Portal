@@ -63,3 +63,15 @@ Route::get('/storage-link', function () {
 
 
 
+
+
+use App\Http\Controllers\ChatController;
+
+Route::get('/chat', [ChatController::class, 'index'])->name('chat');
+Route::get('/chat/start/{userId}', [ChatController::class, 'startConversation'])->name('chat.start');
+Route::get('/chat/{conversationId}', [ChatController::class, 'showConversation'])->name('chat.show');
+Route::post('/chat/send/{conversationId}', [ChatController::class, 'sendMessage'])->name('chat.send');
+
+// Define the route for deleting multiple messages
+Route::delete('/chat/delete-messages', [ChatController::class, 'deleteMultipleMessages'])->name('chat.delete.multiple');
+    Route::get('/chat/start/{userId}', [ChatController::class, 'startConversation'])->name('chat.startConversation');
