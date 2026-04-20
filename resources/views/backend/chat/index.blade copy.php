@@ -327,6 +327,11 @@
                 <input type="text" id="contact-search" placeholder="Search contacts...">
             </div>
 
+
+
+
+
+
             <div id="contacts">
                 <ul id="contacts-list">
                     @foreach ($users as $user)
@@ -335,6 +340,7 @@
                             {!! userAvatar($user, 40) !!}
                             <div class="meta user_overview">
                                 <h6 class="name mb-0">{{ $user->name }}</h6>
+                                {{-- <p class="preview mb-0">No messages yet.</p> --}}
 
                                 @php
                                     $lastMessage = \App\Models\Conversation::where(function ($q) use ($user) {
@@ -379,11 +385,11 @@
                     @endif
                 </div>
 
-                <div class="messages" id="chat-messages">
-                    <ul id="messages-list">
+                <div class="messages">
+                    <ul>
                         @foreach ($conversation->messages as $message)
                             <li class="{{ $message->user->id == auth()->id() ? 'sent' : 'replies' }}">
-                                <div class="form-check mb-4" style="display: inline-block; margin-right: 12px;">
+                                <div class="form-check" style="display: inline-block; margin-right: 12px;">
                                     <input type="checkbox" class="form-check-input message-select"
                                         value="{{ $message->id }}">
                                 </div>
@@ -392,10 +398,7 @@
                                     {!! userAvatar($message->user, 30) !!}
                                 </div>
 
-                                @if ($message->message)
-                                    <p>{{ $message->message }}</p>
-                                @endif
-
+                                <p>{{ $message->message }}</p>
                                 @if ($message->file_path)
                                     @if (in_array(pathinfo($message->file_path, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png']))
                                         <img src="{{ asset($message->file_path) }}" alt="Image"
@@ -432,10 +435,6 @@
                         <input type="file" id="file-upload" name="file" class="form-control mt-2"
                             style="display: none;">
 
-                        <div id="file-preview-container" style="display: none; margin-left: 10px; margin-right: 10px;">
-                            <div id="file-preview-content"></div>
-                        </div>
-
                         <input type="hidden" id="audio-file" name="audio_file" value="">
 
                         <button type="submit" id="send-message" class="btn btn-primary ms-2"><i
@@ -443,8 +442,7 @@
 
                         <label for="file-upload" class="btn ms-2"><i class="fa fa-paperclip"></i></label>
 
-                        <button type="button" id="record-btn" class="btn ms-2"><i
-                                class="fa fa-microphone"></i></button>
+                        <button id="record-btn" class="btn ms-2"><i class="fa fa-microphone"></i></button>
 
                         <audio id="audio-player" controls style="display: none;"></audio>
 
@@ -457,15 +455,19 @@
                     <div
                         class="card-body d-flex flex-column align-items-center justify-content-center text-center py-5 px-4">
 
+                        <!-- Icon Circle -->
                         <div class="d-flex align-items-center justify-content-center rounded-circle mb-4"
                             style="width: 110px; height: 110px; background-color: rgba(0, 0, 207, 0.1);">
                             <i class="fas fa-comments text-success" style="font-size: 42px;"></i>
                         </div>
 
+                        <!-- Heading -->
                         <h2 class="fw-bold text-dark mb-2">Welcome to Chat</h2>
 
+                        <!-- Divider -->
                         <div class="bg-success rounded-pill mb-4" style="width: 70px; height: 4px;"></div>
 
+                        <!-- Description -->
                         <p class="text-muted fs-5 mb-4">
                             Select a conversation from the left to start messaging
                         </p>
@@ -496,177 +498,53 @@
     </div>
 
     <script>
-        const chatMessages = document.getElementById('chat-messages');
-        const messagesList = document.getElementById('messages-list');
-        const fileInput = document.getElementById('file-upload');
-        const filePreviewContainer = document.getElementById('file-preview-container');
-        const filePreviewContent = document.getElementById('file-preview-content');
-        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
-        const conversationId = @json($conversation ? $conversation->id : '');
-        const currentUserAvatar = @json(userAvatar(auth()->user(), 30));
+        document.querySelector('#send-message').addEventListener('click', function() {
+            const messageInput = document.querySelector('#message-input');
+            const messageText = messageInput.value.trim();
 
-        function scrollChatToBottom() {
-            if (chatMessages) {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-        }
-
-        function escapeHtml(text) {
-            return $('<div>').text(text || '').html();
-        }
-
-        function createFilePreviewFromUrl(fileUrl, extension) {
-            if (!fileUrl || !extension) return '';
-
-            extension = extension.toLowerCase();
-
-            if (['jpg', 'jpeg', 'png'].includes(extension)) {
-                return `<img src="${fileUrl}" alt="Image"
-                    style="width: 90px; height: 90px; border-radius: 8px; object-fit: cover; margin-left: 10px; margin-right: 10px;">`;
-            }
-
-            if (['mp4', 'avi', 'mkv', 'webm'].includes(extension)) {
-                return `
-                    <video width="320" height="240" controls>
-                        <source src="${fileUrl}">
-                        Your browser does not support the video tag.
-                    </video>
-                `;
-            }
-
-            if (['mp3', 'ogg', 'wav'].includes(extension)) {
-                return `
-                    <audio controls>
-                        <source src="${fileUrl}">
-                        Your browser does not support the audio element.
-                    </audio>
-                `;
-            }
-
-            return `<a href="${fileUrl}" download>Download File</a>`;
-        }
-
-        function appendMessageToChat(messageText = '', fileUrl = '', extension = '', messageId = '') {
-            const safeMessage = escapeHtml(messageText);
-            const filePreview = createFilePreviewFromUrl(fileUrl, extension);
-
-            const html = `
-                <li class="sent">
-                    <div class="form-check" style="display: inline-block; margin-right: 12px;">
-                        <input type="checkbox" class="form-check-input message-select" value="${messageId}">
-                    </div>
-
-                    <div style="margin-right: 10px;">
-                        ${currentUserAvatar}
-                    </div>
-
-                    ${safeMessage ? `<p>${safeMessage}</p>` : ''}
-                    ${filePreview}
-                </li>
-            `;
-
-            messagesList.insertAdjacentHTML('beforeend', html);
-            scrollChatToBottom();
-        }
-
-        function clearFilePreview() {
-            $('#file-upload').val('');
-            filePreviewContainer.style.display = 'none';
-            filePreviewContent.innerHTML = '';
-        }
-
-        scrollChatToBottom();
-
-        $('#file-upload').on('change', function() {
-            const file = this.files[0];
-
-            if (!file) {
-                clearFilePreview();
-                return;
-            }
-
-            const fileName = file.name.toLowerCase();
-            const extension = fileName.split('.').pop();
-
-            filePreviewContainer.style.display = 'block';
-
-            if (['jpg', 'jpeg', 'png'].includes(extension)) {
-                const imageUrl = URL.createObjectURL(file);
-                filePreviewContent.innerHTML = `
-                    <img src="${imageUrl}" alt="Preview"
-                        style="width: 70px; height: 70px; border-radius: 8px; object-fit: cover;">
-                `;
-            } else if (['mp4', 'avi', 'mkv', 'webm'].includes(extension)) {
-                const videoUrl = URL.createObjectURL(file);
-                filePreviewContent.innerHTML = `
-                    <video width="100" height="70" controls style="border-radius: 8px;">
-                        <source src="${videoUrl}">
-                        Your browser does not support the video tag.
-                    </video>
-                `;
-            } else if (['mp3', 'ogg', 'wav'].includes(extension)) {
-                const audioUrl = URL.createObjectURL(file);
-                filePreviewContent.innerHTML = `
-                    <audio controls style="width: 140px;">
-                        <source src="${audioUrl}">
-                        Your browser does not support the audio element.
-                    </audio>
-                `;
-            } else {
-                filePreviewContent.innerHTML = `
-                    <div style="padding: 8px 12px; background: #e9ecef; border-radius: 8px; font-size: 12px; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                        ${escapeHtml(file.name)}
-                    </div>
-                `;
+            if (messageText) {
+                $.ajax({
+                    url: '{{ route('chat.send', $conversation->id ?? '') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        message: messageText,
+                    },
+                    success: function(response) {
+                        const newMessage = document.createElement('li');
+                        newMessage.classList.add('sent');
+                        newMessage.innerHTML =
+                            `<div style="width:30px;height:30px;border-radius:50%;background:#007bff;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;margin-right:10px;">{{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}</div><p>${messageText}</p>`;
+                        document.querySelector('.messages ul').appendChild(newMessage);
+                        messageInput.value = '';
+                        document.querySelector('.messages').scrollTop = document.querySelector(
+                            '.messages').scrollHeight;
+                    },
+                    error: function() {
+                        alert('Error sending message.');
+                    }
+                });
             }
         });
+    </script>
 
+    <script>
         $('#chat-form').on('submit', function(e) {
             e.preventDefault();
 
-            let messageText = $('#message-input').val().trim();
-            let selectedFile = fileInput.files[0];
-
-            if (!messageText && !selectedFile) {
-                return;
-            }
-
-            let formData = new FormData(this);
+            var formData = new FormData(this);
 
             $.ajax({
                 url: $(this).attr('action'),
                 method: 'POST',
                 data: formData,
                 headers: {
-                    'X-CSRF-TOKEN': csrfToken
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    let fileUrl = '';
-                    let extension = '';
-                    let messageId = '';
-
-                    if (response && typeof response === 'object') {
-                        fileUrl = response.file_url || response.file_path || '';
-                        extension = response.extension || '';
-
-                        if (!extension && selectedFile) {
-                            let parts = selectedFile.name.split('.');
-                            extension = parts.length > 1 ? parts.pop() : '';
-                        }
-
-                        messageId = response.message_id || response.id || '';
-                    } else if (selectedFile) {
-                        let parts = selectedFile.name.split('.');
-                        extension = parts.length > 1 ? parts.pop() : '';
-                    }
-
-                    appendMessageToChat(messageText, fileUrl, extension, messageId);
-
-                    $('#message-input').val('');
-                    $('#audio-file').val('');
-                    clearFilePreview();
+                    console.log('Message sent successfully');
                 },
                 error: function(xhr, status, error) {
                     console.log('Error sending message:', error);
@@ -679,22 +557,25 @@
         let audioBlob;
         let recordingState = false;
 
-        $('#record-btn').on('click', function(e) {
-            e.preventDefault();
+        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 
+        $('#record-btn').on('click', function() {
+            console.log('Record button clicked');
             if (!recordingState) {
                 navigator.mediaDevices.getUserMedia({
                         audio: true
                     })
                     .then(function(stream) {
+                        console.log('Microphone access granted');
                         mediaRecorder = new MediaRecorder(stream);
-                        audioChunks = [];
 
                         mediaRecorder.ondataavailable = function(event) {
                             audioChunks.push(event.data);
+                            console.log('Audio data available');
                         };
 
                         mediaRecorder.onstop = function() {
+                            console.log('Recording stopped');
                             audioBlob = new Blob(audioChunks, {
                                 type: 'audio/wav'
                             });
@@ -705,13 +586,12 @@
                             let file = new File([audioBlob], 'voice_message.wav', {
                                 type: 'audio/wav'
                             });
-
                             let formData = new FormData();
                             formData.append('file', file);
                             formData.append('message', '');
 
                             $.ajax({
-                                url: '/chat/send/' + conversationId,
+                                url: '/chat/send/' + @json($conversation ? $conversation->id : ''),
                                 method: 'POST',
                                 data: formData,
                                 headers: {
@@ -720,28 +600,24 @@
                                 processData: false,
                                 contentType: false,
                                 success: function(response) {
-                                    let fileUrl = '';
-                                    let extension = 'wav';
-                                    let messageId = '';
-
-                                    if (response && typeof response === 'object') {
-                                        fileUrl = response.file_url || response.file_path || '';
-                                        extension = response.extension || 'wav';
-                                        messageId = response.message_id || response.id || '';
-                                    }
-
-                                    appendMessageToChat('', fileUrl, extension, messageId);
-                                    resetRecordingState();
+                                    console.log(
+                                        'Audio file uploaded and message sent successfully!'
+                                    );
+                                    $('#audio-file').val(response.file_path);
                                 },
                                 error: function(error) {
                                     console.log('Error sending the audio file:', error);
-                                    resetRecordingState();
                                 }
                             });
+
+                            resetRecordingState();
                         };
 
                         mediaRecorder.start();
+                        $(this).text('Stop Recording');
+                        $(this).removeClass('btn-danger').addClass('btn-success');
                         recordingState = true;
+                        console.log('Recording started');
                     })
                     .catch(function(error) {
                         console.log('Error accessing microphone:', error);
@@ -749,11 +625,16 @@
             } else {
                 if (mediaRecorder && mediaRecorder.state === 'recording') {
                     mediaRecorder.stop();
+                    $(this).text('Recording Stopped');
+                    $(this).removeClass('btn-success').addClass('btn-warning');
+                    console.log('Recording stopped manually');
                 }
             }
         });
 
         function resetRecordingState() {
+            $('#record-btn').text('Record Voice').removeClass('btn-warning').removeClass('btn-success').addClass(
+                'btn-danger');
             recordingState = false;
             audioChunks = [];
             $('#audio-player').hide();
@@ -779,7 +660,8 @@
                 },
                 success: function(response) {
                     selectedMessages.forEach(function(messageId) {
-                        $('input.message-select[value="' + messageId + '"]').closest('li').remove();
+                        $('input.message-select[value="' + messageId + '"]').closest(
+                            '.sent, .received').remove();
                     });
                     alert('Selected messages deleted successfully!');
                 },
@@ -797,6 +679,7 @@
             });
         });
     </script>
+
 
 </body>
 

@@ -70,18 +70,18 @@ class ChatController extends Controller
         return redirect()->route('chat', ['conversation_id' => $conversation->id]);
     }
 
- 
+
 
     // Send a message in a conversation
 
     public function sendMessage(Request $request, $conversationId)
     {
 
-    // dd($request->all());
-    //   if ($request->hasFile('file')) {
-    //         $file = $request->file('file');
-    //         dd($file);
-    //   }
+        // dd($request->all());
+        //   if ($request->hasFile('file')) {
+        //         $file = $request->file('file');
+        //         dd($file);
+        //   }
         // Validate the text message and files
         $request->validate([
             'message' => 'nullable|string|max:255',
@@ -100,10 +100,10 @@ class ChatController extends Controller
         if (!file_exists($publicPath)) {
             mkdir($publicPath, 0777, true); // Create directory with permissions
         }
- 
+
         // Handle the file upload if present
         if ($request->hasFile('file')) {
-        // dd('dddd  ddd');
+            // dd('dddd  ddd');
             $file = $request->file('file');
 
 
@@ -136,27 +136,36 @@ class ChatController extends Controller
         // Broadcast the message in real-time
         broadcast(new MessageSent($message));
 
-        return back();
+        return response()->json([
+            'success' => true,
+            'id' => $message->id,
+            'message_id' => $message->id,
+            'message' => $message->message,
+            'file_path' => $message->file_path ? asset($message->file_path) : null,
+            'file_url' => $message->file_path ? asset($message->file_path) : null,
+            'extension' => $message->file_path ? pathinfo($message->file_path, PATHINFO_EXTENSION) : null,
+            'file_name' => $message->file_name,
+            'file_type' => $message->file_type,
+        ]);
     }
 
 
 
 
-public function deleteMultipleMessages(Request $request)
-{
-    // Validate the request (ensure the message_ids are provided)
-    $request->validate([
-        'message_ids' => 'required|array',
-        'message_ids.*' => 'exists:messages,id', // Ensure each ID exists in the messages table
-    ]);
+    public function deleteMultipleMessages(Request $request)
+    {
+        // Validate the request (ensure the message_ids are provided)
+        $request->validate([
+            'message_ids' => 'required|array',
+            'message_ids.*' => 'exists:messages,id', // Ensure each ID exists in the messages table
+        ]);
 
-    // Get the message IDs from the request
-    $messageIds = $request->message_ids;
+        // Get the message IDs from the request
+        $messageIds = $request->message_ids;
 
-    // Delete all selected messages
-    Message::whereIn('id', $messageIds)->delete();
+        // Delete all selected messages
+        Message::whereIn('id', $messageIds)->delete();
 
-    return response()->json(['success' => true]);
+        return response()->json(['success' => true]);
+    }
 }
-}
-
