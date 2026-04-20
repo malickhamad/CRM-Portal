@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('file_path')->nullable(); // To store the path of the file
             $table->string('file_type')->nullable(); // To store the type of the file (image, video, audio)
             $table->string('file_name')->nullable(); // To store the name of the file
+            $table->boolean('is_read')->default(0);
             $table->timestamps();
         });
     }

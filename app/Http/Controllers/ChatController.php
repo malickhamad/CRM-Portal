@@ -40,6 +40,12 @@ class ChatController extends Controller
             }
         }
 
+        if ($conversation) {
+    $conversation->messages()
+        ->where('user_id', '!=', auth()->id())
+        ->where('is_read', 0)
+        ->update(['is_read' => 1]);
+}
         // Return the chat page with the conversations and users
         return view('backend.chat.index', compact('conversations', 'users', 'conversation'));
     }

@@ -1,4 +1,6 @@
 @php
+    use App\Models\Conversation;
+
     function userAvatar($user, $size = 40)
     {
         if ($user && !empty($user->profile_picture)) {
@@ -10,7 +12,7 @@
                 $size .
                 'px;height:' .
                 $size .
-                'px;border-radius:50%;">';
+                'px;border-radius:50%;object-fit:cover;">';
         }
 
         $letter = strtoupper(substr($user->name ?? 'U', 0, 1));
@@ -19,10 +21,76 @@
             $size .
             'px;height:' .
             $size .
-            'px;border-radius:50%;background:#007bff;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;">' .
+            'px;border-radius:50%;background:#14532d;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;">' .
             $letter .
             '</div>';
     }
+
+    function getMessagePreview($message)
+    {
+        if (!$message) {
+            return 'No messages yet.';
+        }
+
+        if (!empty($message->message)) {
+            return \Illuminate\Support\Str::limit($message->message, 30);
+        }
+
+        if (!empty($message->file_path)) {
+            $ext = strtolower(pathinfo($message->file_path, PATHINFO_EXTENSION));
+
+            if (in_array($ext, ['jpg', 'jpeg', 'png'])) {
+                return '📷 Photo';
+            }
+
+            if (in_array($ext, ['mp4', 'avi', 'mkv', 'webm'])) {
+                return '🎥 Video';
+            }
+
+            if (in_array($ext, ['mp3', 'ogg', 'wav'])) {
+                return '🎤 Voice message';
+            }
+
+            return '📎 File';
+        }
+
+        return 'No messages yet.';
+    }
+
+    $sortedUsers = collect($users)
+        ->map(function ($user) {
+            $conversation = Conversation::where(function ($q) use ($user) {
+                $q->where('user_1_id', auth()->id())->where('user_2_id', $user->id);
+            })
+                ->orWhere(function ($q) use ($user) {
+                    $q->where('user_1_id', $user->id)->where('user_2_id', auth()->id());
+                })
+                ->with([
+                    'messages' => function ($q) {
+                        $q->latest();
+                    },
+                ])
+                ->first();
+
+            $lastMessage = $conversation?->messages->sortByDesc('created_at')->first();
+
+            $unreadCount = 0;
+
+            if ($conversation) {
+                $unreadCount = $conversation->messages()->where('user_id', $user->id)->where('is_read', 0)->count();
+            }
+
+            $user->chat_conversation = $conversation;
+            $user->last_message = $lastMessage;
+            $user->last_message_time = $lastMessage?->created_at;
+            $user->unread_count = $unreadCount;
+            $user->preview_text = getMessagePreview($lastMessage);
+
+            return $user;
+        })
+        ->sortByDesc(function ($user) {
+            return $user->last_message_time ?? now()->subYears(10);
+        });
 @endphp
 
 <!DOCTYPE html>
@@ -33,6 +101,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Perfect Chat Interface</title>
+
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
 
@@ -47,9 +116,7 @@
             font-size: 0.9em;
             color: #32465a;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin: 0;
             overflow: hidden;
         }
 
@@ -57,17 +124,20 @@
             display: flex;
             width: 70%;
             max-width: 900px;
-            height: 90vh;
-            background: #E6EAEA;
-            border-radius: 15px;
+            height: 92vh;
+            margin: 4vh auto;
+            background: #fff;
+            border-radius: 16px;
             overflow: hidden;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
         }
 
         #sidepanel {
-            background: #2c3e50;
+            background: #23343b;
             color: #f5f5f5;
             width: 35%;
-            padding: 15px;
+            min-width: 280px;
+            padding: 12px;
             overflow-y: auto;
             scrollbar-width: none;
         }
@@ -79,101 +149,190 @@
         #profile {
             display: flex;
             align-items: center;
-            flex-direction: column;
-            margin-bottom: 8px;
-            padding: 6px 10px;
-        }
-
-        #profile img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
         }
 
         #profile p {
-            margin-top: 5px;
+            margin: 0;
             color: #fff;
-            font-size: 1em;
-            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
         }
 
         #search {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         #search input {
             width: 100%;
-            padding: 10px;
-            border-radius: 25px;
+            padding: 10px 14px;
+            border-radius: 24px;
             border: none;
-            background: #34495e;
-            color: white;
-            font-size: 0.9em;
+            background: #31464f;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+        }
+
+        #search input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
 
         #contacts ul {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         #contacts ul li {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 10px;
             cursor: pointer;
-            border-bottom: 1px solid #34495e;
-            transition: background-color 0.3s;
+            border-radius: 12px;
+            margin-bottom: 6px;
+            transition: 0.25s ease;
         }
 
-        #contacts ul li:hover {
-            background: #32465a;
+        #contacts ul li:hover,
+        #contacts ul li.active-contact {
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        #contacts img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 15px;
+        .contact-left {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user_overview {
+            margin-left: 10px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .contact-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .contact-top-row .name {
+            margin: 0;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .preview {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.72);
+            margin: 2px 0 0 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .unread-badge {
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 10px;
+            background: #25d366;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
 
         .content {
             width: 65%;
-            padding: 20px;
             display: flex;
             flex-direction: column;
-            background: #fff;
-            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            background: #f6f8fa;
+            padding: 12px;
+            min-width: 0;
         }
 
         .contact-profile {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 12px;
+            background: #fff;
+            border-radius: 14px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
         }
 
-        .contact-profile img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 15px;
+        .contact-profile-left {
+            display: flex;
+            align-items: center;
+            min-width: 0;
         }
 
-        .contact-profile p {
-            font-size: 1.1em;
+        .contact-profile-left p {
+            margin: 0 0 0 10px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #23343b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .chat-header-actions .form-check {
             margin: 0;
+            padding: 6px 12px 6px 28px;
+            background: #f2f4f6;
+            border-radius: 20px;
+        }
+
+        #delete-selected {
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 22px;
+            padding: 7px 14px;
+            font-weight: 600;
+        }
+
+        #delete-selected:hover {
+            background: #c82333;
+            color: #fff;
         }
 
         .messages {
-            flex-grow: 1;
-            overflow-y: scroll;
-            margin-bottom: 15px;
-            background: #f5f5f5;
-            border-radius: 8px;
-            padding: 10px;
-            max-height: calc(90vh - 160px);
+            flex: 1;
+            overflow-y: auto;
+            background: #f4f7f9;
+            border-radius: 14px;
+            padding: 12px 10px 6px 10px;
+            margin-bottom: 8px;
             scrollbar-width: none;
+            min-height: 0;
         }
 
         .messages::-webkit-scrollbar {
@@ -183,12 +342,14 @@
         .messages ul {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         .messages ul li {
             display: flex;
-            margin-bottom: 15px;
             align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
         }
 
         .messages ul li.sent {
@@ -196,130 +357,258 @@
         }
 
         .messages ul li p {
-            background: #e9ecef;
-            padding: 10px 15px;
-            border-radius: 15px;
-            max-width: 75%;
-            margin: 0 0 0 8px;
+            background: #fff;
+            padding: 10px 14px;
+            border-radius: 16px;
+            max-width: 72%;
+            margin: 0;
+            word-break: break-word;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .messages ul li.sent p {
-            background: #d1ecf1;
-            margin: 0 8px 0 0;
+            background: #dff3e5;
         }
 
-        .messages ul li img {
-            width: 30px;
-            height: 30px;
+        .message-select {
+            margin-right: 0;
+        }
+
+        .chat-image-link {
+            display: inline-block;
+            margin: 0 4px;
+        }
+
+        .chat-image-link img {
+            width: 90px;
+            height: 90px;
+            border-radius: 12px;
+            object-fit: cover;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        .message-input-wrapper {
+            background: #fff;
+            border-radius: 14px;
+            padding: 10px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .selected-file-preview {
+            display: none;
+            margin-bottom: 8px;
+        }
+
+        .preview-box {
+            position: relative;
+            display: inline-block;
+            background: #f7f9fb;
+            border: 1px solid #e4eaee;
+            border-radius: 12px;
+            padding: 8px;
+            max-width: 180px;
+        }
+
+        .remove-preview-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 22px;
+            height: 22px;
+            border: none;
             border-radius: 50%;
-            margin: 0 15px;
+            background: #dc3545;
+            color: #fff;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
         }
 
         .message-input {
             display: flex;
             align-items: center;
-            background: #f5f5f5;
-            padding: 8px;
-            border-radius: 8px;
+            gap: 8px;
         }
 
-        .message-input input {
+        .message-input input[type="text"] {
             flex: 1;
-            padding: 8px 12px;
-            border-radius: 20px;
-            border: 1px solid #ddd;
-            font-size: 0.85em;
+            padding: 10px 14px;
+            border-radius: 24px;
+            border: 1px solid #dce5eb;
+            font-size: 13px;
+            outline: none;
         }
 
         .message-input button,
-        .attachment,
-        .microphone {
-            width: 36px;
-            height: 36px;
+        .message-input label {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
             border-radius: 50%;
             padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 6px;
+            margin-bottom: 0;
+            border: none;
         }
 
-        .message-input i,
-        .attachment i,
-        .microphone i {
-            font-size: 14px;
+        #send-message {
+            background: #0d6efd;
+            color: #fff;
         }
 
-        .message-input button {
-            background: #007bff;
-            color: white;
+        #file-label-btn {
+            background: #f0ad4e;
+            color: #fff;
+            cursor: pointer;
         }
 
-        .attachment {
-            background: #f39c12;
-        }
-
-        .microphone {
+        #record-btn {
             background: #e74c3c;
+            color: #fff;
         }
 
-        .message-input button:hover,
-        .attachment:hover,
-        .microphone:hover {
-            background: #3b5a3d;
+        #record-btn.recording {
+            background: #28a745;
         }
 
-        @media screen and (max-width: 768px) {
+        .recording-status {
+            display: none;
+            font-size: 12px;
+            color: #dc3545;
+            font-weight: 700;
+        }
+
+        .recording-status.active {
+            display: inline-block;
+        }
+
+        .file-thumb-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .file-thumb-video {
+            width: 120px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .file-name-box {
+            padding: 8px 12px;
+            background: #e9ecef;
+            border-radius: 8px;
+            font-size: 12px;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                overflow: auto;
+            }
+
             #frame {
+                width: 100%;
+                max-width: 100%;
+                height: 100vh;
+                margin: 0;
+                border-radius: 0;
                 flex-direction: column;
             }
 
             #sidepanel {
                 width: 100%;
+                min-width: 100%;
+                max-height: 34vh;
                 padding: 10px;
             }
 
             .content {
                 width: 100%;
+                height: 66vh;
+                padding: 10px;
             }
 
-            .message-input input {
-                width: 60%;
+            .contact-profile {
+                padding: 10px;
+                margin-bottom: 6px;
             }
 
-            .message-input button,
-            .attachment,
-            .microphone {
-                width: 25%;
+            .chat-header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .messages {
+                padding: 10px 8px 5px 8px;
+                margin-bottom: 6px;
+            }
+
+            .messages ul li p {
+                max-width: 78%;
+                font-size: 13px;
+            }
+
+            .message-input {
+                flex-wrap: wrap;
+            }
+
+            .message-input input[type="text"] {
+                width: 100%;
+                flex: 0 0 100%;
+                margin-bottom: 4px;
+            }
+
+            .chat-image-link img {
+                width: 80px;
+                height: 80px;
             }
         }
 
-        .preview {
-            font-size: 13px;
-            color: rgb(139, 134, 134);
-        }
+        @media (max-width: 480px) {
+            #profile p {
+                font-size: 14px;
+            }
 
-        .user_overview {
-            margin-left: 10px;
-        }
+            .contact-top-row .name {
+                font-size: 13px;
+            }
 
-        .message-select {
-            margin-right: 10px;
-        }
+            .preview {
+                font-size: 11px;
+            }
 
-        .form-check {
-            display: flex;
-            align-items: center;
+            .contact-profile-left p {
+                font-size: 14px;
+            }
+
+            .chat-header-actions .form-check {
+                font-size: 12px;
+            }
+
+            #delete-selected {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
         }
     </style>
 </head>
 
 <body>
-
     <div id="frame">
         <div id="sidepanel">
             <div id="profile">
-                {!! userAvatar(auth()->user(), 40) !!}
+                {!! userAvatar(auth()->user(), 42) !!}
                 <p>{{ auth()->user()->name }}</p>
             </div>
 
@@ -329,28 +618,26 @@
 
             <div id="contacts">
                 <ul id="contacts-list">
-                    @foreach ($users as $user)
-                        <li class="contact" data-name="{{ strtolower($user->name) }}"
+                    @foreach ($sortedUsers as $user)
+                        <li class="contact {{ isset($otherUser) && $otherUser && $otherUser->id == $user->id ? 'active-contact' : '' }}"
+                            data-name="{{ strtolower($user->name) }}" data-user-id="{{ $user->id }}"
+                            data-conversation-id="{{ $user->chat_conversation?->id }}"
                             onclick="window.location.href='{{ route('chat.startConversation', $user->id) }}'">
-                            {!! userAvatar($user, 40) !!}
-                            <div class="meta user_overview">
-                                <h6 class="name mb-0">{{ $user->name }}</h6>
+                            <div class="contact-left">
+                                {!! userAvatar($user, 42) !!}
 
-                                @php
-                                    $lastMessage = \App\Models\Conversation::where(function ($q) use ($user) {
-                                        $q->where('user_1_id', auth()->id())->where('user_2_id', $user->id);
-                                    })
-                                        ->orWhere(function ($q) use ($user) {
-                                            $q->where('user_1_id', $user->id)->where('user_2_id', auth()->id());
-                                        })
-                                        ->with('messages')
-                                        ->first()
-                                        ?->messages->last();
-                                @endphp
+                                <div class="meta user_overview">
+                                    <div class="contact-top-row">
+                                        <h6 class="name">{{ $user->name }}</h6>
 
-                                <p class="preview mb-0">
-                                    {{ \Illuminate\Support\Str::limit($lastMessage?->message ?? 'No messages yet.', 30) }}
-                                </p>
+                                        <span class="unread-badge"
+                                            style="{{ $user->unread_count > 0 ? '' : 'display:none;' }}">
+                                            {{ $user->unread_count > 9 ? '9+' : $user->unread_count }}
+                                        </span>
+                                    </div>
+
+                                    <p class="preview">{{ $user->preview_text }}</p>
+                                </div>
                             </div>
                         </li>
                     @endforeach
@@ -359,36 +646,46 @@
         </div>
 
         <div class="content">
-
             @if ($conversation)
+                @php
+                    $otherUserId =
+                        $conversation->user_1_id == auth()->id() ? $conversation->user_2_id : $conversation->user_1_id;
+
+                    $otherUser = \App\Models\User::find($otherUserId);
+                @endphp
+
                 <div class="contact-profile">
-                    @php
-                        $otherUserId =
-                            $conversation->user_1_id == auth()->id()
-                                ? $conversation->user_2_id
-                                : $conversation->user_1_id;
+                    <div class="contact-profile-left">
+                        @if ($otherUser)
+                            {!! userAvatar($otherUser, 44) !!}
+                            <p>{{ $otherUser->name }}</p>
+                        @else
+                            <p>No user available in this conversation.</p>
+                        @endif
+                    </div>
 
-                        $otherUser = \App\Models\User::find($otherUserId);
-                    @endphp
+                    <div class="chat-header-actions">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="select-all-messages">
+                            <label class="form-check-label ml-2" for="select-all-messages">Select All</label>
+                        </div>
 
-                    @if ($otherUser)
-                        {!! userAvatar($otherUser, 43) !!}
-                        <p class="ms-3" style="margin-left: 8px;">{{ $otherUser->name }}</p>
-                    @else
-                        <p>No user available in this conversation.</p>
-                    @endif
+                        <button type="button" id="delete-selected" class="btn btn-sm">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="messages" id="chat-messages">
                     <ul id="messages-list">
                         @foreach ($conversation->messages as $message)
                             <li class="{{ $message->user->id == auth()->id() ? 'sent' : 'replies' }}">
-                                <div class="form-check mb-4" style="display: inline-block; margin-right: 12px;">
+                                <div class="form-check mb-3" style="display: inline-flex;">
                                     <input type="checkbox" class="form-check-input message-select"
                                         value="{{ $message->id }}">
                                 </div>
 
-                                <div style="margin-right: 10px;">
+                                <div>
                                     {!! userAvatar($message->user, 30) !!}
                                 </div>
 
@@ -397,23 +694,29 @@
                                 @endif
 
                                 @if ($message->file_path)
-                                    @if (in_array(pathinfo($message->file_path, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png']))
-                                        <img src="{{ asset($message->file_path) }}" alt="Image"
-                                            style="width: 90px; height: 90px; border-radius: 8px; object-fit: cover; margin-left: 10px; margin-right: 10px;">
-                                    @elseif(in_array(pathinfo($message->file_path, PATHINFO_EXTENSION), ['mp4', 'avi', 'mkv']))
-                                        <video width="320" height="240" controls>
-                                            <source src="{{ asset($message->file_path) }}"
-                                                type="video/{{ pathinfo($message->file_path, PATHINFO_EXTENSION) }}">
+                                    @php
+                                        $ext = strtolower(pathinfo($message->file_path, PATHINFO_EXTENSION));
+                                    @endphp
+
+                                    @if (in_array($ext, ['jpg', 'jpeg', 'png']))
+                                        <a href="{{ asset($message->file_path) }}" target="_blank"
+                                            class="chat-image-link">
+                                            <img src="{{ asset($message->file_path) }}" alt="Image">
+                                        </a>
+                                    @elseif(in_array($ext, ['mp4', 'avi', 'mkv', 'webm']))
+                                        <video width="220" height="160" controls
+                                            style="border-radius: 10px; margin: 0 6px;">
+                                            <source src="{{ asset($message->file_path) }}">
                                             Your browser does not support the video tag.
                                         </video>
-                                    @elseif(in_array(pathinfo($message->file_path, PATHINFO_EXTENSION), ['mp3', 'ogg', 'wav']))
-                                        <audio controls>
-                                            <source src="{{ asset($message->file_path) }}"
-                                                type="audio/{{ pathinfo($message->file_path, PATHINFO_EXTENSION) }}">
+                                    @elseif(in_array($ext, ['mp3', 'ogg', 'wav']))
+                                        <audio controls style="margin: 0 6px;">
+                                            <source src="{{ asset($message->file_path) }}">
                                             Your browser does not support the audio element.
                                         </audio>
                                     @else
-                                        <a href="{{ asset($message->file_path) }}" download>Download File</a>
+                                        <a href="{{ asset($message->file_path) }}" download
+                                            style="margin: 0 6px;">Download File</a>
                                     @endif
                                 @endif
                             </li>
@@ -421,74 +724,59 @@
                     </ul>
                 </div>
 
-                <div class="message-input d-flex align-items-center">
+                <div class="message-input-wrapper">
                     <form id="chat-form" method="POST" action="{{ route('chat.send', $conversation->id) }}"
-                        enctype="multipart/form-data" class="d-flex w-100">
+                        enctype="multipart/form-data">
                         @csrf
 
-                        <input type="text" id="message-input" name="message" placeholder="Write your message..."
-                            class="form-control">
-
-                        <input type="file" id="file-upload" name="file" class="form-control mt-2"
-                            style="display: none;">
-
-                        <div id="file-preview-container" style="display: none; margin-left: 10px; margin-right: 10px;">
-                            <div id="file-preview-content"></div>
+                        <div id="selected-file-preview" class="selected-file-preview">
+                            <div class="preview-box">
+                                <button type="button" class="remove-preview-btn" id="remove-preview-btn">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                                <div id="file-preview-content"></div>
+                            </div>
                         </div>
 
-                        <input type="hidden" id="audio-file" name="audio_file" value="">
+                        <div class="message-input">
+                            <input type="text" id="message-input" name="message" placeholder="Write your message..."
+                                class="form-control">
 
-                        <button type="submit" id="send-message" class="btn btn-primary ms-2"><i
-                                class="fa fa-paper-plane"></i></button>
+                            <input type="file" id="file-upload" name="file" style="display: none;">
 
-                        <label for="file-upload" class="btn ms-2"><i class="fa fa-paperclip"></i></label>
+                            <input type="hidden" id="audio-file" name="audio_file" value="">
 
-                        <button type="button" id="record-btn" class="btn ms-2"><i
-                                class="fa fa-microphone"></i></button>
+                            <button type="submit" id="send-message" class="btn">
+                                <i class="fa fa-paper-plane"></i>
+                            </button>
 
-                        <audio id="audio-player" controls style="display: none;"></audio>
+                            <label for="file-upload" class="btn" id="file-label-btn">
+                                <i class="fa fa-paperclip"></i>
+                            </label>
 
+                            <button type="button" id="record-btn" class="btn">
+                                <i class="fa fa-microphone"></i>
+                            </button>
+
+                            <span id="recording-status" class="recording-status">Recording...</span>
+                        </div>
                     </form>
-                    <button id="delete-selected" class="btn btn-danger mb-2" style="background-color: red;"><i
-                            class="fa fa-trash"></i></button>
                 </div>
             @else
                 <div class="card border-0 shadow-sm h-100">
                     <div
                         class="card-body d-flex flex-column align-items-center justify-content-center text-center py-5 px-4">
-
                         <div class="d-flex align-items-center justify-content-center rounded-circle mb-4"
                             style="width: 110px; height: 110px; background-color: rgba(0, 0, 207, 0.1);">
                             <i class="fas fa-comments text-success" style="font-size: 42px;"></i>
                         </div>
 
-                        <h2 class="fw-bold text-dark mb-2">Welcome to Chat</h2>
-
+                        <h2 class="font-weight-bold text-dark mb-2">Welcome to Chat</h2>
                         <div class="bg-success rounded-pill mb-4" style="width: 70px; height: 4px;"></div>
 
-                        <p class="text-muted fs-5 mb-4">
+                        <p class="text-muted mb-4">
                             Select a conversation from the left to start messaging
                         </p>
-
-                        <div class="d-flex justify-content-center align-items-center flex-wrap mt-3">
-
-                            <div class="d-flex align-items-center mx-1">
-                                <i class="fas fa-lock text-success mx-1"></i>
-                                <span class="text-muted">Secure</span>
-                            </div>
-
-                            <div class="d-flex align-items-center mx-1">
-                                <i class="fas fa-bolt text-success mx-1"></i>
-                                <span class="text-muted">Fast</span>
-                            </div>
-
-                            <div class="d-flex align-items-center mx-1">
-                                <i class="fas fa-user-friends text-success mx-1"></i>
-                                <span class="text-muted">Easy</span>
-                            </div>
-
-                        </div>
-
                     </div>
                 </div>
             @endif
@@ -499,10 +787,11 @@
         const chatMessages = document.getElementById('chat-messages');
         const messagesList = document.getElementById('messages-list');
         const fileInput = document.getElementById('file-upload');
-        const filePreviewContainer = document.getElementById('file-preview-container');
+        const selectedFilePreview = document.getElementById('selected-file-preview');
         const filePreviewContent = document.getElementById('file-preview-content');
         const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
         const conversationId = @json($conversation ? $conversation->id : '');
+        const currentUserId = @json(auth()->id());
         const currentUserAvatar = @json(userAvatar(auth()->user(), 30));
 
         function scrollChatToBottom() {
@@ -521,13 +810,16 @@
             extension = extension.toLowerCase();
 
             if (['jpg', 'jpeg', 'png'].includes(extension)) {
-                return `<img src="${fileUrl}" alt="Image"
-                    style="width: 90px; height: 90px; border-radius: 8px; object-fit: cover; margin-left: 10px; margin-right: 10px;">`;
+                return `
+                    <a href="${fileUrl}" target="_blank" class="chat-image-link">
+                        <img src="${fileUrl}" alt="Image">
+                    </a>
+                `;
             }
 
             if (['mp4', 'avi', 'mkv', 'webm'].includes(extension)) {
                 return `
-                    <video width="320" height="240" controls>
+                    <video width="220" height="160" controls style="border-radius: 10px; margin: 0 6px;">
                         <source src="${fileUrl}">
                         Your browser does not support the video tag.
                     </video>
@@ -536,14 +828,14 @@
 
             if (['mp3', 'ogg', 'wav'].includes(extension)) {
                 return `
-                    <audio controls>
+                    <audio controls style="margin: 0 6px;">
                         <source src="${fileUrl}">
                         Your browser does not support the audio element.
                     </audio>
                 `;
             }
 
-            return `<a href="${fileUrl}" download>Download File</a>`;
+            return `<a href="${fileUrl}" download style="margin: 0 6px;">Download File</a>`;
         }
 
         function appendMessageToChat(messageText = '', fileUrl = '', extension = '', messageId = '') {
@@ -552,34 +844,57 @@
 
             const html = `
                 <li class="sent">
-                    <div class="form-check" style="display: inline-block; margin-right: 12px;">
+                    <div class="form-check" style="display: inline-flex;">
                         <input type="checkbox" class="form-check-input message-select" value="${messageId}">
                     </div>
-
-                    <div style="margin-right: 10px;">
-                        ${currentUserAvatar}
-                    </div>
-
+                    <div>${currentUserAvatar}</div>
                     ${safeMessage ? `<p>${safeMessage}</p>` : ''}
                     ${filePreview}
                 </li>
             `;
 
             messagesList.insertAdjacentHTML('beforeend', html);
+            bindMessageCheckboxEvents();
+            syncSelectAllState();
+            scrollChatToBottom();
+        }
+
+        function appendIncomingMessage(messageText = '', fileUrl = '', extension = '', messageId = '') {
+            const safeMessage = escapeHtml(messageText);
+            const filePreview = createFilePreviewFromUrl(fileUrl, extension);
+
+            const html = `
+                <li class="replies">
+                    <div class="form-check mb-3" style="display: inline-flex;">
+                        <input type="checkbox" class="form-check-input message-select" value="${messageId}">
+                    </div>
+                    <div></div>
+                    ${safeMessage ? `<p>${safeMessage}</p>` : ''}
+                    ${filePreview}
+                </li>
+            `;
+
+            messagesList.insertAdjacentHTML('beforeend', html);
+            bindMessageCheckboxEvents();
+            syncSelectAllState();
             scrollChatToBottom();
         }
 
         function clearFilePreview() {
-            $('#file-upload').val('');
-            filePreviewContainer.style.display = 'none';
-            filePreviewContent.innerHTML = '';
+            if (fileInput) {
+                fileInput.value = '';
+            }
+
+            if (selectedFilePreview) {
+                selectedFilePreview.style.display = 'none';
+            }
+
+            if (filePreviewContent) {
+                filePreviewContent.innerHTML = '';
+            }
         }
 
-        scrollChatToBottom();
-
-        $('#file-upload').on('change', function() {
-            const file = this.files[0];
-
+        function renderSelectedFilePreview(file) {
             if (!file) {
                 clearFilePreview();
                 return;
@@ -588,18 +903,15 @@
             const fileName = file.name.toLowerCase();
             const extension = fileName.split('.').pop();
 
-            filePreviewContainer.style.display = 'block';
+            selectedFilePreview.style.display = 'block';
 
             if (['jpg', 'jpeg', 'png'].includes(extension)) {
                 const imageUrl = URL.createObjectURL(file);
-                filePreviewContent.innerHTML = `
-                    <img src="${imageUrl}" alt="Preview"
-                        style="width: 70px; height: 70px; border-radius: 8px; object-fit: cover;">
-                `;
+                filePreviewContent.innerHTML = `<img src="${imageUrl}" alt="Preview" class="file-thumb-img">`;
             } else if (['mp4', 'avi', 'mkv', 'webm'].includes(extension)) {
                 const videoUrl = URL.createObjectURL(file);
                 filePreviewContent.innerHTML = `
-                    <video width="100" height="70" controls style="border-radius: 8px;">
+                    <video controls class="file-thumb-video">
                         <source src="${videoUrl}">
                         Your browser does not support the video tag.
                     </video>
@@ -607,25 +919,130 @@
             } else if (['mp3', 'ogg', 'wav'].includes(extension)) {
                 const audioUrl = URL.createObjectURL(file);
                 filePreviewContent.innerHTML = `
-                    <audio controls style="width: 140px;">
+                    <audio controls style="width: 150px;">
                         <source src="${audioUrl}">
                         Your browser does not support the audio element.
                     </audio>
                 `;
             } else {
-                filePreviewContent.innerHTML = `
-                    <div style="padding: 8px 12px; background: #e9ecef; border-radius: 8px; font-size: 12px; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                        ${escapeHtml(file.name)}
-                    </div>
-                `;
+                filePreviewContent.innerHTML = `<div class="file-name-box">${escapeHtml(file.name)}</div>`;
             }
+        }
+
+        function syncSelectAllState() {
+            const allCheckbox = $('#select-all-messages');
+            const checkboxes = $('.message-select');
+            const checked = $('.message-select:checked');
+
+            if (!checkboxes.length) {
+                allCheckbox.prop('checked', false).prop('indeterminate', false);
+                return;
+            }
+
+            if (checked.length === 0) {
+                allCheckbox.prop('checked', false).prop('indeterminate', false);
+            } else if (checked.length === checkboxes.length) {
+                allCheckbox.prop('checked', true).prop('indeterminate', false);
+            } else {
+                allCheckbox.prop('checked', false).prop('indeterminate', true);
+            }
+        }
+
+        function bindMessageCheckboxEvents() {
+            $('.message-select').off('change').on('change', function() {
+                syncSelectAllState();
+            });
+        }
+
+        function setRecordingUI(isRecording) {
+            if (isRecording) {
+                $('#record-btn').addClass('recording');
+                $('#recording-status').addClass('active');
+                $('#record-btn i').removeClass('fa-microphone').addClass('fa-stop');
+            } else {
+                $('#record-btn').removeClass('recording');
+                $('#recording-status').removeClass('active');
+                $('#record-btn i').removeClass('fa-stop').addClass('fa-microphone');
+            }
+        }
+
+        function getPreviewTextFromEvent(message) {
+            if (message.message) {
+                return message.message.length > 30 ? message.message.substring(0, 30) + '...' : message.message;
+            }
+
+            if (message.file_path) {
+                const ext = (message.extension || '').toLowerCase();
+
+                if (['jpg', 'jpeg', 'png'].includes(ext)) return '📷 Photo';
+                if (['mp4', 'avi', 'mkv', 'webm'].includes(ext)) return '🎥 Video';
+                if (['mp3', 'ogg', 'wav'].includes(ext)) return '🎤 Voice message';
+                return '📎 File';
+            }
+
+            return 'No messages yet.';
+        }
+
+        function moveContactToTop(contactItem) {
+            const contactsList = document.getElementById('contacts-list');
+            if (contactsList && contactItem) {
+                contactsList.prepend(contactItem);
+            }
+        }
+
+        function updateSidebarLive(messageData) {
+            const contactItem = document.querySelector(
+                '#contacts-list .contact[data-conversation-id="' + messageData.conversation_id + '"]'
+            );
+
+            if (!contactItem) return;
+
+            const previewEl = contactItem.querySelector('.preview');
+            const badgeEl = contactItem.querySelector('.unread-badge');
+            const isActiveConversation = String(messageData.conversation_id) === String(conversationId);
+
+            if (previewEl) {
+                previewEl.textContent = getPreviewTextFromEvent(messageData);
+            }
+
+            if (parseInt(messageData.user_id) !== parseInt(currentUserId) && !isActiveConversation && badgeEl) {
+                let currentCount = parseInt(badgeEl.textContent) || 0;
+                currentCount++;
+                badgeEl.style.display = 'inline-flex';
+                badgeEl.textContent = currentCount > 9 ? '9+' : currentCount;
+            }
+
+            if (isActiveConversation && badgeEl) {
+                badgeEl.style.display = 'none';
+                badgeEl.textContent = '0';
+            }
+
+            moveContactToTop(contactItem);
+        }
+
+        scrollChatToBottom();
+        bindMessageCheckboxEvents();
+        syncSelectAllState();
+
+        $('#file-upload').on('change', function() {
+            const file = this.files[0];
+            renderSelectedFilePreview(file);
+        });
+
+        $('#remove-preview-btn').on('click', function() {
+            clearFilePreview();
+        });
+
+        $('#select-all-messages').on('change', function() {
+            $('.message-select').prop('checked', $(this).is(':checked'));
+            syncSelectAllState();
         });
 
         $('#chat-form').on('submit', function(e) {
             e.preventDefault();
 
             let messageText = $('#message-input').val().trim();
-            let selectedFile = fileInput.files[0];
+            let selectedFile = fileInput ? fileInput.files[0] : null;
 
             if (!messageText && !selectedFile) {
                 return;
@@ -650,13 +1067,12 @@
                     if (response && typeof response === 'object') {
                         fileUrl = response.file_url || response.file_path || '';
                         extension = response.extension || '';
+                        messageId = response.message_id || response.id || '';
 
                         if (!extension && selectedFile) {
                             let parts = selectedFile.name.split('.');
                             extension = parts.length > 1 ? parts.pop() : '';
                         }
-
-                        messageId = response.message_id || response.id || '';
                     } else if (selectedFile) {
                         let parts = selectedFile.name.split('.');
                         extension = parts.length > 1 ? parts.pop() : '';
@@ -676,7 +1092,6 @@
 
         let mediaRecorder;
         let audioChunks = [];
-        let audioBlob;
         let recordingState = false;
 
         $('#record-btn').on('click', function(e) {
@@ -684,68 +1099,64 @@
 
             if (!recordingState) {
                 navigator.mediaDevices.getUserMedia({
-                        audio: true
-                    })
-                    .then(function(stream) {
-                        mediaRecorder = new MediaRecorder(stream);
-                        audioChunks = [];
+                    audio: true
+                }).then(function(stream) {
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
 
-                        mediaRecorder.ondataavailable = function(event) {
-                            audioChunks.push(event.data);
-                        };
+                    mediaRecorder.ondataavailable = function(event) {
+                        audioChunks.push(event.data);
+                    };
 
-                        mediaRecorder.onstop = function() {
-                            audioBlob = new Blob(audioChunks, {
-                                type: 'audio/wav'
-                            });
+                    mediaRecorder.onstop = function() {
+                        let audioBlob = new Blob(audioChunks, {
+                            type: 'audio/wav'
+                        });
 
-                            let audioUrl = URL.createObjectURL(audioBlob);
-                            $('#audio-player').attr('src', audioUrl).show();
+                        let file = new File([audioBlob], 'voice_message.wav', {
+                            type: 'audio/wav'
+                        });
 
-                            let file = new File([audioBlob], 'voice_message.wav', {
-                                type: 'audio/wav'
-                            });
+                        let formData = new FormData();
+                        formData.append('file', file);
+                        formData.append('message', '');
 
-                            let formData = new FormData();
-                            formData.append('file', file);
-                            formData.append('message', '');
+                        $.ajax({
+                            url: '/chat/send/' + conversationId,
+                            method: 'POST',
+                            data: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken
+                            },
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                let fileUrl = '';
+                                let extension = 'wav';
+                                let messageId = '';
 
-                            $.ajax({
-                                url: '/chat/send/' + conversationId,
-                                method: 'POST',
-                                data: formData,
-                                headers: {
-                                    'X-CSRF-TOKEN': csrfToken
-                                },
-                                processData: false,
-                                contentType: false,
-                                success: function(response) {
-                                    let fileUrl = '';
-                                    let extension = 'wav';
-                                    let messageId = '';
-
-                                    if (response && typeof response === 'object') {
-                                        fileUrl = response.file_url || response.file_path || '';
-                                        extension = response.extension || 'wav';
-                                        messageId = response.message_id || response.id || '';
-                                    }
-
-                                    appendMessageToChat('', fileUrl, extension, messageId);
-                                    resetRecordingState();
-                                },
-                                error: function(error) {
-                                    console.log('Error sending the audio file:', error);
-                                    resetRecordingState();
+                                if (response && typeof response === 'object') {
+                                    fileUrl = response.file_url || response.file_path || '';
+                                    extension = response.extension || 'wav';
+                                    messageId = response.message_id || response.id || '';
                                 }
-                            });
-                        };
 
-                        mediaRecorder.start();
-                        recordingState = true;
-                    })
-                    .catch(function(error) {
-                        console.log('Error accessing microphone:', error);
-                    });
+                                appendMessageToChat('', fileUrl, extension, messageId);
+                                resetRecordingState();
+                            },
+                            error: function(error) {
+                                console.log('Error sending the audio file:', error);
+                                resetRecordingState();
+                            }
+                        });
+                    };
+
+                    mediaRecorder.start();
+                    recordingState = true;
+                    setRecordingUI(true);
+                }).catch(function(error) {
+                    console.log('Error accessing microphone:', error);
+                });
             } else {
                 if (mediaRecorder && mediaRecorder.state === 'recording') {
                     mediaRecorder.stop();
@@ -756,17 +1167,22 @@
         function resetRecordingState() {
             recordingState = false;
             audioChunks = [];
-            $('#audio-player').hide();
+            setRecordingUI(false);
         }
 
         $('#delete-selected').on('click', function() {
             let selectedMessages = [];
-            $('input.message-select:checked').each(function() {
+
+            $('.message-select:checked').each(function() {
                 selectedMessages.push($(this).val());
             });
 
             if (selectedMessages.length === 0) {
                 alert('Please select at least one message to delete.');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete selected messages?')) {
                 return;
             }
 
@@ -779,8 +1195,10 @@
                 },
                 success: function(response) {
                     selectedMessages.forEach(function(messageId) {
-                        $('input.message-select[value="' + messageId + '"]').closest('li').remove();
+                        $('.message-select[value="' + messageId + '"]').closest('li').remove();
                     });
+
+                    syncSelectAllState();
                     alert('Selected messages deleted successfully!');
                 },
                 error: function() {
@@ -796,8 +1214,56 @@
                 $(this).toggle($(this).data('name').indexOf(value) > -1);
             });
         });
-    </script>
 
+        if (typeof window.Echo !== 'undefined') {
+            window.Echo.channel('chat')
+                .listen('.message.sent', function(e) {
+                    const message = e.message || e;
+
+                    updateSidebarLive(message);
+
+                    if (String(message.conversation_id) === String(conversationId) &&
+                        parseInt(message.user_id) !== parseInt(currentUserId)) {
+
+                        appendIncomingMessage(
+                            message.message || '',
+                            message.file_path || '',
+                            message.extension || '',
+                            message.id || message.message_id || ''
+                        );
+                    }
+                });
+        }
+
+
+        function refreshSidebarWithoutReload() {
+            fetch(window.location.href, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+
+                    const newContactsList = doc.querySelector('#contacts-list');
+                    const currentContactsList = document.querySelector('#contacts-list');
+
+                    if (newContactsList && currentContactsList) {
+                        currentContactsList.innerHTML = newContactsList.innerHTML;
+                    }
+                })
+                .catch(error => {
+                    console.log('Sidebar refresh error:', error);
+                });
+        }
+
+        // refresh sidebar every 3 seconds
+        setInterval(function() {
+            refreshSidebarWithoutReload();
+        }, 3000);
+    </script>
 </body>
 
 </html>
