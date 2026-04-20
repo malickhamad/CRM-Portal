@@ -45,11 +45,11 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
         ->name('notepad.upload.image');
 
 
-// Application comments routes
-Route::get('/admin/applications', [ApplicationController::class, 'applications'])->name('admin.applications');
+    // Application comments routes
+    Route::get('/admin/applications', [ApplicationController::class, 'applications'])->name('admin.applications');
 
-Route::post('/admin/applications/{application}/comments', [ApplicationCommentController::class, 'store'])
-    ->name('applications.comments.store');
+    Route::post('/admin/applications/{application}/comments', [ApplicationCommentController::class, 'store'])
+        ->name('applications.comments.store');
 
 
 
@@ -103,10 +103,10 @@ Route::post('/admin/applications/{application}/comments', [ApplicationCommentCon
 
     });
 
-// Route to print application as PDF
+    // Route to print application as PDF
 
-Route::get('/admin/applications/{id}/print', [ApplicationController::class, 'print'])
-    ->name('applications.print');
+    Route::get('/admin/applications/{id}/print', [ApplicationController::class, 'print'])
+        ->name('applications.print');
 
     // logs
 

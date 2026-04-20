@@ -1,6 +1,105 @@
 @extends('backend.layouts.app')
 
 @section('content')
+@php
+    $fieldMap = [
+        'new_customer_name' => 'name_of_new_customer',
+    ];
+
+    $appValue = function ($name, $default = null) use ($application, $fieldMap) {
+        $attribute = $fieldMap[$name] ?? $name;
+        return old($name, data_get($application, $attribute, $default));
+    };
+
+    $storedFile = function ($path) {
+        return $path ? asset('storage/' . ltrim($path, '/')) : null;
+    };
+
+    $directorEntries = old('director_name')
+        ? collect(old('director_name'))->map(function ($name, $index) {
+            return [
+                'director_name' => $name,
+                'date_of_birth' => old('director_dob_array.' . $index),
+                'phone_no' => old('director_phone.' . $index),
+                'email_address' => old('director_email.' . $index),
+                'home_address' => old('director_home_address.' . $index),
+            ];
+        })->values()->all()
+        : ($application->directors->map(function ($director) {
+            return [
+                'director_name' => $director->director_name,
+                'date_of_birth' => $director->date_of_birth,
+                'phone_no' => $director->phone_no,
+                'email_address' => $director->email_address,
+                'home_address' => $director->home_address,
+            ];
+        })->values()->all() ?: [[
+            'director_name' => '',
+            'date_of_birth' => '',
+            'phone_no' => '',
+            'email_address' => '',
+            'home_address' => '',
+        ]]);
+
+    $gasMeters = old('meters')
+        ?: ($application->meters->where('meter_type', 'gas')->map(function ($meter) {
+            return [
+                'supplier_name' => $meter->supplier_name,
+                'mprn_no' => $meter->mprn_no,
+                'offer_rate' => $meter->offer_rate,
+                'contract_duration' => $meter->contract_duration,
+                'uplift' => $meter->uplift,
+                'customer_no' => $meter->customer_no,
+                'bill_name' => $meter->name_appears_on_bill,
+                'current_meter_read' => $meter->current_meter_read,
+                'meter_serial_no' => $meter->meter_serial_no,
+                'last_bill_amount' => $meter->last_bill_amount,
+                'mode' => $meter->mode,
+            ];
+        })->values()->toArray() ?: [[
+            'supplier_name' => '',
+            'mprn_no' => '',
+            'offer_rate' => '',
+            'contract_duration' => '',
+            'uplift' => '',
+            'customer_no' => '',
+            'bill_name' => '',
+            'current_meter_read' => '',
+            'meter_serial_no' => '',
+            'last_bill_amount' => '',
+            'mode' => '',
+        ]]);
+
+    $elecMeters = old('elec_meters')
+        ?: ($application->meters->where('meter_type', 'electricity')->map(function ($meter) {
+            return [
+                'supplier_name' => $meter->supplier_name,
+                'mpan_top_line' => $meter->mpan_top,
+                'mpan_bottom_line' => $meter->mpan_bottom,
+                'con_duration' => $meter->contract_duration,
+                'offer_rate' => $meter->offer_rate,
+                'name_on_bill' => $meter->name_appears_on_bill,
+                'customer_no' => $meter->customer_no,
+                'meter_serial_no' => $meter->meter_serial_no,
+                'current_meter_read' => $meter->current_meter_read,
+                'mode' => $meter->mode,
+                'last_bill_amount' => $meter->last_bill_amount,
+            ];
+        })->values()->toArray() ?: [[
+            'supplier_name' => '',
+            'mpan_top_line' => '',
+            'mpan_bottom_line' => '',
+            'con_duration' => '',
+            'offer_rate' => '',
+            'name_on_bill' => '',
+            'customer_no' => '',
+            'meter_serial_no' => '',
+            'current_meter_read' => '',
+            'mode' => '',
+            'last_bill_amount' => '',
+        ]]);
+@endphp
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <main class="dashboard-main">
@@ -9,7 +108,7 @@
         <div class="dashboard-main-body bg-light position-relative pt-5">
 
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-                <h6 class="fw-semibold mb-0 text-success-1000">New Application</h6>
+                <h6 class="fw-semibold mb-0 text-success-1000">Edit Application</h6>
                 <ul class="d-flex align-items-center gap-2">
                     <li class="fw-medium">
                         <a href="{{ route('admin.dashboard') }}"
@@ -33,7 +132,7 @@
                 <div class="mb-5  py-2 bg-white ">
 
                     <h6 class="fw-bold mb-0 green_color">
-                        <i class="bi bi-ui-checks-grid me-1"></i>New Application (Electric Gas)
+                        <i class="bi bi-ui-checks-grid me-1"></i>Edit Application (Electric Gas)
                     </h6>
                 </div>
 
@@ -54,9 +153,10 @@
 
 
 
-                <form id="electricgasForm" action="{{ route('admin.applications.store') }}" method="POST"
+                <form id="electricgasForm" action="{{ route('admin.applications.update', $application->id) }}" method="POST"
                     enctype="multipart/form-data" novalidate>
                     @csrf
+                    @method('PUT')
 
                     <!-- APPLICATION Form -->
                     <div class="form-section mb-3">
@@ -67,10 +167,10 @@
                             </div>
                             <div class="col-md-9">
                                 <select class="form-select" name="application_agent" required>
-                                    <option disabled selected>Select Agent</option>
-                                    <option>Ali Hassan</option>
-                                    <option>Usman Khan</option>
-                                    <option>Sara Ahmed</option>
+                                    <option disabled {{ $appValue('application_agent') ? '' : 'selected' }}>Select Agent</option>
+                                    <option {{ (string) $appValue('application_agent') === 'Ali Hassan' ? 'selected' : '' }}>Ali Hassan</option>
+                                    <option {{ (string) $appValue('application_agent') === 'Usman Khan' ? 'selected' : '' }}>Usman Khan</option>
+                                    <option {{ (string) $appValue('application_agent') === 'Sara Ahmed' ? 'selected' : '' }}>Sara Ahmed</option>
                                 </select>
                             </div>
                         </div>
@@ -84,7 +184,7 @@
                             <div class="col-md-2"><label>Company Name <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" class="form-control border-end-0" placeholder="Enter company name"
-                                    name="company_name" required>
+                                    name="company_name" required value="{{ $appValue('company_name') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-building"></i>
                                 </span>
@@ -92,7 +192,7 @@
 
                             <div class="col-md-2"><label>Trading Name <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" name="trading_name" required>
+                                <input type="text" class="form-control border-end-0" name="trading_name" required value="{{ $appValue('trading_name') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-pencil"></i>
                                 </span>
@@ -103,17 +203,17 @@
                             <div class="col-md-2"><label>Business Entity <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4">
                                 <select class="form-select" name="business_entity" required>
-                                    <option disabled selected>Please Select</option>
-                                    <option selected>Private Limited</option>
-                                    <option>Public Limited</option>
-                                    <option>Partnership</option>
+                                    <option disabled {{ $appValue('business_entity') ? '' : 'selected' }}>Please Select</option>
+                                    <option {{ (string) $appValue('business_entity') === 'Private Limited' ? 'selected' : '' }}>Private Limited</option>
+                                    <option {{ (string) $appValue('business_entity') === 'Public Limited' ? 'selected' : '' }}>Public Limited</option>
+                                    <option {{ (string) $appValue('business_entity') === 'Partnership' ? 'selected' : '' }}>Partnership</option>
 
                                 </select>
                             </div>
 
                             <div class="col-md-2"><label>Business Nature <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4">
-                                <input type="text" class="form-control border-end-0" name="business_nature" required>
+                                <input type="text" class="form-control border-end-0" name="business_nature" required value="{{ $appValue('business_nature') }}">
                             </div>
                         </div>
 
@@ -121,10 +221,10 @@
                             <div class="col-md-2"><label>Title <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4">
                                 <select class="form-select" name="title" required>
-                                    <option disabled selected>Please Select</option>
-                                    <option>Mr.</option>
-                                    <option>Mrs.</option>
-                                    <option>Miss.</option>
+                                    <option disabled {{ $appValue('title') ? '' : 'selected' }}>Please Select</option>
+                                    <option {{ (string) $appValue('title') === 'Mr.' ? 'selected' : '' }}>Mr.</option>
+                                    <option {{ (string) $appValue('title') === 'Mrs.' ? 'selected' : '' }}>Mrs.</option>
+                                    <option {{ (string) $appValue('title') === 'Miss.' ? 'selected' : '' }}>Miss.</option>
                                 </select>
                             </div>
 
@@ -132,7 +232,7 @@
                             </div>
                             <div class="col-md-4">
                                 <input type="text" class="form-control border-end-0" name="merchant_full_name"
-                                    required>
+                                    required value="{{ $appValue('merchant_full_name') }}">
                             </div>
                         </div>
 
@@ -140,17 +240,17 @@
                             <div class="col-md-2"><label>Position <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4">
                                 <select class="form-select" name="position" required>
-                                    <option disabled selected>Please Select</option>
-                                    <option>Owner</option>
-                                    <option>Manager</option>
-                                    <option>Employee</option>
+                                    <option disabled {{ $appValue('position') ? '' : 'selected' }}>Please Select</option>
+                                    <option {{ (string) $appValue('position') === 'Owner' ? 'selected' : '' }}>Owner</option>
+                                    <option {{ (string) $appValue('position') === 'Manager' ? 'selected' : '' }}>Manager</option>
+                                    <option {{ (string) $appValue('position') === 'Employee' ? 'selected' : '' }}>Employee</option>
                                 </select>
                             </div>
 
                             <div class="col-md-2"><label>Email Address <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="email" class="form-control border-end-0" placeholder="example@email.com"
-                                    name="email_address" required>
+                                    name="email_address" required value="{{ $appValue('email_address') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-envelope"></i>
                                 </span>
@@ -160,7 +260,7 @@
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Phone Number <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" name="phone_number" required>
+                                <input type="text" class="form-control border-end-0" name="phone_number" required value="{{ $appValue('phone_number') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-telephone"></i>
                                 </span>
@@ -170,7 +270,7 @@
                                         class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" class="form-control border-end-0" name="companies_house_number"
-                                    required>
+                                    required value="{{ $appValue('companies_house_number') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-building"></i>
                                 </span>
@@ -180,7 +280,7 @@
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>VAT/TAX Number <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" name="vat_tax_number">
+                                <input type="text" class="form-control border-end-0" name="vat_tax_number" value="{{ $appValue('vat_tax_number') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-hash"></i>
                                 </span>
@@ -188,7 +288,7 @@
 
                             <div class="col-md-2"><label>Trading Address <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" name="trading_address" required>
+                                <input type="text" class="form-control border-end-0" name="trading_address" required value="{{ $appValue('trading_address') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-geo-alt"></i>
                                 </span>
@@ -198,7 +298,7 @@
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Postal Code <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4">
-                                <input type="text" class="form-control border-end-0" name="postal_code" required>
+                                <input type="text" class="form-control border-end-0" name="postal_code" required value="{{ $appValue('postal_code') }}">
                             </div>
                         </div>
                     </div>
@@ -210,8 +310,8 @@
                         <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Application Num <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" name="application_num" class="form-control border-end-0"
-                                    value="{{ $nextNum }}" readonly required>
+                                <input type="text" class="form-control border-end-0" readonly
+                                    name="application_num" required value="{{ $appValue('application_num') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-hash"></i>
                                 </span>
@@ -219,8 +319,8 @@
 
                             <div class="col-md-2"><label>Service</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" value="Electric Gas" readonly
-                                    name="service_type" required>
+                                <input type="text" class="form-control border-end-0" readonly
+                                    name="service_type" required value="{{ $appValue('service_type') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-credit-card"></i>
                                 </span>
@@ -231,7 +331,7 @@
                             <div class="col-md-2"><label>Application Date <span class="text-danger">:*</span></label>
                             </div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" class="form-control border-end-0" name="application_date" required>
+                                <input type="date" class="form-control border-end-0" name="application_date" required value="{{ $appValue('application_date') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar"></i>
                                 </span>
@@ -241,7 +341,7 @@
                             </div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" class="form-control border-end-0" name="annual_consumption"
-                                    required>
+                                    required value="{{ $appValue('annual_consumption') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-lightning"></i>
                                 </span>
@@ -251,12 +351,12 @@
                         <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Renewal Date <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4">
-                                <input type="date" class="form-control border-end-0" name="renewal_date" required>
+                                <input type="date" class="form-control border-end-0" name="renewal_date" required value="{{ $appValue('renewal_date') }}">
                             </div>
 
                             <div class="col-md-2"><label>Electric Email <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="email" class="form-control border-end-0" name="utility_email" required>
+                                <input type="email" class="form-control border-end-0" name="utility_email" required value="{{ $appValue('utility_email') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-envelope"></i>
                                 </span>
@@ -267,7 +367,7 @@
                             <div class="col-md-2"><label>Company Registration No <span
                                         class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" name="company_reg_no" required>
+                                <input type="text" class="form-control border-end-0" name="company_reg_no" required value="{{ $appValue('company_reg_no') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-hash"></i>
                                 </span>
@@ -277,7 +377,7 @@
                             </div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" class="form-control border-end-0" name="commercial_resident"
-                                    required>
+                                    required value="{{ $appValue('commercial_resident') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-building"></i>
                                 </span>
@@ -288,16 +388,16 @@
                             <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4">
                                 <select class="form-select" name="brand" required>
-                                    <option disabled selected>Select Brand</option>
-                                    <option>Verifone</option>
-                                    <option>Ingenico</option>
-                                    <option>PAX</option>
+                                    <option disabled {{ $appValue('brand') ? '' : 'selected' }}>Select Brand</option>
+                                    <option {{ (string) $appValue('brand') === 'Verifone' ? 'selected' : '' }}>Verifone</option>
+                                    <option {{ (string) $appValue('brand') === 'Ingenico' ? 'selected' : '' }}>Ingenico</option>
+                                    <option {{ (string) $appValue('brand') === 'PAX' ? 'selected' : '' }}>PAX</option>
                                 </select>
                             </div>
 
                             <div class="col-md-2"><label>Comment</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" name="comment">
+                                <input type="text" class="form-control border-end-0" name="comment" value="{{ $appValue('comment') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-chat-left-text"></i>
                                 </span>
@@ -310,14 +410,15 @@
     <div class="section-title"><span>Electricity Details</span></div>
 
     <div id="elec-meter-container">
+    @foreach ($elecMeters as $index => $meter)
         <div class="elec-meter-block mb-4 border-bottom pb-3">
 
             <div class="row mb-2">
                 <div class="col-auto d-flex align-items-center">
                     <p class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0 elec-meter-label">
-                        Meter #1
+                        Meter #{{ $index + 1 }}
                     </p>
-                    <button type="button" class="btn btn-danger btn-sm ms-2 remove-elec-btn d-none"
+                    <button type="button" class="btn btn-danger btn-sm ms-2 remove-elec-btn {{ $index === 0 ? 'd-none' : '' }}"
                         style="padding: 2px 8px; font-size: 12px;">
                         <i class="bi bi-trash"></i> Remove
                     </button>
@@ -328,71 +429,72 @@
 
                 <div class="col-md-2"><label>Supplier Name *</label></div>
                 <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][supplier_name]" required>
+                    <input class="form-control" name="elec_meters[{{ $index }}][supplier_name]" value="{{ $meter['supplier_name'] ?? '' }}" required>
                 </div>
 
                 <div class="col-md-2"><label>MPAN Top Line</label></div>
                 <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][mpan_top_line]" required>
+                    <input class="form-control" name="elec_meters[{{ $index }}][mpan_top_line]" value="{{ $meter['mpan_top_line'] ?? '' }}" required>
                 </div>
             </div>
 
             <div class="row gy-1 gx-3 align-items-center">
                 <div class="col-md-2"><label>MPAN Bottom Line</label></div>
                 <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][mpan_bottom_line]" required>
+                    <input class="form-control" name="elec_meters[{{ $index }}][mpan_bottom_line]" value="{{ $meter['mpan_bottom_line'] ?? '' }}" required>
                 </div>
 
                 <div class="col-md-2"><label>Con. Duration</label></div>
                 <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][con_duration]" required>
+                    <input class="form-control" name="elec_meters[{{ $index }}][con_duration]" value="{{ $meter['con_duration'] ?? '' }}" required>
                 </div>
             </div>
 
             <div class="row gy-1 gx-3 align-items-center">
                 <div class="col-md-2"><label>Offer Rate</label></div>
                 <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][offer_rate]" required>
+                    <input class="form-control" name="elec_meters[{{ $index }}][offer_rate]" value="{{ $meter['offer_rate'] ?? '' }}" required>
                 </div>
 
                 <div class="col-md-2"><label>Name Appears On Bill</label></div>
                 <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][name_on_bill]" required>
+                    <input class="form-control" name="elec_meters[{{ $index }}][name_on_bill]" value="{{ $meter['name_on_bill'] ?? '' }}" required>
                 </div>
             </div>
 
             <div class="row gy-1 gx-3 align-items-center">
                 <div class="col-md-2"><label>Customer No.</label></div>
                 <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][customer_no]" required>
+                    <input class="form-control" name="elec_meters[{{ $index }}][customer_no]" value="{{ $meter['customer_no'] ?? '' }}" required>
                 </div>
 
                 <div class="col-md-2"><label>Meter Serial No.</label></div>
                 <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][meter_serial_no]" required>
+                    <input class="form-control" name="elec_meters[{{ $index }}][meter_serial_no]" value="{{ $meter['meter_serial_no'] ?? '' }}" required>
                 </div>
             </div>
 
             <div class="row gy-1 gx-3 align-items-center">
                 <div class="col-md-2"><label>Current Meter Read</label></div>
                 <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][current_meter_read]" required>
+                    <input class="form-control" name="elec_meters[{{ $index }}][current_meter_read]" value="{{ $meter['current_meter_read'] ?? '' }}" required>
                 </div>
 
                 <div class="col-md-2"><label>Mode</label></div>
                 <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][mode]" required>
+                    <input class="form-control" name="elec_meters[{{ $index }}][mode]" value="{{ $meter['mode'] ?? '' }}" required>
                 </div>
             </div>
 
             <div class="row gy-1 gx-3 align-items-center">
                 <div class="col-md-2"><label>Last Bill Amount</label></div>
                 <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][last_bill_amount]" required>
+                    <input class="form-control" name="elec_meters[{{ $index }}][last_bill_amount]" value="{{ $meter['last_bill_amount'] ?? '' }}" required>
                 </div>
             </div>
 
         </div>
+    @endforeach
     </div>
 
     <div class="mt-3">
@@ -407,91 +509,93 @@
                         <div class="section-title"><span>Gas Details</span></div>
 
                         <div id="meter-container">
-                            <div class="meter-block mb-3 border-bottom pb-2">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <p class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0 meter-label">
-                                        Meter #1
-                                    </p>
-                                    <button type="button" class="btn btn-danger btn-sm remove-meter-btn d-none"
-                                        style="padding: 2px 8px; font-size: 12px;">
-                                        <i class="bi bi-trash"></i> Remove
-                                    </button>
+                            @foreach ($gasMeters as $index => $meter)
+                                <div class="meter-block mb-3 border-bottom pb-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <p class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0 meter-label">
+                                            Meter #{{ $index + 1 }}
+                                        </p>
+                                        <button type="button" class="btn btn-danger btn-sm remove-meter-btn {{ $index === 0 ? 'd-none' : '' }}"
+                                            style="padding: 2px 8px; font-size: 12px;">
+                                            <i class="bi bi-trash"></i> Remove
+                                        </button>
+                                    </div>
+
+                                    <div class="row align-items-center">
+
+                                        <div class="col-md-2"><label class="mb-0">Supplier Name</label></div>
+                                        <div class="col-md-4 d-flex align-items-center mb-1">
+                                            <input class="form-control border-end-0" name="meters[{{ $index }}][supplier_name]" value="{{ $meter['supplier_name'] ?? '' }}" required>
+                                            <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
+                                        </div>
+
+                                        <div class="col-md-2"><label class="mb-0">MPRN No</label></div>
+                                        <div class="col-md-4 d-flex align-items-center mb-1">
+                                            <input class="form-control border-end-0" name="meters[{{ $index }}][mprn_no]" value="{{ $meter['mprn_no'] ?? '' }}" required>
+                                            <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
+                                        </div>
+
+                                        <div class="col-md-2"><label class="mb-0">Offer Rate</label></div>
+                                        <div class="col-md-4 d-flex align-items-center mb-1">
+                                            <input class="form-control border-end-0" name="meters[{{ $index }}][offer_rate]" value="{{ $meter['offer_rate'] ?? '' }}" required>
+                                            <span class="icon-box border-start-0"><i class="bi bi-tag"></i></span>
+                                        </div>
+
+                                        <div class="col-md-2"><label class="mb-0">Con. Duration</label></div>
+                                        <div class="col-md-4 d-flex align-items-center mb-1">
+                                            <input class="form-control border-end-0" name="meters[{{ $index }}][contract_duration]"
+                                                value="{{ $meter['contract_duration'] ?? '' }}" required>
+                                            <span class="icon-box border-start-0"><i class="bi bi-clock"></i></span>
+                                        </div>
+
+                                        <div class="col-md-2"><label class="mb-0">Uplift</label></div>
+                                        <div class="col-md-4 d-flex align-items-center mb-1">
+                                            <input class="form-control border-end-0" name="meters[{{ $index }}][uplift]" value="{{ $meter['uplift'] ?? '' }}" required>
+                                            <span class="icon-box border-start-0"><i class="bi bi-percent"></i></span>
+                                        </div>
+
+                                        <div class="col-md-2"><label class="mb-0">Customer No</label></div>
+                                        <div class="col-md-4 d-flex align-items-center mb-1">
+                                            <input class="form-control border-end-0" name="meters[{{ $index }}][customer_no]" value="{{ $meter['customer_no'] ?? '' }}" required>
+                                            <span class="icon-box border-start-0"><i class="bi bi-card-text"></i></span>
+                                        </div>
+
+                                        <div class="col-md-2"><label class="mb-0">Name Appears On Bill</label></div>
+                                        <div class="col-md-4 d-flex align-items-center mb-1">
+                                            <input class="form-control border-end-0" name="meters[{{ $index }}][bill_name]" value="{{ $meter['bill_name'] ?? '' }}" required>
+                                            <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
+                                        </div>
+
+                                        <div class="col-md-2"><label class="mb-0">Current Meter Read</label></div>
+                                        <div class="col-md-4 d-flex align-items-center mb-1">
+                                            <input class="form-control border-end-0" name="meters[{{ $index }}][current_meter_read]"
+                                                value="{{ $meter['current_meter_read'] ?? '' }}" required>
+                                            <span class="icon-box border-start-0"><i class="bi bi-droplet"></i></span>
+                                        </div>
+
+                                        <div class="col-md-2"><label class="mb-0">Meter Serial No</label></div>
+                                        <div class="col-md-4 d-flex align-items-center mb-1">
+                                            <input class="form-control border-end-0" name="meters[{{ $index }}][meter_serial_no]"
+                                                value="{{ $meter['meter_serial_no'] ?? '' }}" required>
+                                            <span class="icon-box border-start-0"><i class="bi bi-upc-scan"></i></span>
+                                        </div>
+
+                                        <div class="col-md-2"><label class="mb-0">Last Bill Amount</label></div>
+                                        <div class="col-md-4 d-flex align-items-center mb-1">
+                                            <input class="form-control border-end-0" name="meters[{{ $index }}][last_bill_amount]"
+                                                value="{{ $meter['last_bill_amount'] ?? '' }}" required>
+                                            <span class="icon-box border-start-0"><i class="bi bi-currency-dollar"></i></span>
+                                        </div>
+
+                                        <div class="col-md-2"><label class="mb-0">Mode</label></div>
+                                        <div class="col-md-4 d-flex align-items-center mb-1">
+                                            <input class="form-control border-end-0" name="meters[{{ $index }}][mode]" value="{{ $meter['mode'] ?? '' }}" required>
+                                            <span class="icon-box border-start-0"><i class="bi bi-credit-card"></i></span>
+                                        </div>
+
+                                    </div>
                                 </div>
-
-                                <div class="row align-items-center">
-
-                                    <div class="col-md-2"><label class="mb-0">Supplier Name</label></div>
-                                    <div class="col-md-4 d-flex align-items-center mb-1">
-                                        <input class="form-control border-end-0" name="meters[0][supplier_name]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
-                                    </div>
-
-                                    <div class="col-md-2"><label class="mb-0">MPRN No</label></div>
-                                    <div class="col-md-4 d-flex align-items-center mb-1">
-                                        <input class="form-control border-end-0" name="meters[0][mprn_no]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
-                                    </div>
-
-                                    <div class="col-md-2"><label class="mb-0">Offer Rate</label></div>
-                                    <div class="col-md-4 d-flex align-items-center mb-1">
-                                        <input class="form-control border-end-0" name="meters[0][offer_rate]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-tag"></i></span>
-                                    </div>
-
-                                    <div class="col-md-2"><label class="mb-0">Con. Duration</label></div>
-                                    <div class="col-md-4 d-flex align-items-center mb-1">
-                                        <input class="form-control border-end-0" name="meters[0][contract_duration]"
-                                            required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-clock"></i></span>
-                                    </div>
-
-                                    <div class="col-md-2"><label class="mb-0">Uplift</label></div>
-                                    <div class="col-md-4 d-flex align-items-center mb-1">
-                                        <input class="form-control border-end-0" name="meters[0][uplift]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-percent"></i></span>
-                                    </div>
-
-                                    <div class="col-md-2"><label class="mb-0">Customer No</label></div>
-                                    <div class="col-md-4 d-flex align-items-center mb-1">
-                                        <input class="form-control border-end-0" name="meters[0][customer_no]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-card-text"></i></span>
-                                    </div>
-
-                                    <div class="col-md-2"><label class="mb-0">Name Appears On Bill</label></div>
-                                    <div class="col-md-4 d-flex align-items-center mb-1">
-                                        <input class="form-control border-end-0" name="meters[0][bill_name]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
-                                    </div>
-
-                                    <div class="col-md-2"><label class="mb-0">Current Meter Read</label></div>
-                                    <div class="col-md-4 d-flex align-items-center mb-1">
-                                        <input class="form-control border-end-0" name="meters[0][current_meter_read]"
-                                            required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-droplet"></i></span>
-                                    </div>
-
-                                    <div class="col-md-2"><label class="mb-0">Meter Serial No</label></div>
-                                    <div class="col-md-4 d-flex align-items-center mb-1">
-                                        <input class="form-control border-end-0" name="meters[0][meter_serial_no]"
-                                            required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-upc-scan"></i></span>
-                                    </div>
-
-                                    <div class="col-md-2"><label class="mb-0">Last Bill Amount</label></div>
-                                    <div class="col-md-4 d-flex align-items-center mb-1">
-                                        <input class="form-control border-end-0" name="meters[0][last_bill_amount]"
-                                            required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-currency-dollar"></i></span>
-                                    </div>
-
-                                    <div class="col-md-2"><label class="mb-0">Mode</label></div>
-                                    <div class="col-md-4 d-flex align-items-center mb-1">
-                                        <input class="form-control border-end-0" name="meters[0][mode]" required>
-                                        <span class="icon-box border-start-0"><i class="bi bi-credit-card"></i></span>
-                                    </div>
-
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
 
                         <div class="mt-2">
@@ -510,41 +614,41 @@
                             <div class="col-md-2"><label>Name On Account</label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input class="form-control border-end-0" placeholder="Enter Name On Account"
-                                    name="name_on_account">
+                                    name="name_on_account" value="{{ $appValue('name_on_account') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Account Number</label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input class="form-control border-end-0" placeholder="Enter Account Number"
-                                    name="account_number">
+                                    name="account_number" value="{{ $appValue('account_number') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Sort Code</label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input class="form-control border-end-0" placeholder="Enter Sort Code" name="sort_code"
-                                    required>
+                                    required value="{{ $appValue('sort_code') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-diagram-3"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>IBAN</label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input class="form-control border-end-0" placeholder="Enter IBAN" name="iban"
-                                    required>
+                                    required value="{{ $appValue('iban') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-credit-card-2-front"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>BIC</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" placeholder="Enter BIC" name="bic">
+                                <input class="form-control border-end-0" placeholder="Enter BIC" name="bic" value="{{ $appValue('bic') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-bank"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Name Of Bank</label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input class="form-control border-end-0" placeholder="Enter Bank Name"
-                                    name="name_of_bank" required>
+                                    name="name_of_bank" required value="{{ $appValue('name_of_bank') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-building"></i></span>
                             </div>
 
@@ -559,44 +663,44 @@
 
                             <div class="col-md-2"><label>Bill Payment Method</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="bill_payment_method">
+                                <input class="form-control border-end-0" name="bill_payment_method" value="{{ $appValue('bill_payment_method') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-credit-card"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Landlord Name</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="landlord_name">
+                                <input class="form-control border-end-0" name="landlord_name" value="{{ $appValue('landlord_name') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-person-badge"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Director D.O.B</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" class="form-control border-end-0" name="director_dob_single">
+                                <input type="date" class="form-control border-end-0" name="director_dob_single" value="{{ $appValue('director_dob_single') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-calendar"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Name Of New Customer</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="new_customer_name" required>
+                                <input class="form-control border-end-0" name="new_customer_name" required value="{{ $appValue('new_customer_name') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Status Taken Date</label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="date" class="form-control border-end-0" name="status_taken_date"
-                                    required>
+                                    required value="{{ $appValue('status_taken_date') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-calendar-check"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Password</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="password" class="form-control border-end-0" name="password">
+                                <input type="password" class="form-control border-end-0" name="password" value="{{ $appValue('password') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-lock"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Customer History</label></div>
                             <div class="col-md-10 d-flex align-items-center">
-                                <input class="form-control border-end-0" name="customer_history">
+                                <input class="form-control border-end-0" name="customer_history" value="{{ $appValue('customer_history') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-clock-history"></i></span>
                             </div>
 
@@ -617,6 +721,11 @@
                                         <p class="text-muted mb-0">Drop files here to upload</p>
                                         <input type="file" id="pictureId" name="picture_id" hidden>
                                     </div>
+                                    @if ($application->picture_id)
+                                        <div class="mt-2">
+                                            <a href="{{ $storedFile($application->picture_id) }}" target="_blank">View Current File</a>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="col-md-6">
@@ -625,6 +734,11 @@
                                         <p class="text-muted mb-0">Drop files here to upload</p>
                                         <input type="file" id="insidePics" name="inside_outside_pics" hidden>
                                     </div>
+                                    @if ($application->inside_outside_pics)
+                                        <div class="mt-2">
+                                            <a href="{{ $storedFile($application->inside_outside_pics) }}" target="_blank">View Current File</a>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="col-md-6">
@@ -633,6 +747,11 @@
                                         <p class="text-muted mb-0">Drop files here to upload</p>
                                         <input type="file" id="billUpload" name="bill_upload" hidden>
                                     </div>
+                                    @if ($application->bill_upload)
+                                        <div class="mt-2">
+                                            <a href="{{ $storedFile($application->bill_upload) }}" target="_blank">View Current File</a>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="col-md-6">
@@ -642,6 +761,11 @@
                                         <p class="text-muted mb-0">Drop files here to upload</p>
                                         <input type="file" id="bankStatement" name="bank_statement" hidden>
                                     </div>
+                                    @if ($application->bank_statement)
+                                        <div class="mt-2">
+                                            <a href="{{ $storedFile($application->bank_statement) }}" target="_blank">View Current File</a>
+                                        </div>
+                                    @endif
                                 </div>
 
                             </div>
@@ -651,7 +775,7 @@
                     <!-- SUBMIT -->
                     <div class="mt-3">
                         <button class="btn btn-primary bg_green_color" required>
-                            <i class="bi bi-send me-1"></i> Save
+                            <i class="bi bi-send me-1"></i> Update
                         </button>
                     </div>
 

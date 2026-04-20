@@ -25,16 +25,14 @@ class UserController extends Controller
     }
 
     // Display a listing of the resource.
-    public function index(Request $request): View
-    {
-        $users = User::with(['roles', 'parent'])
-            ->where('created_by', true)
-            ->latest()
-            ->get();
+ public function index(Request $request): View
+{
+    $users = User::with(['roles', 'parent'])
+        ->latest()
+        ->get();
 
-        return view('backend.users.index', ['users' => $users]);
-    }
-
+    return view('backend.users.index', ['users' => $users]);
+}
     /**
      * Show the form for creating a new resource.
      */
@@ -94,10 +92,8 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
-        $standards = Standard::all(); // Get all standards
-        $userStandards = $user->standards->pluck('id')->toArray(); // Get user's standards
 
-        return view('backend.users.edit', compact('user', 'roles', 'userRole', 'standards', 'userStandards'));
+        return view('backend.users.edit', compact('user', 'roles', 'userRole'));
     }
 
     /**

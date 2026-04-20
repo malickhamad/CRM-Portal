@@ -1,6 +1,105 @@
 @extends('backend.layouts.app')
 
 @section('content')
+@php
+    $fieldMap = [
+        'new_customer_name' => 'name_of_new_customer',
+    ];
+
+    $appValue = function ($name, $default = null) use ($application, $fieldMap) {
+        $attribute = $fieldMap[$name] ?? $name;
+        return old($name, data_get($application, $attribute, $default));
+    };
+
+    $storedFile = function ($path) {
+        return $path ? asset('storage/' . ltrim($path, '/')) : null;
+    };
+
+    $directorEntries = old('director_name')
+        ? collect(old('director_name'))->map(function ($name, $index) {
+            return [
+                'director_name' => $name,
+                'date_of_birth' => old('director_dob_array.' . $index),
+                'phone_no' => old('director_phone.' . $index),
+                'email_address' => old('director_email.' . $index),
+                'home_address' => old('director_home_address.' . $index),
+            ];
+        })->values()->all()
+        : ($application->directors->map(function ($director) {
+            return [
+                'director_name' => $director->director_name,
+                'date_of_birth' => $director->date_of_birth,
+                'phone_no' => $director->phone_no,
+                'email_address' => $director->email_address,
+                'home_address' => $director->home_address,
+            ];
+        })->values()->all() ?: [[
+            'director_name' => '',
+            'date_of_birth' => '',
+            'phone_no' => '',
+            'email_address' => '',
+            'home_address' => '',
+        ]]);
+
+    $gasMeters = old('meters')
+        ?: ($application->meters->where('meter_type', 'gas')->map(function ($meter) {
+            return [
+                'supplier_name' => $meter->supplier_name,
+                'mprn_no' => $meter->mprn_no,
+                'offer_rate' => $meter->offer_rate,
+                'contract_duration' => $meter->contract_duration,
+                'uplift' => $meter->uplift,
+                'customer_no' => $meter->customer_no,
+                'bill_name' => $meter->name_appears_on_bill,
+                'current_meter_read' => $meter->current_meter_read,
+                'meter_serial_no' => $meter->meter_serial_no,
+                'last_bill_amount' => $meter->last_bill_amount,
+                'mode' => $meter->mode,
+            ];
+        })->values()->toArray() ?: [[
+            'supplier_name' => '',
+            'mprn_no' => '',
+            'offer_rate' => '',
+            'contract_duration' => '',
+            'uplift' => '',
+            'customer_no' => '',
+            'bill_name' => '',
+            'current_meter_read' => '',
+            'meter_serial_no' => '',
+            'last_bill_amount' => '',
+            'mode' => '',
+        ]]);
+
+    $elecMeters = old('elec_meters')
+        ?: ($application->meters->where('meter_type', 'electricity')->map(function ($meter) {
+            return [
+                'supplier_name' => $meter->supplier_name,
+                'mpan_top_line' => $meter->mpan_top,
+                'mpan_bottom_line' => $meter->mpan_bottom,
+                'con_duration' => $meter->contract_duration,
+                'offer_rate' => $meter->offer_rate,
+                'name_on_bill' => $meter->name_appears_on_bill,
+                'customer_no' => $meter->customer_no,
+                'meter_serial_no' => $meter->meter_serial_no,
+                'current_meter_read' => $meter->current_meter_read,
+                'mode' => $meter->mode,
+                'last_bill_amount' => $meter->last_bill_amount,
+            ];
+        })->values()->toArray() ?: [[
+            'supplier_name' => '',
+            'mpan_top_line' => '',
+            'mpan_bottom_line' => '',
+            'con_duration' => '',
+            'offer_rate' => '',
+            'name_on_bill' => '',
+            'customer_no' => '',
+            'meter_serial_no' => '',
+            'current_meter_read' => '',
+            'mode' => '',
+            'last_bill_amount' => '',
+        ]]);
+@endphp
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <main class="dashboard-main">
@@ -9,7 +108,7 @@
         <div class="dashboard-main-body bg-light position-relative pt-5">
 
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-                <h6 class="fw-semibold mb-0 text-success-1000">New Application</h6>
+                <h6 class="fw-semibold mb-0 text-success-1000">Edit Application</h6>
                 <ul class="d-flex align-items-center gap-2">
                     <li class="fw-medium">
                         <a href="{{ route('admin.dashboard') }}"
@@ -26,14 +125,14 @@
 
 
             {{-- leads and sales info --}}
-         @include('backend.layouts.partials.leads-sales-cards')
+           @include('backend.layouts.partials.leads-sales-cards')
 
             <div class="container-fluid bg-white px-3 py-5">
 
                 <div class="mb-5  py-2 bg-white ">
 
                     <h6 class="fw-bold mb-0 green_color">
-                        <i class="bi bi-ui-checks-grid me-1"></i>New Application (Water)
+                        <i class="bi bi-ui-checks-grid me-1"></i>Edit Application (Broadband)
                     </h6>
                 </div>
 
@@ -46,30 +145,29 @@
                             Back
                         </a>
                     </div>
-@include('backend.layouts.partials.application-summary-cards')
+
+                   @include('backend.layouts.partials.application-summary-cards')
                 </div>
                 <!-- HEADER -->
 
 
 
-
-                <form id="waterForm" action="{{ route('admin.applications.store') }}" method="POST"
+                <form id="broadbrandForm" action="{{ route('admin.applications.update', $application->id) }}" method="POST"
                     enctype="multipart/form-data" novalidate>
                     @csrf
+                    @method('PUT')
 
                     <!-- APPLICATION Form -->
                     <div class="form-section mb-3">
                         <div class="section-title"><span>Application Form</span></div>
                         <div class="row g-3 align-items-center">
-                            <div class="col-md-3 ">
-                                <label>Application Agent <span class="text-danger">:*</span></label>
-                            </div>
+                            <div class="col-md-3"><label>Application Agent <span class="text-danger">:*</span></label></div>
                             <div class="col-md-9">
                                 <select class="form-select" name="application_agent" required>
-                                    <option disabled selected>Select Agent</option>
-                                    <option>Ali Hassan</option>
-                                    <option>Usman Khan</option>
-                                    <option>Sara Ahmed</option>
+                                    <option disabled {{ $appValue('application_agent') ? '' : 'selected' }}>Select Agent</option>
+                                    <option value="Ali Hassan" {{ (string) $appValue('application_agent') === 'Ali Hassan' ? 'selected' : '' }}>Ali Hassan</option>
+                                    <option value="Usman Khan" {{ (string) $appValue('application_agent') === 'Usman Khan' ? 'selected' : '' }}>Usman Khan</option>
+                                    <option value="Sara Ahmed" {{ (string) $appValue('application_agent') === 'Sara Ahmed' ? 'selected' : '' }}>Sara Ahmed</option>
                                 </select>
                             </div>
                         </div>
@@ -81,115 +179,84 @@
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Company Name <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="company_name" class="form-control border-end-0"
-                                    placeholder="Enter company name" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-building"></i>
-                                </span>
+                                    placeholder="Enter company name" required value="{{ $appValue('company_name') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-building"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Landline No <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="landline_no" class="form-control border-end-0"
-                                    placeholder="Enter landline number" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-telephone"></i>
-                                </span>
+                                    placeholder="Enter landline number" required value="{{ $appValue('landline_no') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-telephone"></i></span>
                             </div>
                         </div>
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Contact Person Name <span class="text-danger">:*</span></label>
                             </div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="contact_person_name" class="form-control border-end-0"
-                                    placeholder="Enter person name" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-person"></i>
-                                </span>
+                                    placeholder="Enter person name" required value="{{ $appValue('contact_person_name') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Company Reg No <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="company_reg_no" class="form-control border-end-0"
-                                    placeholder="Enter company reg no" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-hash"></i>
-                                </span>
+                                    placeholder="Enter company reg no" required value="{{ $appValue('company_reg_no') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
                             </div>
                         </div>
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Business Address <span class="text-danger">:*</span></label>
                             </div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="business_address" class="form-control border-end-0"
-                                    placeholder="Enter business address" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-geo-alt"></i>
-                                </span>
+                                    placeholder="Enter business address" required value="{{ $appValue('business_address') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-geo-alt"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Email Address <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="email" name="email_address" class="form-control border-end-0"
-                                    placeholder="example@email.com" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-envelope"></i>
-                                </span>
+                                    placeholder="example@email.com" required value="{{ $appValue('email_address') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-envelope"></i></span>
                             </div>
                         </div>
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Unit <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="unit" class="form-control border-end-0"
-                                    placeholder="Enter unit" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-building"></i>
-                                </span>
+                                    placeholder="Enter unit" required value="{{ $appValue('unit') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-building"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Home Address <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="home_address" class="form-control border-end-0"
-                                    placeholder="Enter home address" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-house"></i>
-                                </span>
+                                    placeholder="Enter home address" required value="{{ $appValue('home_address') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-house"></i></span>
                             </div>
                         </div>
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Director DOB <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" name="director_dob_single" class="form-control border-end-0" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-calendar"></i>
-                                </span>
+                                <input type="date" name="director_dob_single" class="form-control border-end-0" required value="{{ $appValue('director_dob_single') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-calendar"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Mobile No <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="mobile_no" class="form-control border-end-0"
-                                    placeholder="03XXXXXXXXX" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-telephone"></i>
-                                </span>
+                                    placeholder="03XXXXXXXXX" required value="{{ $appValue('mobile_no') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-telephone"></i></span>
                             </div>
                         </div>
-
                     </div>
 
                     <!-- APPLICATION DETAIL -->
@@ -197,76 +264,48 @@
                         <div class="section-title"><span>Application Detail</span></div>
 
                         <div class="row g-3 align-items-center mb-2">
-                            <div class="col-md-2"><label>Application Number <span class="text-danger">:*</span></label>
-                            </div>
-
+                            <div class="col-md-2"><label>Application Num <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="application_num" class="form-control border-end-0"
-                                    value="{{ $nextNum }}" readonly required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-hash"></i>
-                                </span>
+                                    readonly required value="{{ $appValue('application_num') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Service</label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" name="service_type"
-                                    value="Water" readonly required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-credit-card"></i>
-                                </span>
+                                <input type="text" name="service_type" class="form-control border-end-0"
+                                    readonly required value="{{ $appValue('service_type') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-credit-card"></i></span>
                             </div>
                         </div>
 
                         <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Application Date <span class="text-danger">:*</span></label>
                             </div>
-
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" name="application_date" class="form-control border-end-0" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-calendar"></i>
-                                </span>
+                                <input type="date" name="application_date" class="form-control border-end-0" required value="{{ $appValue('application_date') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-calendar"></i></span>
                             </div>
 
-                            <div class="col-md-2"><label>SPID <span class="text-danger">:*</span></label></div>
-
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input type="number" name="spid" class="form-control border-end-0" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-123"></i>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
-                                <select class="form-select border-end-0" name="brand" required>
-                                    <option disabled selected>Select Brand</option>
-                                    <option>Verifone</option>
-                                    <option>Ingenico</option>
-                                    <option>PAX</option>
+                                <select name="brand" class="form-select border-end-0" required>
+                                    <option disabled {{ $appValue('brand') ? '' : 'selected' }}>Select Brand</option>
+                                    <option value="Verifone" {{ (string) $appValue('brand') === 'Verifone' ? 'selected' : '' }}>Verifone</option>
+                                    <option value="Ingenico" {{ (string) $appValue('brand') === 'Ingenico' ? 'selected' : '' }}>Ingenico</option>
+                                    <option value="PAX" {{ (string) $appValue('brand') === 'PAX' ? 'selected' : '' }}>PAX</option>
                                 </select>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-bag"></i>
-                                </span>
+                                <span class="icon-box border-start-0"><i class="bi bi-bag"></i></span>
                             </div>
                         </div>
 
                         <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Comment</label></div>
-
                             <div class="col-md-10 d-flex align-items-center">
-                                <input type="text" name="comment" class="form-control border-end-0">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-chat-left-text"></i>
-                                </span>
+                                <input type="text" name="comment" class="form-control border-end-0" value="{{ $appValue('comment') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-chat-left-text"></i></span>
                             </div>
                         </div>
-
                     </div>
 
                     <!-- BANK DETAILS -->
@@ -278,54 +317,42 @@
                             <div class="col-md-2"><label>Name On Account</label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input name="name_on_account" class="form-control border-end-0"
-                                    placeholder="Enter Name On Account" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-person"></i>
-                                </span>
+                                    placeholder="Enter Name On Account" value="{{ $appValue('name_on_account') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Account Number</label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input name="account_number" class="form-control border-end-0"
-                                    placeholder="Enter Account Number" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-hash"></i>
-                                </span>
+                                    placeholder="Enter Account Number" value="{{ $appValue('account_number') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Sort Code</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input name="sort_code" class="form-control border-end-0" placeholder="Enter Sort Code"
-                                    required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-diagram-3"></i>
-                                </span>
+                                <input name="sort_code" class="form-control border-end-0"
+                                    placeholder="Enter Sort Code" value="{{ $appValue('sort_code') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-diagram-3"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>IBAN</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input name="iban" class="form-control border-end-0" placeholder="Enter IBAN"
-                                    required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-credit-card-2-front"></i>
-                                </span>
+                                <input name="iban" class="form-control border-end-0"
+                                    placeholder="Enter IBAN" value="{{ $appValue('iban') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-credit-card-2-front"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>BIC</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input name="bic" class="form-control border-end-0" placeholder="Enter BIC">
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-bank"></i>
-                                </span>
+                                <input name="bic" class="form-control border-end-0" placeholder="Enter BIC" value="{{ $appValue('bic') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-bank"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>Name Of Bank</label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input name="name_of_bank" class="form-control border-end-0"
-                                    placeholder="Enter Bank Name" required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-building"></i>
-                                </span>
+                                    placeholder="Enter Bank Name" value="{{ $appValue('name_of_bank') }}">
+                                <span class="icon-box border-start-0"><i class="bi bi-building"></i></span>
                             </div>
 
                         </div>
@@ -345,6 +372,11 @@
                                         <p class="text-muted mb-0">Drop files here to upload</p>
                                         <input type="file" id="pictureId" name="picture_id" hidden>
                                     </div>
+                                    @if ($application->picture_id)
+                                        <div class="mt-2">
+                                            <a href="{{ $storedFile($application->picture_id) }}" target="_blank">View Current File</a>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="col-md-6">
@@ -353,6 +385,11 @@
                                         <p class="text-muted mb-0">Drop files here to upload</p>
                                         <input type="file" id="insidePics" name="inside_outside_pics" hidden>
                                     </div>
+                                    @if ($application->inside_outside_pics)
+                                        <div class="mt-2">
+                                            <a href="{{ $storedFile($application->inside_outside_pics) }}" target="_blank">View Current File</a>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="col-md-6">
@@ -361,6 +398,11 @@
                                         <p class="text-muted mb-0">Drop files here to upload</p>
                                         <input type="file" id="billUpload" name="bill_upload" hidden>
                                     </div>
+                                    @if ($application->bill_upload)
+                                        <div class="mt-2">
+                                            <a href="{{ $storedFile($application->bill_upload) }}" target="_blank">View Current File</a>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="col-md-6">
@@ -370,6 +412,11 @@
                                         <p class="text-muted mb-0">Drop files here to upload</p>
                                         <input type="file" id="bankStatement" name="bank_statement" hidden>
                                     </div>
+                                    @if ($application->bank_statement)
+                                        <div class="mt-2">
+                                            <a href="{{ $storedFile($application->bank_statement) }}" target="_blank">View Current File</a>
+                                        </div>
+                                    @endif
                                 </div>
 
                             </div>
@@ -377,13 +424,14 @@
                     </div>
 
                     <!-- SUBMIT -->
-                    <div class="mt-3 ">
-                        <button class="btn btn-primary bg_green_color">
-                            <i class="bi bi-send me-1"></i> Save
+                    <div class="mt-3">
+                        <button class="btn btn-primary bg_green_color" type="submit">
+                            <i class="bi bi-send me-1"></i> Update
                         </button>
                     </div>
 
                 </form>
+
 
 
             </div>

@@ -90,27 +90,6 @@
                                                 @enderror
                                             </div>
 
-{{--
-                                            <div class="form-group mb-3">
-                                                <label class="fs-5">Standards</label>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        @foreach($standards as $standard)
-                                                            <div class="form-check mb-2">
-                                                                <input class="form-check-input" type="checkbox" name="standards[]"
-                                                                       value="{{ $standard->id }}" id="standard_{{ $standard->id }}"
-                                                                       {{ in_array($standard->id, old('standards', $userStandards)) ? 'checked' : '' }}>
-                                                                <label class="form-check-label ms-3" for="standard_{{ $standard->id }}">
-                                                                    {{ $standard->name }}
-                                                                </label>
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                </div>
-                                                @error('standards')
-                                                    <div class="text-danger mt-1">{{ $message }}</div>
-                                                @enderror
-                                            </div> --}}
 
                                         </div>
 

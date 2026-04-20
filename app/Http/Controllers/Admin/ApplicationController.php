@@ -366,18 +366,45 @@ class ApplicationController extends Controller
             $this->syncMeters($application, $prepared);
 
             DB::commit();
-            return back()->with('success', 'Application Submitted Successfully!');
-        } catch (\Throwable $e) {
+    return back()->with('sweetalert', [
+                'type' => 'success',
+                'title' => 'Success',
+                'message' => 'Application Submitted Successfully!',
+            ]);
+                    } catch (\Throwable $e) {
             DB::rollBack();
-            return back()->withInput()->with('error', 'Error: ' . $e->getMessage());
-        }
+return back()->withInput()->with('sweetalert', [
+                'type' => 'error',
+                'title' => 'Error',
+                'message' => $e->getMessage(),
+            ]);        }
     }
 
-    public function edit($id)
-    {
-        $application = Application::with('directors', 'meters')->findOrFail($id);
-        return view('backend.applications.edit', compact('application'));
-    }
+ public function edit($id)
+{
+    $application = Application::with('directors', 'meters')->findOrFail($id);
+
+    $serviceType = $this->normalizeServiceType($application->service_type);
+
+    $view = match ($serviceType) {
+        'Card Machine' => 'backend.applications.edit.card_machine',
+        'Loan' => 'backend.applications.edit.loan',
+        'Open Banking' => 'backend.applications.edit.open_banking',
+        'Water' => 'backend.applications.edit.water',
+        'Broadband' => 'backend.applications.edit.broadband',
+        'Telecom' => 'backend.applications.edit.telecom',
+        'Gas' => 'backend.applications.edit.gas',
+        'Electricity' => 'backend.applications.edit.electricity',
+        'Electric Gas' => 'backend.applications.edit.electric_gas',
+        default => 'backend.applications.edit.loan',
+    };
+
+    return view($view, array_merge(
+        ['application' => $application],
+        $this->getCommonStats()
+    ));
+}
+
 
     public function update(Request $request, $id)
     {
@@ -398,11 +425,17 @@ class ApplicationController extends Controller
             $this->syncMeters($application, $prepared);
 
             DB::commit();
-            return back()->with('success', 'Application Updated Successfully!');
-        } catch (\Throwable $e) {
+ return back()->with('sweetalert', [
+                'type' => 'success',
+                'title' => 'Success',
+                'message' => 'Application Updated Successfully!',
+            ]);        } catch (\Throwable $e) {
             DB::rollBack();
-            return back()->withInput()->with('error', 'Error: ' . $e->getMessage());
-        }
+return back()->withInput()->with('sweetalert', [
+                'type' => 'error',
+                'title' => 'Error',
+                'message' => $e->getMessage(),
+            ]);        }
     }
 
     public function destroy($id)
