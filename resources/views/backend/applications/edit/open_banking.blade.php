@@ -307,7 +307,9 @@
                             </div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" class="form-control border-end-0" name="application_date" required value="{{ $appValue('application_date') }}">
+                                <input type="date" name="application_date"
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($appValue('application_date'))->format('Y-m-d') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar"></i>
                                 </span>
@@ -316,7 +318,9 @@
                             <div class="col-md-2"><label>Renewal Date <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" class="form-control border-end-0" name="renewal_date" required value="{{ $appValue('renewal_date') }}">
+                                <input type="date" name="renewal_date"
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($appValue('renewal_date'))->format('Y-m-d') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar-event"></i>
                                 </span>

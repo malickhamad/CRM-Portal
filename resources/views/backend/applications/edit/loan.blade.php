@@ -205,9 +205,11 @@
                             <div class="col-md-2"><label>Business Entity<span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <select class="form-select border-end-0" name="business_entity" required>
-                                    <option {{ (string) $appValue('business_entity') === 'Select' ? 'selected' : '' }}>Select</option>
-                                </select>
+                               <select class="form-select border-end-0" name="business_entity" required>
+        <option disabled selected>Please Select</option>
+        <option value="Partnership" {{ old('business_entity', $application->business_entity) == 'Partnership' ? 'selected' : '' }}>Partnership</option>
+        <option value="Company" {{ old('business_entity', $application->business_entity) == 'Company' ? 'selected' : '' }}>Company</option>
+    </select>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-diagram-3"></i>
                                 </span>
@@ -216,9 +218,12 @@
                             <div class="col-md-2"><label>Business Nature <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <select class="form-select border-end-0" name="business_nature" required>
-                                    <option {{ (string) $appValue('business_nature') === 'Select' ? 'selected' : '' }}>Select</option>
-                                </select>
+                               <select class="form-select border-end-0" name="business_nature" required>
+        <option disabled selected>Please Select</option>
+        <option value="Manufacturing" {{ old('business_nature', $application->business_nature) == 'Manufacturing' ? 'selected' : '' }}>Manufacturing</option>
+        <option value="Retail" {{ old('business_nature', $application->business_nature) == 'Retail' ? 'selected' : '' }}>Retail</option>
+        <option value="Services" {{ old('business_nature', $application->business_nature) == 'Services' ? 'selected' : '' }}>Services</option>
+    </select>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-briefcase"></i>
                                 </span>
@@ -349,7 +354,8 @@
                                         </div>
                                         <div class="col-md-4 d-flex align-items-center">
                                             <input type="date" name="director_dob_array[]"
-                                                class="form-control border-end-0" value="{{ $director['date_of_birth'] ?? '' }}" required>
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($director['date_of_birth'])->format('Y-m-d') ?? '' }}" required>
                                             <span class="icon-box border-start-0"><i class="bi bi-calendar-date"></i></span>
                                         </div>
                                     </div>
@@ -417,8 +423,9 @@
                             <div class="col-md-2"><label>Application Date <span class="text-danger">:*</span></label>
                             </div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" class="form-control border-end-0" name="application_date" required
-                                    placeholder="" value="{{ $appValue('application_date') }}">
+                                 <input type="date" name="application_date"
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($appValue('application_date'))->format('Y-m-d') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar"></i>
                                 </span>
@@ -426,8 +433,9 @@
 
                             <div class="col-md-2"><label>Renewal Date <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" class="form-control border-end-0" name="renewal_date" required
-                                    placeholder="" value="{{ $appValue('renewal_date') }}">
+                                <input type="date" name="renewal_date"
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($appValue('renewal_date'))->format('Y-m-d') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar-event"></i>
                                 </span>

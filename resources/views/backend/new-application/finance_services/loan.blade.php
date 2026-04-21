@@ -106,7 +106,9 @@
 
                             <div class="col-md-4 d-flex align-items-center">
                                 <select class="form-select border-end-0" name="business_entity" required>
-                                    <option>Select</option>
+                                    <option disabled selected>Please Select</option>
+                                    <option>Partnership</option>
+                                    <option>Company</option>
                                 </select>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-diagram-3"></i>
@@ -117,7 +119,10 @@
 
                             <div class="col-md-4 d-flex align-items-center">
                                 <select class="form-select border-end-0" name="business_nature" required>
-                                    <option>Select</option>
+                                    <option disabled selected>Please Select</option>
+                                    <option>Manufacturing</option>
+                                    <option>Retail</option>
+                                    <option>Services</option>
                                 </select>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-briefcase"></i>

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class ApplicationController extends Controller
 {
@@ -366,18 +367,10 @@ class ApplicationController extends Controller
             $this->syncMeters($application, $prepared);
 
             DB::commit();
-    return back()->with('sweetalert', [
-                'type' => 'success',
-                'title' => 'Success',
-                'message' => 'Application Submitted Successfully!',
-            ]);
+    return back()->with( 'success', 'Application Submitted Successfully!');
                     } catch (\Throwable $e) {
             DB::rollBack();
-return back()->withInput()->with('sweetalert', [
-                'type' => 'error',
-                'title' => 'Error',
-                'message' => $e->getMessage(),
-            ]);        }
+return back()->withInput()->with('error', 'Failed to submit application.');        }
     }
 
  public function edit($id)
@@ -407,36 +400,52 @@ return back()->withInput()->with('sweetalert', [
 
 
     public function update(Request $request, $id)
-    {
-        $prepared = $this->prepareRequestData($request);
-        $serviceType = $prepared['service_type'] ?? '';
-        validator($prepared, $this->getValidationRules($serviceType))->validate();
+{
+    // Fetch the application record based on the provided ID
+    $application = Application::with('directors', 'meters')->findOrFail($id);
 
-        DB::beginTransaction();
-        try {
-            $application = Application::findOrFail($id);
-            $this->fillApplication($application, $request, $prepared, false);
-            $application->save();
+    // Handle the date formatting for director's date of birth and other date fields
+$firstDirector = $application->directors->first();
+$directorDob = $firstDirector ? Carbon::parse($firstDirector->date_of_birth) : null;    $renewalDate = Carbon::parse($application->renewal_date)->format('Y-m-d');
+    $applicationDate = Carbon::parse($application->application_date)->format('Y-m-d');
 
-            $application->directors()->delete();
-            $application->meters()->delete();
+    // Prepare the data for validation
+    $prepared = $this->prepareRequestData($request);
 
-            $this->syncDirectors($application, $prepared);
-            $this->syncMeters($application, $prepared);
+    // Get the service type from the request and validate
+    $serviceType = $prepared['service_type'] ?? '';
+    validator($prepared, $this->getValidationRules($serviceType))->validate();
 
-            DB::commit();
- return back()->with('sweetalert', [
-                'type' => 'success',
-                'title' => 'Success',
-                'message' => 'Application Updated Successfully!',
-            ]);        } catch (\Throwable $e) {
-            DB::rollBack();
-return back()->withInput()->with('sweetalert', [
-                'type' => 'error',
-                'title' => 'Error',
-                'message' => $e->getMessage(),
-            ]);        }
+    DB::beginTransaction();
+    try {
+        // Update the application with the new data
+        $this->fillApplication($application, $request, $prepared, false);
+        $application->save();
+
+        // Sync directors and meters (this is important for updating the application data)
+        $application->directors()->delete(); // Delete existing directors first
+        $application->meters()->delete(); // Delete existing meters first
+        $this->syncDirectors($application, $prepared);
+        $this->syncMeters($application, $prepared);
+
+        DB::commit();
+
+        // Redirect back with success message
+        return back()->with('sweetalert', [
+            'type' => 'success',
+            'title' => 'Success',
+            'message' => 'Application Updated Successfully!',
+        ]);
+    } catch (\Throwable $e) {
+        // In case of error, roll back the transaction and show error message
+        DB::rollBack();
+        return back()->withInput()->with('sweetalert', [
+            'type' => 'error',
+            'title' => 'Error',
+            'message' => $e->getMessage(),
+        ]);
     }
+}
 
     public function destroy($id)
     {

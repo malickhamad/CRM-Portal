@@ -358,7 +358,8 @@
                                         </div>
                                         <div class="col-md-4 d-flex align-items-center">
                                             <input type="date" name="director_dob_array[]"
-                                                class="form-control border-end-0" value="{{ $director['date_of_birth'] ?? '' }}" required>
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($director['date_of_birth'])->format('Y-m-d') ?? '' }}" required>
                                             <span class="icon-box border-start-0"><i class="bi bi-calendar-date"></i></span>
                                         </div>
                                     </div>
@@ -431,8 +432,9 @@
                             </div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" name="application_date" class="form-control border-end-0" required value="{{ $appValue('application_date') }}">
-                                <span class="icon-box border-start-0">
+                                <input type="date" name="application_date"
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($appValue('application_date'))->format('Y-m-d') }}" required>
                                     <i class="bi bi-calendar"></i>
                                 </span>
                             </div>
@@ -440,7 +442,9 @@
                             <div class="col-md-2"><label>Renewal Date <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" name="renewal_date" class="form-control border-end-0" required value="{{ $appValue('renewal_date') }}">
+                               <input type="date" name="renewal_date"
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($appValue('renewal_date'))->format('Y-m-d') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar-event"></i>
                                 </span>
