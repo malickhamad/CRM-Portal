@@ -346,7 +346,9 @@
                             </div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" class="form-control" name="application_date" required value="{{ $appValue('application_date') }}">
+                               <input type="date" name="application_date"
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($appValue('application_date'))->format('Y-m-d') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar"></i>
                                 </span>
@@ -367,7 +369,9 @@
                             <div class="col-md-2"><label>Renewal Date <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4">
-                                <input type="date" class="form-control" name="renewal_date" required value="{{ $appValue('renewal_date') }}">
+                                <input type="date" name="renewal_date"
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($appValue('renewal_date'))->format('Y-m-d') }}" required>
                             </div>
 
                             <div class="col-md-2"><label>Gas Email <span class="text-danger">:*</span></label></div>
@@ -432,7 +436,7 @@
                         <div class="section-title"><span>Gas Details</span></div>
 
                         <div id="meter-container">
-                         @foreach ($gasMeters as $index => $meter)
+                       @foreach ($gasMeters as $index => $meter)
     <div class="meter-block mb-3 border-bottom pb-2">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <p class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0 meter-label">
@@ -445,74 +449,81 @@
         </div>
 
         <div class="row align-items-center">
+            <div class="col-md-2"><label>Meter Type</label></div>
+<div class="col-md-4 d-flex align-items-center">
+    <input type="text" class="form-control" value="gas" name="meters[{{ $index }}][meter_type]" readonly required>
+    <span class="icon-box border-start-0">
+        <i class="bi bi-credit-card"></i>
+    </span>
+</div>
 
             <div class="col-md-2"><label class="mb-0">Supplier Name</label></div>
             <div class="col-md-4 d-flex align-items-center mb-1">
-                <input class="form-control border-end-0" name="meters[{{ $index }}][supplier_name]" value="{{ old('meters.' . $index . '.supplier_name', $meter->supplier_name ?? '') }}" required>
+                <input class="form-control border-end-0" name="meters[{{ $index }}][supplier_name]" value="{{ old('meters.' . $index . '.supplier_name', $meter['supplier_name'] ?? '') }}" required>
                 <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
             </div>
 
             <div class="col-md-2"><label class="mb-0">MPRN No</label></div>
             <div class="col-md-4 d-flex align-items-center mb-1">
-                <input class="form-control border-end-0" name="meters[{{ $index }}][mprn_no]" value="{{ old('meters.' . $index . '.mprn_no', $meter->mprn_no ?? '') }}" required>
+                <input class="form-control border-end-0" name="meters[{{ $index }}][mprn_no]" value="{{ old('meters.' . $index . '.mprn_no', $meter['mprn_no'] ?? '') }}" required>
                 <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
             </div>
 
             <div class="col-md-2"><label class="mb-0">Offer Rate</label></div>
             <div class="col-md-4 d-flex align-items-center mb-1">
-                <input class="form-control border-end-0" name="meters[{{ $index }}][offer_rate]" value="{{ old('meters.' . $index . '.offer_rate', $meter->offer_rate ?? '') }}" required>
+                <input class="form-control border-end-0" name="meters[{{ $index }}][offer_rate]" value="{{ old('meters.' . $index . '.offer_rate', $meter['offer_rate'] ?? '') }}" required>
                 <span class="icon-box border-start-0"><i class="bi bi-tag"></i></span>
             </div>
 
             <div class="col-md-2"><label class="mb-0">Con. Duration</label></div>
             <div class="col-md-4 d-flex align-items-center mb-1">
                 <input class="form-control border-end-0" name="meters[{{ $index }}][contract_duration]"
-                    value="{{ old('meters.' . $index . '.contract_duration', $meter->contract_duration ?? '') }}" required>
+                    value="{{ old('meters.' . $index . '.contract_duration', $meter['contract_duration'] ?? '') }}" required>
                 <span class="icon-box border-start-0"><i class="bi bi-clock"></i></span>
             </div>
 
             <div class="col-md-2"><label class="mb-0">Uplift</label></div>
             <div class="col-md-4 d-flex align-items-center mb-1">
-                <input class="form-control border-end-0" name="meters[{{ $index }}][uplift]" value="{{ old('meters.' . $index . '.uplift', $meter->uplift ?? '') }}" required>
+                <input class="form-control border-end-0" name="meters[{{ $index }}][uplift]" value="{{ old('meters.' . $index . '.uplift', $meter['uplift'] ?? '') }}" required>
                 <span class="icon-box border-start-0"><i class="bi bi-percent"></i></span>
             </div>
 
             <div class="col-md-2"><label class="mb-0">Customer No</label></div>
             <div class="col-md-4 d-flex align-items-center mb-1">
-                <input class="form-control border-end-0" name="meters[{{ $index }}][customer_no]" value="{{ old('meters.' . $index . '.customer_no', $meter->customer_no ?? '') }}" required>
+                <input class="form-control border-end-0" name="meters[{{ $index }}][customer_no]" value="{{ old('meters.' . $index . '.customer_no', $meter['customer_no'] ?? '') }}" required>
                 <span class="icon-box border-start-0"><i class="bi bi-card-text"></i></span>
             </div>
 
             <div class="col-md-2"><label class="mb-0">Name Appears On Bill</label></div>
             <div class="col-md-4 d-flex align-items-center mb-1">
-                <input class="form-control border-end-0" name="meters[{{ $index }}][bill_name]" value="{{ old('meters.' . $index . '.bill_name', $meter->name_appears_on_bill ?? '') }}" required>
+                <input class="form-control border-end-0" name="meters[{{ $index }}][bill_name]" value="{{ old('meters.' . $index . '.bill_name', $meter['bill_name'] ?? '') }}" required>
                 <span class="icon-box border-start-0"><i class="bi bi-person"></i></span>
             </div>
 
             <div class="col-md-2"><label class="mb-0">Current Meter Read</label></div>
             <div class="col-md-4 d-flex align-items-center mb-1">
                 <input class="form-control border-end-0" name="meters[{{ $index }}][current_meter_read]"
-                    value="{{ old('meters.' . $index . '.current_meter_read', $meter->current_meter_read ?? '') }}" required>
+                    value="{{ old('meters.' . $index . '.current_meter_read', $meter['current_meter_read'] ?? '') }}" required>
                 <span class="icon-box border-start-0"><i class="bi bi-droplet"></i></span>
             </div>
 
             <div class="col-md-2"><label class="mb-0">Meter Serial No</label></div>
             <div class="col-md-4 d-flex align-items-center mb-1">
                 <input class="form-control border-end-0" name="meters[{{ $index }}][meter_serial_no]"
-                    value="{{ old('meters.' . $index . '.meter_serial_no', $meter->meter_serial_no ?? '') }}" required>
+                    value="{{ old('meters.' . $index . '.meter_serial_no', $meter['meter_serial_no'] ?? '') }}" required>
                 <span class="icon-box border-start-0"><i class="bi bi-upc-scan"></i></span>
             </div>
 
             <div class="col-md-2"><label class="mb-0">Last Bill Amount</label></div>
             <div class="col-md-4 d-flex align-items-center mb-1">
                 <input class="form-control border-end-0" name="meters[{{ $index }}][last_bill_amount]"
-                    value="{{ old('meters.' . $index . '.last_bill_amount', $meter->last_bill_amount ?? '') }}" required>
+                    value="{{ old('meters.' . $index . '.last_bill_amount', $meter['last_bill_amount'] ?? '') }}" required>
                 <span class="icon-box border-start-0"><i class="bi bi-currency-dollar"></i></span>
             </div>
 
             <div class="col-md-2"><label class="mb-0">Mode</label></div>
             <div class="col-md-4 d-flex align-items-center mb-1">
-                <input class="form-control border-end-0" name="meters[{{ $index }}][mode]" value="{{ old('meters.' . $index . '.mode', $meter->mode ?? '') }}" required>
+                <input class="form-control border-end-0" name="meters[{{ $index }}][mode]" value="{{ old('meters.' . $index . '.mode', $meter['mode'] ?? '') }}" required>
                 <span class="icon-box border-start-0"><i class="bi bi-credit-card"></i></span>
             </div>
 
@@ -613,7 +624,9 @@
 
                             <div class="col-md-2"><label>Director D.O.B</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" class="form-control" name="director_dob_single" value="{{ $appValue('director_dob_single') }}">
+                                <input type="date" name="director_dob_single"
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($appValue('director_dob_single'))->format('Y-m-d') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar"></i>
                                 </span>
@@ -629,7 +642,9 @@
 
                             <div class="col-md-2"><label>Status Taken Date</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" class="form-control" name="status_taken_date" value="{{ $appValue('status_taken_date') }}">
+                               <input type="date" name="status_taken_date"
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($appValue('status_taken_date'))->format('Y-m-d') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar-check"></i>
                                 </span>
@@ -761,47 +776,63 @@
                 </form>
 
             </div>
-            <script>
-                document.getElementById('add-meter-btn').addEventListener('click', function() {
-                    const container = document.getElementById('meter-container');
-                    const firstBlock = container.querySelector('.meter-block');
+          <script>
+    document.getElementById('add-meter-btn').addEventListener('click', function() {
+        const container = document.getElementById('meter-container');
+        const firstBlock = container.querySelector('.meter-block');
 
-                    // Clone
-                    const newBlock = firstBlock.cloneNode(true);
+        // Clone
+        const newBlock = firstBlock.cloneNode(true);
 
-                    // Reset values
-                    newBlock.querySelectorAll('input').forEach(input => input.value = '');
+        // Reset values for all inputs in the cloned block
+        newBlock.querySelectorAll('input').forEach(input => {
+            input.value = ''; // Clear the input fields
+        });
 
-                    // Manage Remove Button
-                    const removeBtn = newBlock.querySelector('.remove-meter-btn');
-                    removeBtn.classList.remove('d-none');
-                    removeBtn.onclick = function() {
-                        newBlock.remove();
-                        updateMeterIndexes();
-                    };
+        // Set the default 'gas' value for the meter type in the cloned block
+        const meterTypeInput = newBlock.querySelector('input[name^="meters"][name$="[meter_type]"]');
+        if (meterTypeInput) {
+            meterTypeInput.value = 'gas'; // Set the 'gas' value to the cloned meter type input
+        }
 
-                    container.appendChild(newBlock);
-                    updateMeterIndexes();
-                });
+        // Manage Remove Button
+        const removeBtn = newBlock.querySelector('.remove-meter-btn');
+        removeBtn.classList.remove('d-none');
 
-                function updateMeterIndexes() {
-                    const blocks = document.querySelectorAll('.meter-block');
-                    blocks.forEach((block, index) => {
-                        // Update Label (Meter #1, Meter #2...)
-                        block.querySelector('.meter-label').innerText = `Meter #${index + 1}`;
+        // Append the new block to the container
+        container.appendChild(newBlock);
+        updateMeterIndexes();
+    });
 
-                        // Update Input Names (meters[0], meters[1]...)
-                        block.querySelectorAll('input').forEach(input => {
-                            const name = input.getAttribute('name');
-                            if (name) {
-                                // Yeh regex name ke andar [0], [1] wagera ko current index se replace kar dega
-                                const newName = name.replace(/meters\[\d+\]/, `meters[${index}]`);
-                                input.setAttribute('name', newName);
-                            }
-                        });
-                    });
+    // Use event delegation for the remove button
+    document.getElementById('meter-container').addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('remove-meter-btn')) {
+            const meterBlock = event.target.closest('.meter-block');
+            if (meterBlock) {
+                meterBlock.remove();
+                updateMeterIndexes();
+            }
+        }
+    });
+
+    function updateMeterIndexes() {
+        const blocks = document.querySelectorAll('.meter-block');
+        blocks.forEach((block, index) => {
+            // Update Label (Meter #1, Meter #2...)
+            block.querySelector('.meter-label').innerText = `Meter #${index + 1}`;
+
+            // Update Input Names (meters[0], meters[1]...)
+            block.querySelectorAll('input').forEach(input => {
+                const name = input.getAttribute('name');
+                if (name) {
+                    // This regex will replace the index [0], [1], etc. in the input's name
+                    const newName = name.replace(/meters\[\d+\]/, `meters[${index}]`);
+                    input.setAttribute('name', newName);
                 }
-            </script>
+            });
+        });
+    }
+</script>
 
             <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 

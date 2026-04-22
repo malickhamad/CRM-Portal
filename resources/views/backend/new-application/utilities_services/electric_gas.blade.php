@@ -305,7 +305,7 @@
                         </div>
                     </div>
 
-<!-- Electricity DETAILS -->
+         <!-- Electricity DETAILS -->
 <div class="form-section mb-3">
     <div class="section-title"><span>Electricity Details</span></div>
 
@@ -323,8 +323,11 @@
                     </button>
                 </div>
             </div>
-
-            <div class="row gy-1 gx-3 align-items-center">
+ <div class="row gy-1 gx-3 align-items-center">
+            <div class="col-md-2"><label>Meter Type</label></div>
+            <div class="col-md-4 d-flex align-items-center">
+                <input type="text" class="form-control" value="electricity" name="elec_meters[0][meter_type]" readonly required>
+            </div>
 
                 <div class="col-md-2"><label>Supplier Name *</label></div>
                 <div class="col-md-4 d-flex align-items-center">
@@ -401,7 +404,6 @@
         </button>
     </div>
 </div>
-
                     <!-- GAS DETAILS -->
                     <div class="form-section mb-3">
                         <div class="section-title"><span>Gas Details</span></div>
@@ -419,6 +421,17 @@
                                 </div>
 
                                 <div class="row align-items-center">
+
+ <div class="col-md-2"><label>Meter Type</label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" value="gas" name="meters[0][meter_type]" readonly
+                                    required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-credit-card"></i>
+                                </span>
+                            </div>
+
 
                                     <div class="col-md-2"><label class="mb-0">Supplier Name</label></div>
                                     <div class="col-md-4 d-flex align-items-center mb-1">
@@ -500,6 +513,7 @@
                             </button>
                         </div>
                     </div>
+
 
                     <!-- BANK DETAILS -->
                     <div class="form-section mb-3">
@@ -659,55 +673,80 @@
 
             </div>
 
-         <script>
-    // --- Electricity Meters Logic ---
-    document.getElementById('add-elec-meter-btn').addEventListener('click', function () {
-        const container = document.getElementById('elec-meter-container');
-        const firstBlock = container.querySelector('.elec-meter-block');
-        const newBlock = firstBlock.cloneNode(true);
+    <script>
+                document.getElementById('add-meter-btn').addEventListener('click', function() {
+    const container = document.getElementById('meter-container');
+    const firstBlock = container.querySelector('.meter-block');
 
-        newBlock.querySelectorAll('input').forEach(input => input.value = '');
+    // Clone
+    const newBlock = firstBlock.cloneNode(true);
 
-        const removeBtn = newBlock.querySelector('.remove-elec-btn');
-        removeBtn.classList.remove('d-none');
-        removeBtn.onclick = function () {
-            newBlock.remove();
-            updateElecIndexes();
-        };
-
-        container.appendChild(newBlock);
-        updateElecIndexes();
+    // Reset values for all inputs in the cloned block
+    newBlock.querySelectorAll('input').forEach(input => {
+        input.value = ''; // Clear the input fields
     });
 
-    function updateElecIndexes() {
-        const blocks = document.querySelectorAll('.elec-meter-block');
-
-        blocks.forEach((block, index) => {
-            block.querySelector('.elec-meter-label').innerText = `Meter #${index + 1}`;
-
-            block.querySelectorAll('input').forEach(input => {
-                let name = input.getAttribute('name');
-
-                if (name) {
-                    // Replace index correctly
-                    name = name.replace(/\[\d+\]/, `[${index}]`);
-                    input.setAttribute('name', name);
-                }
-            });
-        });
+    // Set the default 'gas' value for the meter type in the cloned block
+    const meterTypeInput = newBlock.querySelector('input[name^="meters"][name$="[meter_type]"]');
+    if (meterTypeInput) {
+        meterTypeInput.value = 'gas'; // Set the 'gas' value to the cloned meter type input
     }
 
-    // --- Gas Meters Logic ---
-    document.getElementById('add-meter-btn').addEventListener('click', function () {
-        const container = document.getElementById('meter-container');
-        const firstBlock = container.querySelector('.meter-block');
+    // Manage Remove Button
+    const removeBtn = newBlock.querySelector('.remove-meter-btn');
+    removeBtn.classList.remove('d-none');
+    removeBtn.onclick = function() {
+        newBlock.remove();
+        updateMeterIndexes();
+    };
+
+    container.appendChild(newBlock);
+    updateMeterIndexes();
+});
+
+function updateMeterIndexes() {
+    const blocks = document.querySelectorAll('.meter-block');
+    blocks.forEach((block, index) => {
+        // Update Label (Meter #1, Meter #2...)
+        block.querySelector('.meter-label').innerText = `Meter #${index + 1}`;
+
+        // Update Input Names (meters[0], meters[1]...)
+        block.querySelectorAll('input').forEach(input => {
+            const name = input.getAttribute('name');
+            if (name) {
+                // This regex will replace the index [0], [1], etc. in the input's name
+                const newName = name.replace(/meters\[\d+\]/, `meters[${index}]`);
+                input.setAttribute('name', newName);
+            }
+        });
+    });
+}
+            </script>
+
+
+        <script>
+    document.getElementById('add-elec-meter-btn').addEventListener('click', function() {
+        const container = document.getElementById('elec-meter-container');
+        const firstBlock = container.querySelector('.elec-meter-block');
+
+        // Clone
         const newBlock = firstBlock.cloneNode(true);
 
-        newBlock.querySelectorAll('input').forEach(input => input.value = '');
+        // Reset values for all inputs in the cloned block
+        newBlock.querySelectorAll('input').forEach(input => {
+            input.value = ''; // Clear the input fields
+        });
 
-        const removeBtn = newBlock.querySelector('.remove-meter-btn');
+        // Set the default 'electricity' value for the meter type in the cloned block
+        const meterTypeInput = newBlock.querySelector('input[name^="elec_meters"][name$="[meter_type]"]');
+        if (meterTypeInput) {
+            meterTypeInput.value = 'electricity'; // Set the 'electricity' value to the cloned meter type input
+        }
+
+        // Manage Remove Button
+        const removeBtn = newBlock.querySelector('.remove-elec-btn');
         removeBtn.classList.remove('d-none');
-        removeBtn.onclick = function () {
+        removeBtn.onclick = function() {
             newBlock.remove();
             updateMeterIndexes();
         };
@@ -717,17 +756,18 @@
     });
 
     function updateMeterIndexes() {
-        const blocks = document.querySelectorAll('.meter-block');
-
+        const blocks = document.querySelectorAll('.elec-meter-block');
         blocks.forEach((block, index) => {
-            block.querySelector('.meter-label').innerText = `Meter #${index + 1}`;
+            // Update Meter Label (Meter #1, Meter #2...)
+            block.querySelector('.elec-meter-label').innerText = `Meter #${index + 1}`;
 
+            // Update Input Names (elec_meters[0], elec_meters[1]...)
             block.querySelectorAll('input').forEach(input => {
-                let name = input.getAttribute('name');
-
+                const name = input.getAttribute('name');
                 if (name) {
-                    name = name.replace(/\[\d+\]/, `[${index}]`);
-                    input.setAttribute('name', name);
+                    // This regex will replace the index [0], [1], etc. in the input's name
+                    const newName = name.replace(/elec_meters\[\d+\]/, `elec_meters[${index}]`);
+                    input.setAttribute('name', newName);
                 }
             });
         });

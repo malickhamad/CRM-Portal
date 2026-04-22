@@ -273,7 +273,9 @@
                             <div class="col-md-2"><label>Director DOB <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" name="director_dob_single" class="form-control border-end-0" required value="{{ $appValue('director_dob_single') }}">
+                                  <input type="date" name="director_dob_single"
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($appValue('director_dob_single'))->format('Y-m-d') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar"></i>
                                 </span>
@@ -324,7 +326,9 @@
                             </div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" name="application_date" class="form-control border-end-0" required value="{{ $appValue('application_date') }}">
+                                <input type="date" name="application_date"
+    class="form-control border-end-0"
+    value="{{ \Carbon\Carbon::parse($appValue('application_date'))->format('Y-m-d') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar"></i>
                                 </span>

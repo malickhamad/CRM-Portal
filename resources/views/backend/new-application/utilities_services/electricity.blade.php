@@ -290,8 +290,11 @@
                     </button>
                 </div>
             </div>
-
-            <div class="row gy-1 gx-3 align-items-center">
+ <div class="row gy-1 gx-3 align-items-center">
+            <div class="col-md-2"><label>Meter Type</label></div>
+            <div class="col-md-4 d-flex align-items-center">
+                <input type="text" class="form-control" value="electricity" name="elec_meters[0][meter_type]" readonly required>
+            </div>
 
                 <div class="col-md-2"><label>Supplier Name *</label></div>
                 <div class="col-md-4 d-flex align-items-center">
@@ -531,44 +534,55 @@
 
             </div>
 
-            <script>
-                  // --- Electricity Meters Logic ---
-    document.getElementById('add-elec-meter-btn').addEventListener('click', function () {
+<script>
+    document.getElementById('add-elec-meter-btn').addEventListener('click', function() {
         const container = document.getElementById('elec-meter-container');
         const firstBlock = container.querySelector('.elec-meter-block');
+
+        // Clone
         const newBlock = firstBlock.cloneNode(true);
 
-        newBlock.querySelectorAll('input').forEach(input => input.value = '');
+        // Reset values for all inputs in the cloned block
+        newBlock.querySelectorAll('input').forEach(input => {
+            input.value = ''; // Clear the input fields
+        });
 
+        // Set the default 'electricity' value for the meter type in the cloned block
+        const meterTypeInput = newBlock.querySelector('input[name^="elec_meters"][name$="[meter_type]"]');
+        if (meterTypeInput) {
+            meterTypeInput.value = 'electricity'; // Set the 'electricity' value to the cloned meter type input
+        }
+
+        // Manage Remove Button
         const removeBtn = newBlock.querySelector('.remove-elec-btn');
         removeBtn.classList.remove('d-none');
-        removeBtn.onclick = function () {
+        removeBtn.onclick = function() {
             newBlock.remove();
-            updateElecIndexes();
+            updateMeterIndexes();
         };
 
         container.appendChild(newBlock);
-        updateElecIndexes();
+        updateMeterIndexes();
     });
 
-    function updateElecIndexes() {
+    function updateMeterIndexes() {
         const blocks = document.querySelectorAll('.elec-meter-block');
-
         blocks.forEach((block, index) => {
+            // Update Meter Label (Meter #1, Meter #2...)
             block.querySelector('.elec-meter-label').innerText = `Meter #${index + 1}`;
 
+            // Update Input Names (elec_meters[0], elec_meters[1]...)
             block.querySelectorAll('input').forEach(input => {
-                let name = input.getAttribute('name');
-
+                const name = input.getAttribute('name');
                 if (name) {
-                    // Replace index correctly
-                    name = name.replace(/\[\d+\]/, `[${index}]`);
-                    input.setAttribute('name', name);
+                    // This regex will replace the index [0], [1], etc. in the input's name
+                    const newName = name.replace(/elec_meters\[\d+\]/, `elec_meters[${index}]`);
+                    input.setAttribute('name', newName);
                 }
             });
         });
-    }               </script>
-
+    }
+</script>
             <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 

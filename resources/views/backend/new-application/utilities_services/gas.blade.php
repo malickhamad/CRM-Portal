@@ -345,6 +345,17 @@
 
                                 <div class="row align-items-center">
 
+ <div class="col-md-2"><label>Meter Type</label></div>
+
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" class="form-control" value="gas" name="meters[0][meter_type]" readonly
+                                    required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-credit-card"></i>
+                                </span>
+                            </div>
+
+
                                     <div class="col-md-2"><label class="mb-0">Supplier Name</label></div>
                                     <div class="col-md-4 d-flex align-items-center mb-1">
                                         <input class="form-control border-end-0" name="meters[0][supplier_name]" required>
@@ -602,7 +613,7 @@
                                     <div class="kyc-upload-box"
                                         onclick="document.getElementById('bankStatement').click();">
                                         <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="bankStatement" name="additional_uploads" hidden>
+                                        <input type="file" id="bankStatement" name="bank_statement" hidden>
                                     </div>
                                 </div>
 
@@ -636,44 +647,52 @@
             </div>
             <script>
                 document.getElementById('add-meter-btn').addEventListener('click', function() {
-                    const container = document.getElementById('meter-container');
-                    const firstBlock = container.querySelector('.meter-block');
+    const container = document.getElementById('meter-container');
+    const firstBlock = container.querySelector('.meter-block');
 
-                    // Clone
-                    const newBlock = firstBlock.cloneNode(true);
+    // Clone
+    const newBlock = firstBlock.cloneNode(true);
 
-                    // Reset values
-                    newBlock.querySelectorAll('input').forEach(input => input.value = '');
+    // Reset values for all inputs in the cloned block
+    newBlock.querySelectorAll('input').forEach(input => {
+        input.value = ''; // Clear the input fields
+    });
 
-                    // Manage Remove Button
-                    const removeBtn = newBlock.querySelector('.remove-meter-btn');
-                    removeBtn.classList.remove('d-none');
-                    removeBtn.onclick = function() {
-                        newBlock.remove();
-                        updateMeterIndexes();
-                    };
+    // Set the default 'gas' value for the meter type in the cloned block
+    const meterTypeInput = newBlock.querySelector('input[name^="meters"][name$="[meter_type]"]');
+    if (meterTypeInput) {
+        meterTypeInput.value = 'gas'; // Set the 'gas' value to the cloned meter type input
+    }
 
-                    container.appendChild(newBlock);
-                    updateMeterIndexes();
-                });
+    // Manage Remove Button
+    const removeBtn = newBlock.querySelector('.remove-meter-btn');
+    removeBtn.classList.remove('d-none');
+    removeBtn.onclick = function() {
+        newBlock.remove();
+        updateMeterIndexes();
+    };
 
-                function updateMeterIndexes() {
-                    const blocks = document.querySelectorAll('.meter-block');
-                    blocks.forEach((block, index) => {
-                        // Update Label (Meter #1, Meter #2...)
-                        block.querySelector('.meter-label').innerText = `Meter #${index + 1}`;
+    container.appendChild(newBlock);
+    updateMeterIndexes();
+});
 
-                        // Update Input Names (meters[0], meters[1]...)
-                        block.querySelectorAll('input').forEach(input => {
-                            const name = input.getAttribute('name');
-                            if (name) {
-                                // Yeh regex name ke andar [0], [1] wagera ko current index se replace kar dega
-                                const newName = name.replace(/meters\[\d+\]/, `meters[${index}]`);
-                                input.setAttribute('name', newName);
-                            }
-                        });
-                    });
-                }
+function updateMeterIndexes() {
+    const blocks = document.querySelectorAll('.meter-block');
+    blocks.forEach((block, index) => {
+        // Update Label (Meter #1, Meter #2...)
+        block.querySelector('.meter-label').innerText = `Meter #${index + 1}`;
+
+        // Update Input Names (meters[0], meters[1]...)
+        block.querySelectorAll('input').forEach(input => {
+            const name = input.getAttribute('name');
+            if (name) {
+                // This regex will replace the index [0], [1], etc. in the input's name
+                const newName = name.replace(/meters\[\d+\]/, `meters[${index}]`);
+                input.setAttribute('name', newName);
+            }
+        });
+    });
+}
             </script>
 
             <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
