@@ -28,14 +28,29 @@ class CreateAdminUserSeeder extends Seeder
 
         // Define admin permissions
         $adminPermissions = [
-            'user-list',
-            'admin-reports',
-            'user-create',
-            'user-edit',
-            'user-delete', 'user-list','role-list', 'role-create', 'role-edit', 'role-delete',
-            'plans-list', 'plans-create', 'plans-edit', 'plans-delete',
-            'plan-features-list', 'plan-features-create', 'plan-features-edit', 'plan-features-delete',
-            'assessment',  'faqs', 'contact-us', 'settings','standards','activity-logs','payment-history','category', 'customers-list',
+           'user-list',
+'admin-reports',
+'user-create',
+'user-edit',
+'user-delete',
+'role-list',
+'role-create',
+'role-edit',
+'role-delete',
+'faqs',
+'contact-us',
+'settings',
+'activity-logs',
+'new-application',
+'edit-application',
+'delete-application',
+'view-application',
+'find-application',
+'logs',
+'permissions',
+'users',
+'roles',
+
         ];
 
         // Get permission models by their names

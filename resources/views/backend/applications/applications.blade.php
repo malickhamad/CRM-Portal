@@ -153,11 +153,13 @@
                                                 {{-- 2. Action --}}
                                                 <td class="text-start">
                                                     <div class="d-flex align-items-center gap-2">
+                                                      @can('edit-application')
                                                         <a href="{{ route('admin.applications.edit', $item->id) }}"
-                                                            class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center"
-                                                            data-bs-toggle="tooltip" title="View">
-                                                            <iconify-icon icon="lucide:eye"></iconify-icon>
-                                                        </a>
+    class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center"
+    data-bs-toggle="tooltip" title="Edit">
+    <iconify-icon icon="lucide:edit"></iconify-icon>
+</a>
+@endcan
 
                                                         <button type="button"
                                                             class="w-32-px h-32-px bg-info-focus text-info-main rounded-circle d-inline-flex align-items-center justify-content-center border-0"
