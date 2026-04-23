@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 class ApplicationController extends Controller
 {
@@ -142,41 +143,41 @@ class ApplicationController extends Controller
             $this->getCommonStats()
         ));
     }
- public function applications(Request $request)
-{
-    $selectedUserId = $request->user_id;
+    public function applications(Request $request)
+    {
+        $selectedUserId = $request->user_id;
 
-    $query = Application::with(['user', 'comments.user'])->latest();
+        $query = Application::with(['user', 'comments.user'])->latest();
 
-    if (!empty($selectedUserId)) {
-        $query->where('user_id', $selectedUserId);
+        if (!empty($selectedUserId)) {
+            $query->where('user_id', $selectedUserId);
+        }
+
+        $applications = $query->get();
+
+        $pendingApplications = Application::when($selectedUserId, function ($q) use ($selectedUserId) {
+            $q->where('user_id', $selectedUserId);
+        })->whereNotIn('status', ['Paid', 'Rejected'])->count();
+
+        $completedApplications = Application::when($selectedUserId, function ($q) use ($selectedUserId) {
+            $q->where('user_id', $selectedUserId);
+        })->whereIn('status', ['Live', 'Paid'])->count();
+
+        $rejectedApplications = Application::when($selectedUserId, function ($q) use ($selectedUserId) {
+            $q->where('user_id', $selectedUserId);
+        })->where('status', 'Rejected')->count();
+
+        $users = \App\Models\User::orderBy('name')->get(['id', 'name']);
+
+        return view('backend.applications.applications', compact(
+            'applications',
+            'pendingApplications',
+            'completedApplications',
+            'rejectedApplications',
+            'users',
+            'selectedUserId'
+        ));
     }
-
-    $applications = $query->get();
-
-    $pendingApplications = Application::when($selectedUserId, function ($q) use ($selectedUserId) {
-        $q->where('user_id', $selectedUserId);
-    })->whereNotIn('status', ['Paid', 'Rejected'])->count();
-
-    $completedApplications = Application::when($selectedUserId, function ($q) use ($selectedUserId) {
-        $q->where('user_id', $selectedUserId);
-    })->whereIn('status', ['Live', 'Paid'])->count();
-
-    $rejectedApplications = Application::when($selectedUserId, function ($q) use ($selectedUserId) {
-        $q->where('user_id', $selectedUserId);
-    })->where('status', 'Rejected')->count();
-
-    $users = \App\Models\User::orderBy('name')->get(['id', 'name']);
-
-    return view('backend.applications.applications', compact(
-        'applications',
-        'pendingApplications',
-        'completedApplications',
-        'rejectedApplications',
-        'users',
-        'selectedUserId'
-    ));
-}
 
     private function normalizeServiceType(?string $serviceType): string
     {
@@ -369,39 +370,91 @@ class ApplicationController extends Controller
             return back()->with('success', 'Application Submitted Successfully!');
         } catch (\Throwable $e) {
             DB::rollBack();
-            return back()->withInput()->with('error', 'Error: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Failed to submit application.');
         }
     }
 
-    public function edit($id)
-    {
-        $application = Application::with('directors', 'meters')->findOrFail($id);
-        return view('backend.applications.edit', compact('application'));
-    }
+
+   public function edit($id)
+{
+    $application = Application::with('directors', 'meters')->findOrFail($id);
+    $serviceType = $this->normalizeServiceType($application->service_type);
+
+    // Fetch only the meters associated with the application
+    $meters = $application->meters;
+
+    // Now filter the meters based on their type
+    $gasMeters = $meters->where('meter_type', 'gas')->values();
+    $electricityMeters = $meters->where('meter_type', 'electricity')->values();
+
+    $view = match ($serviceType) {
+        'Card Machine' => 'backend.applications.edit.card_machine',
+        'Loan' => 'backend.applications.edit.loan',
+        'Open Banking' => 'backend.applications.edit.open_banking',
+        'Water' => 'backend.applications.edit.water',
+        'Broadband' => 'backend.applications.edit.broadband',
+        'Telecom' => 'backend.applications.edit.telecom',
+        'Gas' => 'backend.applications.edit.gas',
+        'Electricity' => 'backend.applications.edit.electricity',
+        'Electric Gas' => 'backend.applications.edit.electric_gas',
+        default => 'backend.applications.edit.loan',
+    };
+
+    return view($view, array_merge(
+        ['application' => $application, 'gasMeters' => $gasMeters, 'electricityMeters' => $electricityMeters],
+        $this->getCommonStats()
+    ));
+}
+
 
     public function update(Request $request, $id)
     {
+        // Fetch the application record based on the provided ID
+        $application = Application::with('directors', 'meters')->findOrFail($id);
+
+        // Handle the date formatting for director's date of birth and other date fields
+        $firstDirector = $application->directors->first();
+        $directorDob = $firstDirector ? Carbon::parse($firstDirector->date_of_birth) : null;
+        $renewalDate = Carbon::parse($application->renewal_date)->format('Y-m-d');
+        $applicationDate = Carbon::parse($application->application_date)->format('Y-m-d');
+        $singledirectordob = Carbon::parse($application->director_dob_single)->format('Y-m-d');
+        $statustakendate = Carbon::parse($application->status_taken_date)->format('Y-m-d');
+
+        // Prepare the data for validation
         $prepared = $this->prepareRequestData($request);
+
+        // Get the service type from the request and validate
         $serviceType = $prepared['service_type'] ?? '';
         validator($prepared, $this->getValidationRules($serviceType))->validate();
 
         DB::beginTransaction();
         try {
-            $application = Application::findOrFail($id);
+            // Update the application with the new data
             $this->fillApplication($application, $request, $prepared, false);
             $application->save();
 
-            $application->directors()->delete();
-            $application->meters()->delete();
-
+            // Sync directors and meters (this is important for updating the application data)
+            $application->directors()->delete(); // Delete existing directors first
+            $application->meters()->delete(); // Delete existing meters first
             $this->syncDirectors($application, $prepared);
             $this->syncMeters($application, $prepared);
 
             DB::commit();
-            return back()->with('success', 'Application Updated Successfully!');
+
+            // Redirect sback with success message
+            return back()->with('sweetalert', [
+                'type' => 'success',
+                'title' => 'Success',
+                'message' => 'Application Updated Successfully!',
+            ]);
         } catch (\Throwable $e) {
+            // In case of error, roll back the transaction and show error message
             DB::rollBack();
-            return back()->withInput()->with('error', 'Error: ' . $e->getMessage());
+            return back()->withInput()->with('sweetalert', [
+                'type' => 'error',
+                'title' => 'Error',
+                'message' => $e->getMessage(),
+            ]);
         }
     }
 
@@ -623,21 +676,21 @@ class ApplicationController extends Controller
     }
 
 
-public function print($id)
-{
-   $application = Application::with(['directors', 'meters'])->findOrFail($id);
+    public function print($id)
+    {
+        $application = Application::with(['directors', 'meters'])->findOrFail($id);
 
-// Load the PDF view with the application data
-$pdf = Pdf::loadView('backend.applications.print', compact('application'))
-    ->setPaper('a4', 'portrait');
+        // Load the PDF view with the application data
+        $pdf = Pdf::loadView('backend.applications.print', compact('application'))
+            ->setPaper('a4', 'portrait');
 
-// Stream the PDF and set headers to force open in a new tab
-return response($pdf->output())
-    ->header('Content-Type', 'application/pdf')
-    ->header('Content-Disposition', 'inline; filename="application-' . $application->application_num . '.pdf"')
-    ->header('Cache-Control', 'private, max-age=0, must-revalidate') // Add cache control
-    ->header('Pragma', 'public') // Add pragma
-    ->header('Expires', '0'); // Disable caching
-}
+        // Stream the PDF and set headers to force open in a new tab
+        return response($pdf->output())
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="application-' . $application->application_num . '.pdf"')
+            ->header('Cache-Control', 'private, max-age=0, must-revalidate') // Add cache control
+            ->header('Pragma', 'public') // Add pragma
+            ->header('Expires', '0'); // Disable caching
+    }
 
 }

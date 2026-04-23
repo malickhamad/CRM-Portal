@@ -19,7 +19,7 @@
         <ul class="sidebar-menu" id="sidebar-menu">
             <li style="margin-bottom: 8px;">
                 <a
-                    href="{{ $isAdmin ? route('admin.dashboard') : ($isSubuser ? route('user.subuserdashboard') : route('user.dashboard')) }}">
+                    href="{{ $isAdmin ? route('admin.dashboard') : ($isSubuser ? route('user.subuserdashboard') : route('admin.dashboard')) }}">
                     <iconify-icon icon="mdi:view-dashboard-outline" class="menu-icon"></iconify-icon>
                     <span>Dashboard</span>
                 </a>
@@ -28,23 +28,24 @@
 
 
 
-            {{-- @can('new-application') --}}
+           @can('new-application')
                 <li>
                     <a href="{{ route('admin.services') }}">
                         <iconify-icon icon="mdi:file-document-outline" class="menu-icon"></iconify-icon>
                         <span>New Application</span>
                     </a>
                 </li>
-            {{-- @endcan --}}
+         @endcan
 
 
-
+ @can('find-application')
     <li>
         <a href="{{ route('admin.applications') }}">
             <iconify-icon icon="mdi:magnify" class="menu-icon"></iconify-icon>
             <span>Find Application</span>
         </a>
     </li>
+     @endcan
 
      <li>
         <a href="{{ route('chat') }}">
@@ -66,7 +67,7 @@
 
             @can('user-list')
                 <li class=" ">
-                    <a href="{{ $isAdmin ? route('admin.users.index') : route('user.subusers.index') }}">
+                    <a href="{{ $isAdmin ? route('admin.users.index') : route('admin.users.index') }}">
                         <iconify-icon icon="mdi:account-group-outline" class="menu-icon"></iconify-icon>
                         <span>Users</span>
                     </a>
@@ -89,18 +90,18 @@
 
             @can('role-list')
                 <li class="dropdown">
-                    <a href="{{ $isAdmin ? route('admin.roles.index') : route('user.roles.index') }}">
+                    <a href="{{ $isAdmin ? route('admin.roles.index') : route('admin.roles.index') }}">
                         <iconify-icon icon="mdi:account-cog-outline" class="menu-icon"></iconify-icon>
                         <span>Roles</span>
                     </a>
                     <ul class="sidebar-submenu">
                         <li>
-                            <a href="{{ $isAdmin ? route('admin.roles.index') : route('user.roles.index') }}">
+                            <a href="{{ $isAdmin ? route('admin.roles.index') : route('admin.roles.index') }}">
                                 <i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Roles
                             </a>
                         </li>
                         <li>
-                            <a href="{{ $isAdmin ? route('admin.roles.create') : route('user.roles.create') }}">
+                            <a href="{{ $isAdmin ? route('admin.roles.create') : route('admin.roles.create') }}">
                                 <i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Add Roles
                             </a>
                         </li>
@@ -110,7 +111,7 @@
 
 
 
-            @can('settings')
+            @can('settings-admin')
                 <li class="dropdown">
                     <a href="javascript:void(0)">
                         <iconify-icon icon="mdi:cog-outline" class="menu-icon"></iconify-icon>
@@ -118,7 +119,7 @@
                     </a>
                     <ul class="sidebar-submenu">
                         <li>
-                            <a href="{{ $isAdmin ? route('admin.permissions.index') : route('user.permissions.index') }}">
+                            <a href="{{ $isAdmin ? route('admin.permissions.index') : route('admin.permissions.index') }}">
                                 <i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Permissions
                             </a>
                         </li>

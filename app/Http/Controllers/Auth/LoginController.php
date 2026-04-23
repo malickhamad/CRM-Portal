@@ -32,12 +32,10 @@ class LoginController extends Controller
     {
         if (Auth::check()) {
             // Redirect 'User' role and 'SubUser' role to /user/dashboard
-            if (Auth::user()->hasAnyRole('Subuser')) {
-                return '/user/subuserdashboard';
-            }
+
 
             if (Auth::user()->hasRole('User')) {
-                return '/user/dashboard';
+                return '/admin/dashboard';
             }
             // Redirect 'Admin' role to /admin/dashboard
             if (Auth::user()->hasRole('Admin')) {

@@ -33,12 +33,10 @@ class RegisterController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
 
-            if ($user->hasRole('Subuser')) {
-                return '/user/dashboard'; // Redirect subusers to user dashboard
-            }
+
 
             if ($user->hasRole('User')) {
-                return '/user/profile'; // Redirect users to user dashboard
+                return '/admin/dashboard'; // Redirect users to user dashboard
             }
 
             if ($user->hasRole('Admin')) {

@@ -26,7 +26,7 @@
 
 
             {{-- leads and sales info --}}
-           @include('backend.layouts.partials.leads-sales-cards')
+            @include('backend.layouts.partials.leads-sales-cards')
 
             <div class="container-fluid bg-white px-3 py-5">
 
@@ -131,8 +131,7 @@
                             <div class="col-md-2"><label>Merchant Full Name <span class="text-danger">:*</span></label>
                             </div>
                             <div class="col-md-4">
-                                <input type="text" class="form-control border-end-0" name="merchant_full_name"
-                                    required>
+                                <input type="text" class="form-control border-end-0" name="merchant_full_name" required>
                             </div>
                         </div>
 
@@ -210,8 +209,8 @@
                         <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Application Num <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" value="AUTO-001" readonly
-                                    name="application_num" required>
+                                <input type="text" name="application_num" class="form-control border-end-0"
+                                    value="{{ $nextNum }}" readonly required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-hash"></i>
                                 </span>
@@ -305,103 +304,107 @@
                         </div>
                     </div>
 
-<!-- Electricity DETAILS -->
-<div class="form-section mb-3">
-    <div class="section-title"><span>Electricity Details</span></div>
+                    <!-- Electricity DETAILS -->
+                    <div class="form-section mb-3">
+                        <div class="section-title"><span>Electricity Details</span></div>
 
-    <div id="elec-meter-container">
-        <div class="elec-meter-block mb-4 border-bottom pb-3">
+                        <div id="elec-meter-container">
+                            <div class="elec-meter-block mb-4 border-bottom pb-3">
 
-            <div class="row mb-2">
-                <div class="col-auto d-flex align-items-center">
-                    <p class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0 elec-meter-label">
-                        Meter #1
-                    </p>
-                    <button type="button" class="btn btn-danger btn-sm ms-2 remove-elec-btn d-none"
-                        style="padding: 2px 8px; font-size: 12px;">
-                        <i class="bi bi-trash"></i> Remove
-                    </button>
-                </div>
-            </div>
+                                <div class="row mb-2">
+                                    <div class="col-auto d-flex align-items-center">
+                                        <p
+                                            class="bg-dark fs-14 text-white fw-semibold px-3 py-1 rounded mb-0 elec-meter-label">
+                                            Meter #1
+                                        </p>
+                                        <button type="button" class="btn btn-danger btn-sm ms-2 remove-elec-btn d-none"
+                                            style="padding: 2px 8px; font-size: 12px;">
+                                            <i class="bi bi-trash"></i> Remove
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>Meter Type</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input type="text" class="form-control" value="electricity"
+                                            name="elec_meters[0][meter_type]" readonly required>
+                                    </div>
 
-            <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>Supplier Name *</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control" name="elec_meters[0][supplier_name]" required>
+                                    </div>
 
-                <div class="col-md-2"><label>Supplier Name *</label></div>
-                <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][supplier_name]" required>
-                </div>
+                                    <div class="col-md-2"><label>MPAN Top Line</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control" name="elec_meters[0][mpan_top_line]" required>
+                                    </div>
+                                </div>
 
-                <div class="col-md-2"><label>MPAN Top Line</label></div>
-                <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][mpan_top_line]" required>
-                </div>
-            </div>
+                                <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>MPAN Bottom Line</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control" name="elec_meters[0][mpan_bottom_line]" required>
+                                    </div>
 
-            <div class="row gy-1 gx-3 align-items-center">
-                <div class="col-md-2"><label>MPAN Bottom Line</label></div>
-                <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][mpan_bottom_line]" required>
-                </div>
+                                    <div class="col-md-2"><label>Con. Duration</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control" name="elec_meters[0][con_duration]" required>
+                                    </div>
+                                </div>
 
-                <div class="col-md-2"><label>Con. Duration</label></div>
-                <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][con_duration]" required>
-                </div>
-            </div>
+                                <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>Offer Rate</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control" name="elec_meters[0][offer_rate]" required>
+                                    </div>
 
-            <div class="row gy-1 gx-3 align-items-center">
-                <div class="col-md-2"><label>Offer Rate</label></div>
-                <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][offer_rate]" required>
-                </div>
+                                    <div class="col-md-2"><label>Name Appears On Bill</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control" name="elec_meters[0][name_on_bill]" required>
+                                    </div>
+                                </div>
 
-                <div class="col-md-2"><label>Name Appears On Bill</label></div>
-                <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][name_on_bill]" required>
-                </div>
-            </div>
+                                <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>Customer No.</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control" name="elec_meters[0][customer_no]" required>
+                                    </div>
 
-            <div class="row gy-1 gx-3 align-items-center">
-                <div class="col-md-2"><label>Customer No.</label></div>
-                <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][customer_no]" required>
-                </div>
+                                    <div class="col-md-2"><label>Meter Serial No.</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control" name="elec_meters[0][meter_serial_no]" required>
+                                    </div>
+                                </div>
 
-                <div class="col-md-2"><label>Meter Serial No.</label></div>
-                <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][meter_serial_no]" required>
-                </div>
-            </div>
+                                <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>Current Meter Read</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control" name="elec_meters[0][current_meter_read]" required>
+                                    </div>
 
-            <div class="row gy-1 gx-3 align-items-center">
-                <div class="col-md-2"><label>Current Meter Read</label></div>
-                <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][current_meter_read]" required>
-                </div>
+                                    <div class="col-md-2"><label>Mode</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control" name="elec_meters[0][mode]" required>
+                                    </div>
+                                </div>
 
-                <div class="col-md-2"><label>Mode</label></div>
-                <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][mode]" required>
-                </div>
-            </div>
+                                <div class="row gy-1 gx-3 align-items-center">
+                                    <div class="col-md-2"><label>Last Bill Amount</label></div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input class="form-control" name="elec_meters[0][last_bill_amount]" required>
+                                    </div>
+                                </div>
 
-            <div class="row gy-1 gx-3 align-items-center">
-                <div class="col-md-2"><label>Last Bill Amount</label></div>
-                <div class="col-md-4 d-flex align-items-center">
-                    <input class="form-control" name="elec_meters[0][last_bill_amount]" required>
-                </div>
-            </div>
+                            </div>
+                        </div>
 
-        </div>
-    </div>
-
-    <div class="mt-3">
-        <button type="button" id="add-elec-meter-btn" class="btn btn-primary bg_green_color">
-            <i class="bi bi-plus-circle me-1"></i> Add More Meter
-        </button>
-    </div>
-</div>
-
+                        <div class="mt-3">
+                            <button type="button" id="add-elec-meter-btn" class="btn btn-primary bg_green_color">
+                                <i class="bi bi-plus-circle me-1"></i> Add More Meter
+                            </button>
+                        </div>
+                    </div>
                     <!-- GAS DETAILS -->
                     <div class="form-section mb-3">
                         <div class="section-title"><span>Gas Details</span></div>
@@ -419,6 +422,17 @@
                                 </div>
 
                                 <div class="row align-items-center">
+
+                                    <div class="col-md-2"><label>Meter Type</label></div>
+
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input type="text" class="form-control" value="gas"
+                                            name="meters[0][meter_type]" readonly required>
+                                        <span class="icon-box border-start-0">
+                                            <i class="bi bi-credit-card"></i>
+                                        </span>
+                                    </div>
+
 
                                     <div class="col-md-2"><label class="mb-0">Supplier Name</label></div>
                                     <div class="col-md-4 d-flex align-items-center mb-1">
@@ -500,6 +514,7 @@
                             </button>
                         </div>
                     </div>
+
 
                     <!-- BANK DETAILS -->
                     <div class="form-section mb-3">
@@ -659,18 +674,30 @@
 
             </div>
 
-         <script>
-    // --- Electricity Meters Logic ---
-    document.getElementById('add-elec-meter-btn').addEventListener('click', function () {
+          <script>
+    // Electricity Meters Logic
+    document.getElementById('add-elec-meter-btn').addEventListener('click', function() {
         const container = document.getElementById('elec-meter-container');
         const firstBlock = container.querySelector('.elec-meter-block');
+
+        // Clone
         const newBlock = firstBlock.cloneNode(true);
 
-        newBlock.querySelectorAll('input').forEach(input => input.value = '');
+        // Reset values for all inputs in the cloned block
+        newBlock.querySelectorAll('input').forEach(input => {
+            input.value = ''; // Clear the input fields
+        });
 
+        // Set the default 'electricity' value for the meter type in the cloned block
+        const meterTypeInput = newBlock.querySelector('input[name^="elec_meters"][name$="[meter_type]"]');
+        if (meterTypeInput) {
+            meterTypeInput.value = 'electricity'; // Set 'electricity' value
+        }
+
+        // Manage Remove Button
         const removeBtn = newBlock.querySelector('.remove-elec-btn');
         removeBtn.classList.remove('d-none');
-        removeBtn.onclick = function () {
+        removeBtn.onclick = function() {
             newBlock.remove();
             updateElecIndexes();
         };
@@ -683,31 +710,45 @@
         const blocks = document.querySelectorAll('.elec-meter-block');
 
         blocks.forEach((block, index) => {
+            // Update Meter Label (Meter #1, Meter #2...)
             block.querySelector('.elec-meter-label').innerText = `Meter #${index + 1}`;
 
+            // Update Input Names (elec_meters[0], elec_meters[1]...)
             block.querySelectorAll('input').forEach(input => {
-                let name = input.getAttribute('name');
-
+                const name = input.getAttribute('name');
                 if (name) {
-                    // Replace index correctly
-                    name = name.replace(/\[\d+\]/, `[${index}]`);
-                    input.setAttribute('name', name);
+                    const newName = name.replace(/elec_meters\[\d+\]/, `elec_meters[${index}]`);
+                    input.setAttribute('name', newName);
                 }
             });
         });
     }
+</script>
 
-    // --- Gas Meters Logic ---
-    document.getElementById('add-meter-btn').addEventListener('click', function () {
+<script>
+    // Gas Meters Logic
+    document.getElementById('add-meter-btn').addEventListener('click', function() {
         const container = document.getElementById('meter-container');
         const firstBlock = container.querySelector('.meter-block');
+
+        // Clone
         const newBlock = firstBlock.cloneNode(true);
 
-        newBlock.querySelectorAll('input').forEach(input => input.value = '');
+        // Reset values for all inputs in the cloned block
+        newBlock.querySelectorAll('input').forEach(input => {
+            input.value = ''; // Clear the input fields
+        });
 
+        // Set the default 'gas' value for the meter type in the cloned block
+        const meterTypeInput = newBlock.querySelector('input[name^="meters"][name$="[meter_type]"]');
+        if (meterTypeInput) {
+            meterTypeInput.value = 'gas'; // Set 'gas' value
+        }
+
+        // Manage Remove Button
         const removeBtn = newBlock.querySelector('.remove-meter-btn');
         removeBtn.classList.remove('d-none');
-        removeBtn.onclick = function () {
+        removeBtn.onclick = function() {
             newBlock.remove();
             updateMeterIndexes();
         };
@@ -720,20 +761,20 @@
         const blocks = document.querySelectorAll('.meter-block');
 
         blocks.forEach((block, index) => {
+            // Update Meter Label (Meter #1, Meter #2...)
             block.querySelector('.meter-label').innerText = `Meter #${index + 1}`;
 
+            // Update Input Names (meters[0], meters[1]...)
             block.querySelectorAll('input').forEach(input => {
-                let name = input.getAttribute('name');
-
+                const name = input.getAttribute('name');
                 if (name) {
-                    name = name.replace(/\[\d+\]/, `[${index}]`);
-                    input.setAttribute('name', name);
+                    const newName = name.replace(/meters\[\d+\]/, `meters[${index}]`);
+                    input.setAttribute('name', newName);
                 }
             });
         });
     }
 </script>
-
             <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
         </div>

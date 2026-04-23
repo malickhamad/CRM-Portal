@@ -1,4 +1,13 @@
-{{-- @php
+@extends('backend.layouts.app')
+
+@section('content')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <main class="dashboard-main">
+        {{-- @include('backend.layouts.partials.header') --}}
+
+
+@php
     use App\Models\Conversation;
 
     function userAvatar($user, $size = 40)
@@ -115,7 +124,7 @@
             font-family: 'Source Sans Pro', sans-serif;
             font-size: 0.9em;
             color: #32465a;
-            min-height: 100vh;
+            /* min-height: 100vh; */
             margin: 0;
             overflow: hidden;
         }
@@ -364,6 +373,7 @@
             margin: 0;
             word-break: break-word;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: inline-block;
         }
 
         .messages ul li.sent p {
@@ -612,6 +622,8 @@
                 <p>{{ auth()->user()->name }}</p>
             </div>
 
+            <span>gggggggggg</span>
+
             <div id="search">
                 <input type="text" id="contact-search" placeholder="Search contacts...">
             </div>
@@ -679,7 +691,8 @@
                 <div class="messages" id="chat-messages">
                     <ul id="messages-list">
                         @foreach ($conversation->messages as $message)
-                            <li class="{{ $message->user->id == auth()->id() ? 'sent' : 'replies' }}">
+                            <li class="{{ $message->user->id == auth()->id() ? 'sent' : 'replies' }}"
+                                data-message-id="{{ $message->id }}">
                                 <div class="form-check mb-3" style="display: inline-flex;">
                                     <input type="checkbox" class="form-check-input message-select"
                                         value="{{ $message->id }}">
@@ -690,7 +703,20 @@
                                 </div>
 
                                 @if ($message->message)
-                                    <p>{{ $message->message }}</p>
+                                    <div style="{{ $message->user->id == auth()->id() ? 'text-align:right;' : '' }}">
+                                        <p style="display: grid-lanes; text-align:left;">{{ $message->message }}</p>
+                                        @if ($message->user->id == auth()->id())
+                                            <div class="message-read-status"
+                                                data-message-id="{{ $message->id }}"
+                                                style="font-size:12px; margin-top:4px; color:{{ !empty($message->is_read) ? '#2196f3' : '#6c757d' }};">
+                                                @if (!empty($message->is_read))
+                                                    <i class="fa fa-check-double"></i>
+                                                @else
+                                                    <i class="fa fa-check"></i>
+                                                @endif
+                                            </div>
+                                        @endif
+                                    </div>
                                 @endif
 
                                 @if ($message->file_path)
@@ -699,24 +725,76 @@
                                     @endphp
 
                                     @if (in_array($ext, ['jpg', 'jpeg', 'png']))
-                                        <a href="{{ asset($message->file_path) }}" target="_blank"
-                                            class="chat-image-link">
-                                            <img src="{{ asset($message->file_path) }}" alt="Image">
-                                        </a>
+                                        <div style="{{ $message->user->id == auth()->id() ? 'text-align:right;' : '' }}">
+                                            <a href="{{ asset($message->file_path) }}" target="_blank"
+                                                class="chat-image-link">
+                                                <img src="{{ asset($message->file_path) }}" alt="Image">
+                                            </a>
+                                            @if ($message->user->id == auth()->id() && !$message->message)
+                                                <div class="message-read-status"
+                                                    data-message-id="{{ $message->id }}"
+                                                    style="font-size:12px; margin-top:4px; color:{{ !empty($message->is_read) ? '#2196f3' : '#6c757d' }};">
+                                                    @if (!empty($message->is_read))
+                                                        <i class="fa fa-check-double"></i>
+                                                    @else
+                                                        <i class="fa fa-check"></i>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        </div>
                                     @elseif(in_array($ext, ['mp4', 'avi', 'mkv', 'webm']))
-                                        <video width="220" height="160" controls
-                                            style="border-radius: 10px; margin: 0 6px;">
-                                            <source src="{{ asset($message->file_path) }}">
-                                            Your browser does not support the video tag.
-                                        </video>
+                                        <div style="{{ $message->user->id == auth()->id() ? 'text-align:right;' : '' }}">
+                                            <video width="220" height="160" controls
+                                                style="border-radius: 10px; margin: 0 6px;">
+                                                <source src="{{ asset($message->file_path) }}">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                            @if ($message->user->id == auth()->id() && !$message->message)
+                                                <div class="message-read-status"
+                                                    data-message-id="{{ $message->id }}"
+                                                    style="font-size:12px; margin-top:4px; color:{{ !empty($message->is_read) ? '#2196f3' : '#6c757d' }};">
+                                                    @if (!empty($message->is_read))
+                                                        <i class="fa fa-check-double"></i>
+                                                    @else
+                                                        <i class="fa fa-check"></i>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        </div>
                                     @elseif(in_array($ext, ['mp3', 'ogg', 'wav']))
-                                        <audio controls style="margin: 0 6px;">
-                                            <source src="{{ asset($message->file_path) }}">
-                                            Your browser does not support the audio element.
-                                        </audio>
+                                        <div style="{{ $message->user->id == auth()->id() ? 'text-align:right;' : '' }}">
+                                            <audio controls style="margin: 0 6px;">
+                                                <source src="{{ asset($message->file_path) }}">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                            @if ($message->user->id == auth()->id() && !$message->message)
+                                                <div class="message-read-status"
+                                                    data-message-id="{{ $message->id }}"
+                                                    style="font-size:12px; margin-top:4px; color:{{ !empty($message->is_read) ? '#2196f3' : '#6c757d' }};">
+                                                    @if (!empty($message->is_read))
+                                                        <i class="fa fa-check-double"></i>
+                                                    @else
+                                                        <i class="fa fa-check"></i>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        </div>
                                     @else
-                                        <a href="{{ asset($message->file_path) }}" download
-                                            style="margin: 0 6px;">Download File</a>
+                                        <div style="{{ $message->user->id == auth()->id() ? 'text-align:right;' : '' }}">
+                                            <a href="{{ asset($message->file_path) }}" download="{{ $message->file_name ?? basename($message->file_path) }}"
+                                                style="margin: 0 6px;">Download File</a>
+                                            @if ($message->user->id == auth()->id() && !$message->message)
+                                                <div class="message-read-status"
+                                                    data-message-id="{{ $message->id }}"
+                                                    style="font-size:12px; margin-top:4px; color:{{ !empty($message->is_read) ? '#2196f3' : '#6c757d' }};">
+                                                    @if (!empty($message->is_read))
+                                                        <i class="fa fa-check-double"></i>
+                                                    @else
+                                                        <i class="fa fa-check"></i>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        </div>
                                     @endif
                                 @endif
                             </li>
@@ -793,6 +871,7 @@
         const conversationId = @json($conversation ? $conversation->id : '');
         const currentUserId = @json(auth()->id());
         const currentUserAvatar = @json(userAvatar(auth()->user(), 30));
+        const otherUserAvatar = @json(isset($otherUser) && $otherUser ? userAvatar($otherUser, 30) : '');
 
         function scrollChatToBottom() {
             if (chatMessages) {
@@ -804,51 +883,79 @@
             return $('<div>').text(text || '').html();
         }
 
-        function createFilePreviewFromUrl(fileUrl, extension) {
+        function getMessageStatusHtml(messageId, isRead = 0) {
+            const icon = parseInt(isRead) === 1 ? 'fa-check-double' : 'fa-check';
+            const color = parseInt(isRead) === 1 ? '#2196f3' : '#6c757d';
+
+            return `<div class="message-read-status" data-message-id="${messageId}" style="font-size:12px; margin-top:4px; color:${color};"><i class="fa ${icon}"></i></div>`;
+        }
+
+        function createFilePreviewFromUrl(fileUrl, extension, messageId = '', isRead = 0, isOwn = true) {
             if (!fileUrl || !extension) return '';
 
             extension = extension.toLowerCase();
+            const statusHtml = isOwn ? getMessageStatusHtml(messageId, isRead) : '';
+            const alignStyle = isOwn ? 'text-align:right;' : '';
 
             if (['jpg', 'jpeg', 'png'].includes(extension)) {
                 return `
-                    <a href="${fileUrl}" target="_blank" class="chat-image-link">
-                        <img src="${fileUrl}" alt="Image">
-                    </a>
+                    <div style="${alignStyle}">
+                        <a href="${fileUrl}" target="_blank" class="chat-image-link">
+                            <img src="${fileUrl}" alt="Image">
+                        </a>
+                        ${statusHtml}
+                    </div>
                 `;
             }
 
             if (['mp4', 'avi', 'mkv', 'webm'].includes(extension)) {
                 return `
-                    <video width="220" height="160" controls style="border-radius: 10px; margin: 0 6px;">
-                        <source src="${fileUrl}">
-                        Your browser does not support the video tag.
-                    </video>
+                    <div style="${alignStyle}">
+                        <video width="220" height="160" controls style="border-radius: 10px; margin: 0 6px;">
+                            <source src="${fileUrl}">
+                            Your browser does not support the video tag.
+                        </video>
+                        ${statusHtml}
+                    </div>
                 `;
             }
 
             if (['mp3', 'ogg', 'wav'].includes(extension)) {
                 return `
-                    <audio controls style="margin: 0 6px;">
-                        <source src="${fileUrl}">
-                        Your browser does not support the audio element.
-                    </audio>
+                    <div style="${alignStyle}">
+                        <audio controls style="margin: 0 6px;">
+                            <source src="${fileUrl}">
+                            Your browser does not support the audio element.
+                        </audio>
+                        ${statusHtml}
+                    </div>
                 `;
             }
 
-            return `<a href="${fileUrl}" download style="margin: 0 6px;">Download File</a>`;
+            return `
+                <div style="${alignStyle}">
+                    <a href="${fileUrl}" download style="margin: 0 6px;">Download File</a>
+                    ${statusHtml}
+                </div>
+            `;
         }
 
-        function appendMessageToChat(messageText = '', fileUrl = '', extension = '', messageId = '') {
+        function appendMessageToChat(messageText = '', fileUrl = '', extension = '', messageId = '', isRead = 0) {
             const safeMessage = escapeHtml(messageText);
-            const filePreview = createFilePreviewFromUrl(fileUrl, extension);
+            const filePreview = createFilePreviewFromUrl(fileUrl, extension, messageId, isRead, true);
 
             const html = `
-                <li class="sent">
+                <li class="sent" data-message-id="${messageId}">
                     <div class="form-check" style="display: inline-flex;">
                         <input type="checkbox" class="form-check-input message-select" value="${messageId}">
                     </div>
                     <div>${currentUserAvatar}</div>
-                    ${safeMessage ? `<p>${safeMessage}</p>` : ''}
+                    ${safeMessage ? `
+                        <div style="text-align:right;">
+                            <p>${safeMessage}</p>
+                            ${getMessageStatusHtml(messageId, isRead)}
+                        </div>
+                    ` : ''}
                     ${filePreview}
                 </li>
             `;
@@ -861,14 +968,14 @@
 
         function appendIncomingMessage(messageText = '', fileUrl = '', extension = '', messageId = '') {
             const safeMessage = escapeHtml(messageText);
-            const filePreview = createFilePreviewFromUrl(fileUrl, extension);
+            const filePreview = createFilePreviewFromUrl(fileUrl, extension, messageId, 0, false);
 
             const html = `
-                <li class="replies">
+                <li class="replies" data-message-id="${messageId}">
                     <div class="form-check mb-3" style="display: inline-flex;">
                         <input type="checkbox" class="form-check-input message-select" value="${messageId}">
                     </div>
-                    <div></div>
+                    <div>${otherUserAvatar}</div>
                     ${safeMessage ? `<p>${safeMessage}</p>` : ''}
                     ${filePreview}
                 </li>
@@ -971,7 +1078,7 @@
                 return message.message.length > 30 ? message.message.substring(0, 30) + '...' : message.message;
             }
 
-            if (message.file_path) {
+            if (message.file_path || message.file_url) {
                 const ext = (message.extension || '').toLowerCase();
 
                 if (['jpg', 'jpeg', 'png'].includes(ext)) return '📷 Photo';
@@ -1020,6 +1127,48 @@
             moveContactToTop(contactItem);
         }
 
+        function updateMessageReadStatusesFromHtml(doc) {
+            const updatedStatuses = doc.querySelectorAll('.message-read-status');
+            updatedStatuses.forEach(function(statusEl) {
+                const messageId = statusEl.getAttribute('data-message-id');
+                const currentEl = document.querySelector('.message-read-status[data-message-id="' + messageId + '"]');
+                if (currentEl) {
+                    currentEl.outerHTML = statusEl.outerHTML;
+                }
+            });
+        }
+
+        function refreshCurrentChatWithoutReload() {
+            if (!conversationId) return;
+
+            fetch(window.location.href, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+
+                    const newMessages = doc.querySelectorAll('#messages-list li');
+                    newMessages.forEach(function(newMessage) {
+                        const messageId = newMessage.getAttribute('data-message-id');
+                        if (!document.querySelector('#messages-list li[data-message-id="' + messageId + '"]')) {
+                            messagesList.insertAdjacentHTML('beforeend', newMessage.outerHTML);
+                        }
+                    });
+
+                    updateMessageReadStatusesFromHtml(doc);
+                    bindMessageCheckboxEvents();
+                    syncSelectAllState();
+                    scrollChatToBottom();
+                })
+                .catch(error => {
+                    console.log('Chat refresh error:', error);
+                });
+        }
+
         scrollChatToBottom();
         bindMessageCheckboxEvents();
         syncSelectAllState();
@@ -1063,11 +1212,13 @@
                     let fileUrl = '';
                     let extension = '';
                     let messageId = '';
+                    let isRead = 0;
 
                     if (response && typeof response === 'object') {
                         fileUrl = response.file_url || response.file_path || '';
                         extension = response.extension || '';
                         messageId = response.message_id || response.id || '';
+                        isRead = response.is_read || 0;
 
                         if (!extension && selectedFile) {
                             let parts = selectedFile.name.split('.');
@@ -1078,7 +1229,7 @@
                         extension = parts.length > 1 ? parts.pop() : '';
                     }
 
-                    appendMessageToChat(messageText, fileUrl, extension, messageId);
+                    appendMessageToChat(messageText, fileUrl, extension, messageId, isRead);
 
                     $('#message-input').val('');
                     $('#audio-file').val('');
@@ -1134,14 +1285,16 @@
                                 let fileUrl = '';
                                 let extension = 'wav';
                                 let messageId = '';
+                                let isRead = 0;
 
                                 if (response && typeof response === 'object') {
                                     fileUrl = response.file_url || response.file_path || '';
                                     extension = response.extension || 'wav';
                                     messageId = response.message_id || response.id || '';
+                                    isRead = response.is_read || 0;
                                 }
 
-                                appendMessageToChat('', fileUrl, extension, messageId);
+                                appendMessageToChat('', fileUrl, extension, messageId, isRead);
                                 resetRecordingState();
                             },
                             error: function(error) {
@@ -1225,16 +1378,17 @@
                     if (String(message.conversation_id) === String(conversationId) &&
                         parseInt(message.user_id) !== parseInt(currentUserId)) {
 
-                        appendIncomingMessage(
-                            message.message || '',
-                            message.file_path || '',
-                            message.extension || '',
-                            message.id || message.message_id || ''
-                        );
+                        if (!document.querySelector('#messages-list li[data-message-id="' + (message.id || message.message_id || '') + '"]')) {
+                            appendIncomingMessage(
+                                message.message || '',
+                                message.file_path || message.file_url || '',
+                                message.extension || '',
+                                message.id || message.message_id || ''
+                            );
+                        }
                     }
                 });
         }
-
 
         function refreshSidebarWithoutReload() {
             fetch(window.location.href, {
@@ -1259,11 +1413,13 @@
                 });
         }
 
-        // refresh sidebar every 3 seconds
         setInterval(function() {
             refreshSidebarWithoutReload();
+            refreshCurrentChatWithoutReload();
         }, 3000);
+
     </script>
+
 </body>
 
 </html> --}}

@@ -165,10 +165,12 @@
 
                         <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Application Num <span class="text-danger">:*</span></label></div>
-                            <div class="col-md-4 d-flex align-items-center">
+                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="application_num" class="form-control border-end-0"
-                                    value="AUTO-001" readonly required>
-                                <span class="icon-box border-start-0"><i class="bi bi-hash"></i></span>
+                                    value="{{ $nextNum }}" readonly required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-hash"></i>
+                                </span>
                             </div>
 
                             <div class="col-md-2"><label>Service</label></div>

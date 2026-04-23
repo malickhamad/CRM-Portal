@@ -57,28 +57,53 @@
                         <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                             <h4 class="card-title text-success-1000 mb-0">All Applications</h4>
 
-                            @if (auth()->user()->hasRole('Admin'))
-                                <form method="GET" action="{{ route('admin.applications') }}"
-                                    class="d-flex align-items-center gap-2">
-                                    <select name="user_id" class="form-select" onchange="this.form.submit()"
-                                        style="min-width: 220px;">
+                         @if (auth()->user()->hasRole('Admin'))
+<div class="d-flex justify-content-center">
+    <div class="dropdown dropdown-hover position-relative">
 
-                                        <option value="">All Users</option>
+        <button class="btn btn-success dropdown-toggle" type="button">
+            {{ $selectedUserId
+                ? $users->where('id', $selectedUserId)->first()->name ?? 'Select User'
+                : 'All Users' }}
+        </button>
 
-                                        @foreach ($users as $user)
-                                            <option value="{{ $user->id }}"
-                                                {{ (string) $selectedUserId === (string) $user->id ? 'selected' : '' }}>
-                                                {{ $user->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-hover">
+            <li>
+                <a class="dropdown-item" href="{{ route('admin.applications') }}">
+                   All users
+                </a>
+            </li>
 
-                                    @if (!empty($selectedUserId))
-                                        <a href="{{ route('admin.applications') }}"
-                                            class="btn btn-secondary btn-sm">Reset</a>
-                                    @endif
-                                </form>
-                            @endif
+            @foreach ($users as $user)
+                <li>
+                    <a class="dropdown-item" href="{{ route('admin.applications', ['user_id' => $user->id]) }}">
+                       {{ $user->name }}
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+
+    </div>
+</div>
+@endif
+
+<style>
+/* Hover par show karne ke liye */
+.dropdown-hover:hover > .dropdown-menu-hover {
+    display: block;
+}
+
+/* Menu ki alignment fix karne ke liye */
+.dropdown-menu-hover {
+    margin-top: 0; /* Gap khatam karne ke liye */
+    right: 0 !important; /* Right side se align karega taake screen se bahar na jaye */
+    left: auto !important; /* Left auto rakhein */
+}
+
+.dropdown-hover > .dropdown-toggle:active {
+    pointer-events: none;
+}
+</style>
                         </div>
 
                         <div class="card-body  ">
@@ -128,11 +153,13 @@
                                                 {{-- 2. Action --}}
                                                 <td class="text-start">
                                                     <div class="d-flex align-items-center gap-2">
+                                                      @can('edit-application')
                                                         <a href="{{ route('admin.applications.edit', $item->id) }}"
-                                                            class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center"
-                                                            data-bs-toggle="tooltip" title="View">
-                                                            <iconify-icon icon="lucide:eye"></iconify-icon>
-                                                        </a>
+    class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center"
+    data-bs-toggle="tooltip" title="Edit">
+    <iconify-icon icon="lucide:edit"></iconify-icon>
+</a>
+@endcan
 
                                                         <button type="button"
                                                             class="w-32-px h-32-px bg-info-focus text-info-main rounded-circle d-inline-flex align-items-center justify-content-center border-0"
@@ -141,13 +168,13 @@
                                                             title="Comments">
                                                             <iconify-icon icon="mdi:comment-text-outline"></iconify-icon>
                                                         </button>
-                                                          {{-- Print Button --}}
-        <a href="{{ route('admin.applications.print', $item->id) }}"
-            target="_blank"
-            class="w-32-px h-32-px bg-warning-focus text-warning-main rounded-circle d-inline-flex align-items-center justify-content-center"
-            data-bs-toggle="tooltip" title="Print PDF">
-            <iconify-icon icon="mdi:printer-outline"></iconify-icon>
-        </a>
+                                                        {{-- Print Button --}}
+                                                        <a href="{{ route('admin.applications.print', $item->id) }}"
+                                                            target="_blank"
+                                                            class="w-32-px h-32-px bg-warning-focus text-warning-main rounded-circle d-inline-flex align-items-center justify-content-center"
+                                                            data-bs-toggle="tooltip" title="Print PDF">
+                                                            <iconify-icon icon="mdi:printer-outline"></iconify-icon>
+                                                        </a>
 
                                                         <form action="{{ route('admin.applications.destroy', $item->id) }}"
                                                             method="POST" class="d-inline">
@@ -176,7 +203,7 @@
                                                     {{ $item->application_agent ?? 'N/A' }}
                                                 </td>
 
-
+                                                {{-- status --}}
                                                 <td class="text-start">
                                                     <select
                                                         class="status-dropdown {{ $statusClasses[$item->status] ?? '' }}"
@@ -203,7 +230,7 @@
                                                         <option value="Submitted to Supplier"
                                                             {{ $item->status ==
                                                             'Submitted to
-                                                                                                                                                                                                                                                                                                                                                            Supplier'
+                                                                                                                                                                                                                                                                                                                                                                                                                        Supplier'
                                                                 ? 'selected'
                                                                 : '' }}>
                                                             Submitted to Supplier</option>
@@ -240,7 +267,8 @@
 
 
                                             <div class="modal fade" id="commentModal{{ $item->id }}" tabindex="-1"
-                                                aria-labelledby="commentModalLabel{{ $item->id }}" aria-hidden="true">
+                                                aria-labelledby="commentModalLabel{{ $item->id }}"
+                                                aria-hidden="true">
                                                 <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                                     <div class="modal-content border-0 shadow-lg  overflow-hidden">
 

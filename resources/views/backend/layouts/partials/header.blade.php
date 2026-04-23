@@ -31,7 +31,6 @@
             </div>
         </div>
 
-        
         <div class="col-auto">
             <div class="d-flex flex-wrap align-items-center gap-3">
 
