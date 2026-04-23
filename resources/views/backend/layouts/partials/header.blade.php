@@ -17,6 +17,21 @@
                 </button>
             </div>
         </div>
+
+         <div class="col-auto">
+            <div class="d-flex flex-wrap align-items-center gap-4">
+
+                <a type="button" href="{{ route('chat') }}"
+                    class="d-flex justify-content-center align-items-center rounded-circle">
+                    <iconify-icon icon="mdi:chat" class="icon text-2xl"></iconify-icon> <!-- Chat Icon -->
+                    <span>chat</span>
+
+                </a>
+
+            </div>
+        </div>
+
+
         <div class="col-auto">
             <div class="d-flex flex-wrap align-items-center gap-3">
 

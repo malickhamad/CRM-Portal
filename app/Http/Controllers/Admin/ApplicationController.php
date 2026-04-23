@@ -441,7 +441,7 @@ class ApplicationController extends Controller
 
             DB::commit();
 
-            // Redirect back with success message
+            // Redirect sback with success message
             return back()->with('sweetalert', [
                 'type' => 'success',
                 'title' => 'Success',

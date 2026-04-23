@@ -17,4 +17,4 @@
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ $siteSettings['site_title'] ?? 'Five Star Compliance' }}</title>
+  <title>{{ $siteSettings['site_title'] ?? 'Neom Solutions' }}</title>

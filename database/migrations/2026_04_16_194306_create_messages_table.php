@@ -4,11 +4,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up()
     {
-       Schema::create('messages', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('conversation_id');
@@ -19,6 +18,7 @@ return new class extends Migration
             $table->string('file_name')->nullable(); // To store the name of the file
             $table->boolean('is_read')->default(0);
             $table->timestamps();
+
         });
     }
     public function down(): void
