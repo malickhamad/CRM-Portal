@@ -48,9 +48,9 @@
      @endcan
 
      <li>
-        <a href="{{ route('chat') }}">
-            <iconify-icon icon="mdi:magnify" class="menu-icon"></iconify-icon>
-            <span>chat</span>
+        <a href="{{ route('chatify') }}">
+            <iconify-icon icon="mdi:message-text-outline" class="menu-icon"></iconify-icon>
+            <span>Chat</span>
         </a>
     </li>
 

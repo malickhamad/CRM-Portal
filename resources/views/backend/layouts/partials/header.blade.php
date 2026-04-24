@@ -45,7 +45,7 @@
                         <ul class="to-top-list">
                             <li>
                                 <a class="dropdown-item text-success-1000 px-0 py-8 hover-bg-transparent hover-text-success d-flex align-items-center gap-3"
-                                    href="{{ $isAdmin ? route('admin.my-profile') : ($isSubuser ? 'javascript:void(0)' : route('admin.profile')) }}"
+                                    href="{{ $isAdmin ? route('admin.my-profile') : ($isSubuser ? 'javascript:void(0)' : route('admin.my-profile')) }}"
                                     @if ($isSubuser) onclick="alert('You do not have permission to access this page.');" @endif>
                                     My Profile
                                 </a>

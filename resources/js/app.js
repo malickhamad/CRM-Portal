@@ -20,7 +20,7 @@ Echo.private('conversation.' + conversationId)
         newMessage.classList.add('message');
         newMessage.innerHTML = `<strong>${event.message.user.name}:</strong> ${event.message.message}`;
         messageContainer.appendChild(newMessage);
-        
+
         // Scroll to the bottom
         messageContainer.scrollTop = messageContainer.scrollHeight;
     });
