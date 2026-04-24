@@ -3,72 +3,72 @@
 @section('content')
     <main class="dashboard-main">
         @include('backend.layouts.partials.header')
-<style>
-      /* Card Main Container */
-                    .premium-card {
-                        background: #ffffff;
-                        border-radius: 16px;
-                        padding: 16px 20px;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-                        /* Soft Shadow */
-                        border: none;
-                    }
+        <style>
+            /* Card Main Container */
+            .premium-card {
+                background: #ffffff;
+                border-radius: 16px;
+                padding: 16px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                /* Soft Shadow */
+                border: none;
+            }
 
-                    /* Label Styling (Top text) */
-                    .stat-label {
-                        color: #67748e;
-                        font-size: 14px;
-                        font-weight: 600;
-                        display: block;
-                        margin-bottom: 4px;
-                    }
+            /* Label Styling (Top text) */
+            .stat-label {
+                color: #67748e;
+                font-size: 14px;
+                font-weight: 600;
+                display: block;
+                margin-bottom: 4px;
+            }
 
-                    /* Number Styling */
-                    .stat-number {
-                        color: #252f40;
-                        font-size: 20px;
-                        font-weight: 700;
-                        display: flex;
-                        align-items: center;
-                    }
+            /* Number Styling */
+            .stat-number {
+                color: #252f40;
+                font-size: 20px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+            }
 
-                    /* Percentage Badges */
-                    .percentage {
-                        font-size: 13px;
-                        margin-left: 8px;
-                        font-weight: 700;
-                    }
+            /* Percentage Badges */
+            .percentage {
+                font-size: 13px;
+                margin-left: 8px;
+                font-weight: 700;
+            }
 
-                    .positive {
-                        color: #82d616;
-                    }
+            .positive {
+                color: #82d616;
+            }
 
-                    .negative {
-                        color: #ea0606;
-                    }
+            .negative {
+                color: #ea0606;
+            }
 
-                    /* Gradient Icon Box Styling */
-                    .icon-box {
-                        width: 48px;
-                        height: 48px;
-                        background: linear-gradient(310deg, #7928ca 0%, #ff0080 100%);
-                        border-radius: 12px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        color: white;
-                        font-size: 22px;
-                        box-shadow: 0 4px 10px rgba(234, 6, 6, 0.2);
-                    }
+            /* Gradient Icon Box Styling */
+            .icon-box {
+                width: 48px;
+                height: 48px;
+                background: linear-gradient(310deg, #7928ca 0%, #ff0080 100%);
+                border-radius: 12px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: white;
+                font-size: 22px;
+                box-shadow: 0 4px 10px rgba(234, 6, 6, 0.2);
+            }
 
-                    /* Iconify Icon Adjustment */
-                    iconify-icon {
-                        display: block;
-                    }
-</style>
+            /* Iconify Icon Adjustment */
+            iconify-icon {
+                display: block;
+            }
+        </style>
 
         <div class="dashboard-main-body">
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
@@ -250,7 +250,6 @@
                             <span class="header-title">Pending Sales Status</span>
                         </div>
                         <div class="header-right">
-                            <button class="header-btn" title="Settings">&#9881;</button>
                             <button class="header-btn" onclick="toggleMinimize()" title="Minimize">&#8211;</button>
                             <button class="header-btn" onclick="toggleFullscreen()" title="Full View">&#9723;</button>
                             <button class="header-btn close-btn" onclick="closeWidget()" title="Close">&#10005;</button>
@@ -258,7 +257,7 @@
                     </div>
 
                     <div id="scrollContainer" class="applications-container">
-                        @foreach ($applications as $item)
+                        @forelse ($applications as $item)
                             @php
                                 $currentStatus = $statusMap[$item->status] ?? [
                                     'class' => 'inactive',
@@ -285,12 +284,16 @@
                                             {{ $label }}
                                         </span>
                                     @endforeach
-                                </div>
-                            </div>
-                        @endforeach
+
+                                @empty
+                                    <div class="text-center p-4 bg-light rounded shadow-sm">
+                                        <iconify-icon icon="mdi:folder-open-outline"
+                                            style="font-size: 48px; color: #ccc;"></iconify-icon>
+                                        <p class="mt-2 text-secondary">No applications found at the moment.</p>
+                                    </div>
+                        @endforelse
                     </div>
                 </div>
-
 
 
 
@@ -321,87 +324,87 @@
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Dynamically passed data from the backend (Laravel)
-   const labels = @json($monthLabels);  // Get the dynamic month names from the backend
+        <script>
+            // Dynamically passed data from the backend (Laravel)
+            const labels = @json($monthLabels); // Get the dynamic month names from the backend
 
-const pendingData = @json($pendingData);  // Dynamic data for pending applications
-const liveData = @json($liveData);  // Dynamic data for live applications
-const rejectedData = @json($rejectedData);  // Dynamic data for rejected applications
+            const pendingData = @json($pendingData); // Dynamic data for pending applications
+            const liveData = @json($liveData); // Dynamic data for live applications
+            const rejectedData = @json($rejectedData); // Dynamic data for rejected applications
 
-// ✅ LINE CHART
-const lineCtx = document.getElementById('applicationsLineChart').getContext('2d');
-new Chart(lineCtx, {
-    type: 'line',
-    data: {
-        labels: labels,
-        datasets: [{
-                label: 'Pending',
-                data: pendingData,
-                borderColor: '#9C27B0',
-                backgroundColor: 'rgba(156, 39, 176, 0.2)',
-                fill: true,
-                tension: 0.4
-            },
-            {
-                label: 'Live',
-                data: liveData,
-                borderColor: '#2196F3',
-                backgroundColor: 'rgba(33, 150, 243, 0.2)',
-                fill: true,
-                tension: 0.4
-            },
-            {
-                label: 'Rejected',
-                data: rejectedData,
-                borderColor: '#FF9800',
-                backgroundColor: 'rgba(255, 152, 0, 0.2)',
-                fill: true,
-                tension: 0.4
-            }
-        ]
-    },
-    options: {
-        plugins: {
-            legend: {
-                position: 'top'
-            }
-        }
-    }
-});
+            // ✅ LINE CHART
+            const lineCtx = document.getElementById('applicationsLineChart').getContext('2d');
+            new Chart(lineCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                            label: 'Pending',
+                            data: pendingData,
+                            borderColor: '#9C27B0',
+                            backgroundColor: 'rgba(156, 39, 176, 0.2)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Live',
+                            data: liveData,
+                            borderColor: '#2196F3',
+                            backgroundColor: 'rgba(33, 150, 243, 0.2)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Rejected',
+                            data: rejectedData,
+                            borderColor: '#FF9800',
+                            backgroundColor: 'rgba(255, 152, 0, 0.2)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    }
+                }
+            });
 
-// ✅ BAR CHART
-const barCtx = document.getElementById('applicationsBarChart').getContext('2d');
-new Chart(barCtx, {
-    type: 'bar',
-    data: {
-        labels: labels,
-        datasets: [{
-                label: 'Pending',
-                data: pendingData,
-                backgroundColor: '#E0E0E0'
-            },
-            {
-                label: 'Live',
-                data: liveData,
-                backgroundColor: '#90CAF9'
-            },
-            {
-                label: 'Rejected',
-                data: rejectedData,
-                backgroundColor: '#B0BEC5'
-            }
-        ]
-    },
-    options: {
-        plugins: {
-            legend: {
-                position: 'top'
-            }
-        }
-    }
-});
-</script>
+            // ✅ BAR CHART
+            const barCtx = document.getElementById('applicationsBarChart').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                            label: 'Pending',
+                            data: pendingData,
+                            backgroundColor: '#E0E0E0'
+                        },
+                        {
+                            label: 'Live',
+                            data: liveData,
+                            backgroundColor: '#90CAF9'
+                        },
+                        {
+                            label: 'Rejected',
+                            data: rejectedData,
+                            backgroundColor: '#B0BEC5'
+                        }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+        </script>
 
 
 

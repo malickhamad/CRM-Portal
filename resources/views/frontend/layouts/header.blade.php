@@ -47,12 +47,12 @@
                         <nav class="nav-main-menu d-none d-xl-block">
                             <ul class="main-menu">
                                 <li ><a class="active" href="{{ route('frontend.home') }}">Home</a>
-                               
+
                                 </li>
                                 <li><a href="{{ route('frontend.about') }}">About Us</a></li>
                                 <li><a href="{{ route('frontend.service') }}">Our Services</a></li>
 
-                              
+
                                 <li><a href="{{ route('frontend.contact') }}">Contact</a></li>
                                   <li class="has-children"><a href="#">Account</a>
                                     <ul class="sub-menu">
@@ -86,7 +86,7 @@
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                 </svg></span>
                         </div> -->
-                    
+
                         <div class="d-none d-sm-inline-block"><a class="btn btn-brand-1 hover-up"
                                 href="{{ route('login') }}">Get Started</a></div>
                     </div>
@@ -99,7 +99,7 @@
             <div class="mobile-header-content-area">
                 <div class="mobile-logo"><a class="d-flex" href="{{ route('frontend.home') }}">
                  <img src="{{ isset($siteSettings['site_logo']) && file_exists(storage_path('app/public/' . $siteSettings['site_logo'])) ? asset('storage/' . $siteSettings['site_logo']) : asset('asset/backend/images/fivestarlogo.png') }}"
-                        alt="Site Logo" height="100" width="120">   
+                        alt="Site Logo" height="100" width="120">
                 </a></div></a></div>
                 <div class="burger-icon"><span class="burger-icon-top"></span><span
                         class="burger-icon-mid"></span><span class="burger-icon-bottom"></span></div>
@@ -121,7 +121,7 @@
                                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
                                         </path>
                                     </svg>Account</a></li> -->
-                          
+
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane fade active show" id="tab-menu" role="tabpanel"
@@ -129,12 +129,12 @@
                                 <nav class="mt-15">
                                     <ul class="mobile-menu font-heading">
                                           <li class='pt-3'><a class="active" href="{{ route('frontend.home') }}">Home</a>
-                               
+
                                 </li>
                                 <li class='pt-3'><a href="{{ route('frontend.about') }}">About Us</a></li>
                                 <li class='pt-3'><a href="{{ route('frontend.service') }}">Our Services</a></li>
 
-                              
+
                                 <li class='pt-3'><a href="{{ route('frontend.contact') }}">Contact</a></li>
                                   <li class="has-children pt-3"><a href="#">Account</a>
                                     <ul class="sub-menu">
@@ -146,11 +146,11 @@
                                     </ul>
                                 </nav>
                             </div>
-                          
-                     
+
+
                         </div>
                     </div>
-            
+
                 </div>
             </div>
         </div>

@@ -17,21 +17,6 @@
                 </button>
             </div>
         </div>
-
-         <div class="col-auto">
-            <div class="d-flex flex-wrap align-items-center gap-4">
-
-                <a type="button" href="{{ route('chat') }}"
-                    class="d-flex justify-content-center align-items-center rounded-circle">
-                    <iconify-icon icon="mdi:chat" class="icon text-2xl"></iconify-icon> <!-- Chat Icon -->
-                    <span>chat</span>
-
-                </a>
-
-            </div>
-        </div>
-
-
         <div class="col-auto">
             <div class="d-flex flex-wrap align-items-center gap-3">
 
@@ -60,7 +45,7 @@
                         <ul class="to-top-list">
                             <li>
                                 <a class="dropdown-item text-success-1000 px-0 py-8 hover-bg-transparent hover-text-success d-flex align-items-center gap-3"
-                                    href="{{ $isAdmin ? route('admin.my-profile') : ($isSubuser ? 'javascript:void(0)' : route('user.profile')) }}"
+                                    href="{{ $isAdmin ? route('admin.my-profile') : ($isSubuser ? 'javascript:void(0)' : route('admin.profile')) }}"
                                     @if ($isSubuser) onclick="alert('You do not have permission to access this page.');" @endif>
                                     My Profile
                                 </a>
