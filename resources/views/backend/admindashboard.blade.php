@@ -104,7 +104,7 @@
                                     </div>
                                 </div>
                                 <div class="icon-box">
-                                    <iconify-icon icon="ph:wallet-fill"></iconify-icon>
+                                    <iconify-icon icon="ph:stack-fill"></iconify-icon>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,7 @@
                                     </div>
                                 </div>
                                 <div class="icon-box">
-                                    <iconify-icon icon="ph:globe-hemisphere-west-fill"></iconify-icon>
+                                    <iconify-icon icon="ph:clock-countdown-fill"></iconify-icon>
                                 </div>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                                     </div>
                                 </div>
                                 <div class="icon-box">
-                                    <iconify-icon icon="ph:file-text-fill"></iconify-icon>
+                                    <iconify-icon icon="ph:broadcast-fill"></iconify-icon>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +158,7 @@
                                     </div>
                                 </div>
                                 <div class="icon-box">
-                                    <iconify-icon icon="ph:flag-fill"></iconify-icon>
+                                    <iconify-icon icon="ph:x-circle-fill"></iconify-icon>
                                 </div>
                             </div>
                         </div>
@@ -298,7 +298,15 @@
 
 
 
-                {{-- Charts Section --}}
+
+
+
+            </div>
+
+
+        </div>
+
+  {{-- Charts Section --}}
                 <div class="container-fluid py-4">
                     <div class="row g-4 mt-2">
                         <!-- Total Applications Line Chart -->
@@ -321,8 +329,6 @@
 
 
 
-            </div>
-        </div>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
             // Dynamically passed data from the backend (Laravel)

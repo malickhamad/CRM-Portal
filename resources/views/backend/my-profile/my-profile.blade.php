@@ -10,7 +10,8 @@
                 <h6 class="fw-semibold mb-0 text-success-1000 ">My Profile Information</h6>
                 <ul class="d-flex align-items-center gap-2">
                     <li class="fw-medium">
-                        <a href="{{ route('user.dashboard') }}" class="d-flex align-items-center gap-1 hover-text-success text-success-1000">
+                        <a href="{{ route('user.dashboard') }}"
+                            class="d-flex align-items-center gap-1 hover-text-success text-success-1000">
                             <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
                             Dashboard
                         </a>
@@ -23,241 +24,297 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title text-success-1000 ">Profile Information</h4>
-                    </div>
+                </div>
                 <div class="card-body">
-                        <!-- Read-only view -->
-                        <div class="row">
-                            <!-- Full Name -->
-                            <div class="col-md-6 mb-3">
-                                <p class="form-label">Full Name</p>
-                                <div class="form-control  form-control-sm-plaintext">{{ $user->name }}</div>
-                            </div>
+                 <div class="row table-view">
 
-                            <!-- Email -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Email</label>
-                                <div class="form-control  form-control-sm-plaintext">{{ $user->email }}</div>
-                            </div>
+    <div class="col-md-4 mb-3">
+        <label class="form-label">CODE:</label>
+        <div class="form-control form-control-sm-plaintext data-field">104</div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label class="form-label">DESIGNATION:</label>
+        <div class="form-control form-control-sm-plaintext data-field">Out Source</div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label class="form-label">STATUS:</label>
+        <div class="form-control form-control-sm-plaintext data-field">Working</div>
+    </div>
 
-                            <!-- Business Name -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Business Name</label>
-                                <div class="form-control  form-control-sm-plaintext">{{ $user->business_name ?? 'N/A' }}</div>
-                            </div>
+    <div class="col-md-4 mb-3 ">
+        <label class="form-label">CNIC NO:</label>
+        <div class="form-control form-control-sm-plaintext data-field">00000-0000000-0</div>
+    </div>
+    <div class="col-md-4 mb-3 ">
+        <label class="form-label">MOBILE NO:</label>
+        <div class="form-control form-control-sm-plaintext data-field">03427635722</div>
+    </div>
+    <div class="col-md-4 mb-3 ">
+        <label class="form-label">EMAIL:</label>
+        <div class="form-control form-control-sm-plaintext data-field"></div> </div>
 
-                            <!-- Phone Number -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Phone Number</label>
-                                <div class="form-control  form-control-sm-plaintext">{{ $user->phone ?? 'N/A' }}</div>
-                            </div>
+    <div class="col-md-4 mb-3">
+        <label class="form-label">MARITAL STATUS:</label>
+        <div class="form-control form-control-sm-plaintext data-field">Married</div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label class="form-label">DATE OF BIRTH:</label>
+        <div class="form-control form-control-sm-plaintext data-field">13-10-2025</div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label class="form-label">RELIGION:</label>
+        <div class="form-control form-control-sm-plaintext data-field"></div> </div>
 
-                            <!-- Address -->
-                            <div class="col-md-12 mb-3">
-                                <label class="form-label">Address</label>
-                                <div class="form-control  form-control-sm-plaintext">
-                                    {{ $user->street_address ?? 'N/A' }},
-                                    {{ $user->city ?? '' }},
-                                    {{ $user->state ?? '' }},
-                                    {{ $user->country ?? '' }}
-                                </div>
-                            </div>
+    <div class="col-md-4 mb-3">
+        <label class="form-label">FLOOR:</label>
+        <div class="form-control form-control-sm-plaintext data-field">Out source</div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label class="form-label">SHIFT:</label>
+        <div class="form-control form-control-sm-plaintext data-field"></div> </div>
+    <div class="col-md-4 mb-3">
+        <label class="form-label">DEPARTMENT:</label>
+        <div class="form-control form-control-sm-plaintext data-field">Out Source</div>
+    </div>
 
-                            <!-- Profile Picture -->
-                            @if ($user->profile_picture)
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label">Profile Picture</label>
-                                    <div>
-                                        <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture"
-                                            width="120" class="img-thumbnail">
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-{{--
+    <div class="col-md-4 mb-3">
+        <label class="form-label">Account Title:</label>
+        <div class="form-control form-control-sm-plaintext data-field"></div> </div>
+    <div class="col-md-4 mb-3">
+        </div>
+    <div class="col-md-4 mb-3">
+        <label class="form-label">Account Number:</label>
+        <div class="form-control form-control-sm-plaintext data-field"></div> </div>
 
-                        <div class="alert alert-info mt-4">
+    <div class="col-md-4 mb-3">
+        <label class="form-label">ADDRESS:</label>
+        <div class="form-control form-control-sm-plaintext data-field">
+            139B ali mall d ground faisalabad
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+                    {{--  <div class="alert alert-info mt-4">
 
                             Your profile has been completed and cannot be edited.
                             Please contact support if you need to make changes.
                         </div> --}}
 
 
+{{-- Commission Details Section --}}
+<div id="commissionSection" class="mb-4">
+    <div class="custom-card-header">
+        <div class="header-left">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span class="header-title">Commissions Details</span>
+        </div>
+        <div class="header-right">
+            <button class="header-btn" onclick="toggleMinimizeComm()" title="Minimize">&#8211;</button>
+            <button class="header-btn" onclick="toggleFullscreenComm()" title="Full View">&#9723;</button>
+            <button class="header-btn close-btn" onclick="closeWidgetComm()" title="Close">&#10005;</button>
+        </div>
+    </div>
 
-                         <h6 class="mt-5 mb-3  text-success-1000 ">Commission Details</h6>
+    <div id="commScrollContainer" class="applications-container">
 
+        {{-- February Section --}}
+        <h6 class="month-label">FEB 2026</h6>
 
-                         <h4 class="mt-3 mb-3 card-title text-success-1000 ">APRIL 2026</h4>
+        <div class="app-box-item border-left-finalized">
+            <div class="app-header">
+                <strong>Sale #550 - RAJ INTERNATIONAL STORE LTD</strong>
+                <span>(28-01-2026)</span>
+                <span class="status-badge status-paid">Finalized</span>
+            </div>
+            <div class="comm-details-grid">
+                <div class="detail-item"><strong>Agent:</strong> Shoaib Shah</div>
+                <div class="detail-item"><strong>Mature:</strong> 23-02-2026</div>
+                <div class="detail-item"><strong>Commission:</strong> <span class="text-success">PKR 76,230</span></div>
+                <div class="detail-item"><strong>Transfer:</strong> <span class="badge bg-light-success text-success">Transferred</span></div>
+            </div>
+        </div>
+          <div class="app-box-item border-left-pending">
+            <div class="app-header">
+                <strong>Sale #592 - NSEJAS CALABAR KITCHEN</strong>
+                <span>(11-02-2026)</span>
+                <span class="status-badge status-await">Finalize For Payout</span>
+            </div>
+            <div class="comm-details-grid">
+                <div class="detail-item"><strong>Agent:</strong> Shoaib Shah</div>
+                <div class="detail-item"><strong>Mature:</strong> 11-03-2026</div>
+                <div class="detail-item"><strong>Commission:</strong> <span class="text-primary">PKR 89,298</span></div>
+                <div class="detail-item"><strong>Transfer:</strong> <span class="badge bg-light-warning text-warning">Pending</span></div>
+            </div>
+        </div>
 
-                                {{-- show here logs --}}
-                                <div class="table-responsive basic-data-table ">
-                                   <table class="table bordered-table mb-0 text-start" id="dataTable" data-page-length='10'>
-    <thead>
-        <tr>
-            <th scope="col">Sr</th>
-            <th scope="col">Sale Num</th>
-            <th scope="col">Sale Date</th>
-            <th scope="col">Mature Date</th>
-            <th scope="col">Paid Date</th>
-            <th scope="col">Agent</th>
-            <th scope="col">Buisness Name</th>
-            <th scope="col">Service</th>
-            <th scope="col">Commission</th>
-            <th scope="col">Payout</th>
-            <th scope="col">Amount Transfer</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>550</td>
-            <td>28-01-2026</td>
-            <td>23-02-2026</td>
-            <td>02-03-2026</td>
-            <td>Shoaib Shah</td>
-            <td>RAJ INTERNATIONAL STORE LTD</td>
-            <td>Card Machine (1)</td>
-            <td><strong>PKR 76,230</strong></td>
-            <td><span class="badge bg-success-focus text-success-main px-2 py-1">Finalized</span></td>
-            <td>Transferred</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>577</td>
-            <td>06-02-2026</td>
-            <td>26-02-2026</td>
-            <td>02-03-2026</td>
-            <td>Shoaib Shah</td>
-            <td>TV MANCHESTER LTD</td>
-            <td>Card Machine (1)</td>
-            <td><strong>PKR 93,654</strong></td>
-            <td><span class="badge bg-success-focus text-success-main px-2 py-1">Finalized</span></td>
-            <td>Transferred</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>578</td>
-            <td>06-02-2026</td>
-            <td>26-02-2026</td>
-            <td>02-03-2026</td>
-            <td>Shoaib Shah</td>
-            <td>TV MANCHESTER LTD</td>
-            <td>Card Machine (1)</td>
-            <td><strong>PKR 93,654</strong></td>
-            <td><span class="badge bg-success-focus text-success-main px-2 py-1">Finalized</span></td>
-            <td>Transferred</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>658</td>
-            <td>24-02-2026</td>
-            <td>26-02-2026</td>
-            <td>02-03-2026</td>
-            <td>Shoaib Shah</td>
-            <td>K & B Food And Wine</td>
-            <td>Card Machine (1)</td>
-            <td><strong>PKR 93,654</strong></td>
-            <td><span class="badge bg-success-focus text-success-main px-2 py-1">Finalized</span></td>
-            <td>Transferred</td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr class="bg-light">
-            <td colspan="8" class="text-center"><strong>Total</strong></td>
-            <td colspan="3"><strong>PKR 357,192</strong></td>
-        </tr>
-    </tfoot>
-</table>
-                                </div>
+        <div class="app-box-item border-left-finalized">
+            <div class="app-header">
+                <strong>Sale #577 - JTV MANCHESTER LTD</strong>
+                <span>(06-02-2026)</span>
+                <span class="status-badge status-paid">Finalized</span>
+            </div>
+            <div class="comm-details-grid">
+                <div class="detail-item"><strong>Agent:</strong> Shoaib Shah</div>
+                <div class="detail-item"><strong>Mature:</strong> 26-02-2026</div>
+                <div class="detail-item"><strong>Commission:</strong> <span class="text-success">PKR 93,654</span></div>
+                <div class="detail-item"><strong>Transfer:</strong> <span class="badge bg-light-success text-success">Transferred</span></div>
+            </div>
+        </div>
 
+        {{-- March Section --}}
+        <hr>
+        <h6 class="month-label mt-3">MARCH 2026</h6>
 
-                                  <h4 class="mt-3 mb-3 card-title text-success-1000 ">APRIL 2026</h4>
+        <div class="app-box-item border-left-pending">
+            <div class="app-header">
+                <strong>Sale #592 - NSEJAS CALABAR KITCHEN</strong>
+                <span>(11-02-2026)</span>
+                <span class="status-badge status-await">Finalize For Payout</span>
+            </div>
+            <div class="comm-details-grid">
+                <div class="detail-item"><strong>Agent:</strong> Shoaib Shah</div>
+                <div class="detail-item"><strong>Mature:</strong> 11-03-2026</div>
+                <div class="detail-item"><strong>Commission:</strong> <span class="text-primary">PKR 89,298</span></div>
+                <div class="detail-item"><strong>Transfer:</strong> <span class="badge bg-light-warning text-warning">Pending</span></div>
+            </div>
+        </div>
+         <div class="app-box-item border-left-finalized">
+            <div class="app-header">
+                <strong>Sale #577 - JTV MANCHESTER LTD</strong>
+                <span>(06-02-2026)</span>
+                <span class="status-badge status-paid">Finalized</span>
+            </div>
+            <div class="comm-details-grid">
+                <div class="detail-item"><strong>Agent:</strong> Shoaib Shah</div>
+                <div class="detail-item"><strong>Mature:</strong> 26-02-2026</div>
+                <div class="detail-item"><strong>Commission:</strong> <span class="text-success">PKR 93,654</span></div>
+                <div class="detail-item"><strong>Transfer:</strong> <span class="badge bg-light-success text-success">Transferred</span></div>
+            </div>
+        </div>
+         <div class="app-box-item border-left-finalized">
+            <div class="app-header">
+                <strong>Sale #577 - JTV MANCHESTER LTD</strong>
+                <span>(06-02-2026)</span>
+                <span class="status-badge status-paid">Finalized</span>
+            </div>
+            <div class="comm-details-grid">
+                <div class="detail-item"><strong>Agent:</strong> Shoaib Shah</div>
+                <div class="detail-item"><strong>Mature:</strong> 26-02-2026</div>
+                <div class="detail-item"><strong>Commission:</strong> <span class="text-success">PKR 93,654</span></div>
+                <div class="detail-item"><strong>Transfer:</strong> <span class="badge bg-light-success text-success">Transferred</span></div>
+            </div>
+        </div>
 
-                                {{-- show here logs --}}
-                                <div class="table-responsive basic-data-table ">
-                                <table class="table bordered-table mb-0 text-start" id="dataTable" data-page-length='10'>
-    <thead>
-        <tr>
-            <th scope="col">Sr</th>
-            <th scope="col">Sale Num</th>
-            <th scope="col">Sale Date</th>
-            <th scope="col">Mature Date</th>
-            <th scope="col">Paid Date</th>
-            <th scope="col">Agent</th>
-            <th scope="col">Buisness Name</th>
-            <th scope="col">Service</th>
-            <th scope="col">Commission</th>
-            <th scope="col">Payout</th>
-            <th scope="col">Amount Transfer</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>550</td>
-            <td>28-01-2026</td>
-            <td>23-02-2026</td>
-            <td>02-03-2026</td>
-            <td>Shoaib Shah</td>
-            <td>RAJ INTERNATIONAL STORE LTD</td>
-            <td>Card Machine (1)</td>
-            <td><strong>PKR 76,230</strong></td>
-            <td><span class="badge bg-success-focus text-success-main px-2 py-1">Finalized</span></td>
-            <td>Transferred</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>577</td>
-            <td>06-02-2026</td>
-            <td>26-02-2026</td>
-            <td>02-03-2026</td>
-            <td>Shoaib Shah</td>
-            <td>TV MANCHESTER LTD</td>
-            <td>Card Machine (1)</td>
-            <td><strong>PKR 93,654</strong></td>
-            <td><span class="badge bg-success-focus text-success-main px-2 py-1">Finalized</span></td>
-            <td>Transferred</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>578</td>
-            <td>06-02-2026</td>
-            <td>26-02-2026</td>
-            <td>02-03-2026</td>
-            <td>Shoaib Shah</td>
-            <td>TV MANCHESTER LTD</td>
-            <td>Card Machine (1)</td>
-            <td><strong>PKR 93,654</strong></td>
-            <td><span class="badge bg-success-focus text-success-main px-2 py-1">Finalized</span></td>
-            <td>Transferred</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>658</td>
-            <td>24-02-2026</td>
-            <td>26-02-2026</td>
-            <td>02-03-2026</td>
-            <td>Shoaib Shah</td>
-            <td>K & B Food And Wine</td>
-            <td>Card Machine (1)</td>
-            <td><strong>PKR 93,654</strong></td>
-            <td><span class="badge bg-success-focus text-success-main px-2 py-1">Finalized</span></td>
-            <td>Transferred</td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr class="bg-light">
-            <td colspan="8" class="text-center"><strong>Total</strong></td>
-            <td colspan="3"><strong>PKR 357,192</strong></td>
-        </tr>
-    </tfoot>
-</table>
-                                </div>
-                                <!-- Clear All Logs Button -->
+    </div>
+</div>
 
-                                    <button type="submit" class="btn btn-warning"
-                                        onclick="return confirm('Are you sure you want to clear all logs?')">
-                                        Clear All Logs
-                                    </button>
+<style>
+    /* Naye widget ke liye extra styles */
+    .month-label {
+        font-weight: 800;
+        color: #333;
+        background: #f0f2f5;
+        padding: 5px 10px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+        font-size: 12px;
+    }
+
+    .comm-details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        margin-top: 10px;
+        font-size: 12px;
+    }
+
+    .detail-item {
+        color: #666;
+    }
+
+    .border-left-finalized { border-left: 4px solid #66bb6a; }
+    .border-left-pending { border-left: 4px solid #ffa726; }
+
+    .bg-light-success { background: #e8f5e9; padding: 2px 8px; border-radius: 4px; }
+    .bg-light-warning { background: #fff3e0; padding: 2px 8px; border-radius: 4px; }
+
+    /* Fullscreen support */
+    #commissionSection.fullscreen-mode {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 999999 !important;
+        background: white !important;
+        margin: 0 !important;
+        display: flex;
+        flex-direction: column;
+    }
+    .swal-title-custom {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+}
+.swal-text-custom {
+    font-size: 0.9rem !important;
+}
+</style>
+
+<script>
+    function toggleMinimizeComm() {
+        const container = document.getElementById('commScrollContainer');
+        container.style.display = (container.style.display === "none") ? "block" : "none";
+    }
+
+    function toggleFullscreenComm() {
+        const section = document.getElementById('commissionSection');
+        section.classList.toggle('fullscreen-mode');
+        document.body.style.overflow = section.classList.contains('fullscreen-mode') ? 'hidden' : 'auto';
+    }
+
+  function closeWidgetComm() {
+    Swal.fire({
+        title: 'Close Section?',
+        text: 'Are you sure you want to hide this?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, close it!',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        width: '400px', // Isse alert ki width control hogi
+        padding: '1.5rem',
+        customClass: {
+            title: 'swal-title-custom',
+            content: 'swal-text-custom'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const section = document.getElementById('commissionSection');
+            section.style.transition = "opacity 0.4s ease";
+            section.style.opacity = "0";
+            setTimeout(() => {
+                section.style.display = 'none';
+            }, 400);
+
+            // Optional: Success message bhi compact dikhayein
+            Swal.fire({
+                title: 'Closed!',
+                icon: 'success',
+                width: '300px',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+    })
+}
+</script>
+
 
 
 

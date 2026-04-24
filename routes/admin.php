@@ -140,22 +140,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // categories rouets
     Route::resource('categories', CategoryController::class);
 
-    // Customer details
-
-    Route::get('/customers', [CustomersController::class, 'index'])->name('customers.index');
-    Route::get('/customers/create', [CustomersController::class, 'create'])->name('customers.create');
-    Route::post('/customers/store', [CustomersController::class, 'store'])->name('customers.store');
-    Route::get('/customers/{id}/payment', [CustomersController::class, 'payment'])->name('customers.payment');
-    Route::post('/customers/{id}/process-payment', [CustomersController::class, 'processPayment'])->name('customers.process-payment');
-    Route::get('/customers/{id}', [CustomersController::class, 'show'])->name('customers.show');
-    // Edit routes
-    Route::get('customers/{id}/edit', [CustomersController::class, 'editStep1'])->name('customers.edit.step1');
-    Route::put('customers/{id}/update-step1', [CustomersController::class, 'updateStep1'])->name('customers.update.step1');
-    Route::get('customers/{id}/edit-step2', [CustomersController::class, 'editStep2'])->name('customers.edit.step2');
-    Route::put('customers/{id}/update-step2', [CustomersController::class, 'updateStep2'])->name('customers.update.step2');
-    Route::delete('customers/{id}', [CustomersController::class, 'destroy'])->name('customers.destroy');
-    Route::post('customers/update-status', [CustomersController::class, 'updateStatus'])
-        ->name('customers.update-status');
 
 
     // Settings routes

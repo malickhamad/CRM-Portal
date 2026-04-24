@@ -15,15 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('business_name')->nullable();         // business name
-            $table->string('phone')->nullable();                  // phone number
-            $table->string('country')->nullable();                // country
-            $table->string('state')->nullable();                  // state
-            $table->string('city')->nullable();                   // city
-            $table->string('street_address')->nullable();         // street address
             $table->string('profile_picture')->nullable();
-            $table->boolean('profile_completed')->default(false); // NEW: profile completion flag
-
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
