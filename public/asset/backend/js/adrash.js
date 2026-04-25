@@ -32,6 +32,15 @@ $(document).ready(function () {
                 // DISABLE SUBMIT BUTTON BEFORE REQUEST
                 beforeSend: function () {
                     $form.find("button[type='submit']").prop("disabled", true);
+                   
+                    //   Swal.fire({
+                    //     icon: 'success',
+                    //     title: 'Success!',
+                    //     text: 'Please wait',
+                    //     timer: 2000,
+                    //     showConfirmButton: false
+                    // });
+                
                 },
 
                 // SUCCESS RESPONSE
@@ -40,13 +49,13 @@ $(document).ready(function () {
                     $form.find("button[type='submit']").prop("disabled", false);
 
                     // SUCCESS ALERT
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: response.message || 'Application submitted successfully',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
+                    // Swal.fire({
+                    //     icon: 'success',
+                    //     title: 'Success!',
+                    //     text: response.message || 'Application submitted successfully',
+                    //     timer: 2000,
+                    //     showConfirmButton: false
+                    // });
 
                     // RESET FORM AFTER SUCCESS
                     $form[0].reset();
@@ -59,6 +68,12 @@ $(document).ready(function () {
                     resetUploader["#billUpload"]();
                     resetUploader["#bankStatement"]();
                     resetUploader["#additionalUploads"]();
+
+                 // Reload the page after success
+                setTimeout(function() {
+                    window.location.reload();  // Reloads the current page
+                }, 2000);  // Wait for the success alert to finish before reloading
+                
                 },
 
                 // ERROR RESPONSE

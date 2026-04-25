@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 
 class ApplicationController extends Controller
 {
@@ -367,6 +369,14 @@ class ApplicationController extends Controller
             $this->syncMeters($application, $prepared);
 
             DB::commit();
+
+             // Activity log for creating the application
+            activity()
+            ->causedBy(Auth::user())
+            ->performedOn($application)
+            ->log("Created application: {$application->application_num}");
+
+
             return back()->with('success', 'Application Submitted Successfully!');
         } catch (\Throwable $e) {
             DB::rollBack();
@@ -441,6 +451,12 @@ class ApplicationController extends Controller
 
             DB::commit();
 
+               // Activity log for updating the application
+        activity()
+            ->causedBy(Auth::user())
+            ->performedOn($application)
+            ->log("Updated application: {$application->application_num}");
+            
             // Redirect sback with success message
             return back()->with('sweetalert', [
                 'type' => 'success',
@@ -461,6 +477,14 @@ class ApplicationController extends Controller
     public function destroy($id)
     {
         $app = Application::findOrFail($id);
+
+          // Activity log for deleting the application
+          activity()
+        ->causedBy(Auth::user())
+        ->performedOn($app)
+        ->log("Deleted application: {$app->application_num}");
+
+
         $app->delete();
         return back()->with('success', 'Application Deleted Successfully!');
     }
@@ -666,8 +690,22 @@ class ApplicationController extends Controller
         ]);
 
         $application = Application::findOrFail($id);
+        // Store the old status for comparison
+        $oldStatus = $application->status;
+
         $application->status = $request->input('status');
         $application->save();
+
+         // Log the status change activity
+         activity()
+        ->causedBy(Auth::user())  // The user performing the action
+        ->performedOn($application)  // The application being updated
+        ->withProperties([
+            'old_status' => $oldStatus,
+            'new_status' => $application->status,
+        ])  // Log the old and new status
+        ->log("Updated status for application: {$application->application_num} from '{$oldStatus}' to '{$application->status}'");
+
 
         return response()->json([
             'success' => true,

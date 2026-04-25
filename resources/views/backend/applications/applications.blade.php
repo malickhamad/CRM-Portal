@@ -322,7 +322,7 @@
 
                                                                     <div class="col-md-2 d-flex align-items-start pt-md-4">
                                                                         <button type="submit"
-                                                                            class="btn btn-primary rounded-3 w-100 py-2 fw-semibold shadow-sm">
+                                                                            class="btn btn-primary rounded-3 w-100 py-1 fw-semibold shadow-smm bg_green_color">
                                                                             Add Comment
                                                                         </button>
                                                                     </div>
@@ -362,7 +362,7 @@
                                                                                     style="width: 48px; height: 48px; object-fit: cover;">
 
                                                                                 <div>
-                                                                                    <h6 class="mb-1 fw-bold text-primary">
+                                                                                    <h6 class="mb-1 fw-bold text-primary green_color">
                                                                                         {{ $comment->user->name ?? 'User' }}
                                                                                     </h6>
 
@@ -402,7 +402,7 @@
 
                                                         <div class="modal-footer bg-white border-top px-4 py-3">
                                                             <button type="button"
-                                                                class="btn btn-warning rounded-3 px-4 fw-semibold"
+                                                                class="btn btn-warning rounded-3 px-3 fw-semibold"
                                                                 data-bs-dismiss="modal">
                                                                 Close
                                                             </button>

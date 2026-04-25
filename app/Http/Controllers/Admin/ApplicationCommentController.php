@@ -27,12 +27,24 @@ class ApplicationCommentController extends Controller
             $imagePath = $request->file('image')->store('application-comments', 'public');
         }
 
-        ApplicationComment::create([
+       $comment =   ApplicationComment::create([
             'application_id' => $application->id,
             'user_id' => auth()->id(),
             'comment' => $request->comment,
             'image' => $imagePath,
         ]);
+
+          // Activity log for adding the comment
+        activity()
+            ->causedBy(auth()->user())  // The user who added the comment
+            ->performedOn($application)  // The application being commented on
+            ->withProperties([
+                'comment_id' => $comment->id,  // Optional: Log the comment ID if needed
+                'comment' => $request->comment,  // The actual comment content
+                'image' => $imagePath,  // Path to the uploaded image (if any)
+            ])
+            ->log("Added comment to application: {$application->application_num}");
+
 
         return back()->with('success', 'Comment added successfully.');
     }
