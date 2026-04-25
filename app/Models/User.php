@@ -71,6 +71,9 @@ class User extends Authenticatable
             ->useLogName('user');
     }
 
-
+public function profile()
+{
+    return $this->hasOne(Profile::class);
+}
 
 }
