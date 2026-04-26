@@ -99,6 +99,8 @@
                             </span>
                             <input type="password" name="password_confirmation" class="form-control h-56-px bg-neutral-50 radius-12" id="confirm-password" placeholder="Confirm Password" required>
                         </div>
+                        <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light" data-toggle="#confirm-password"></span>
+
                     </div>
                     @error('password') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
