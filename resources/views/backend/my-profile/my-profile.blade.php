@@ -201,7 +201,355 @@
 
             {{-- Commission Details Section --}}
 
+<div class="table-wrapper">
 
+  <!-- FEBRUARY -->
+  <div class="commission-card">
+    <div class="month-title">February 2026</div>
+
+    <div class="table-responsive">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th>Sr</th>
+            <th>Sale No</th>
+            <th>Sale Date</th>
+            <th>Mature Date</th>
+            <th>Paid Date</th>
+            <th>Agent</th>
+            <th>Business Name</th>
+            <th>Service</th>
+            <th>Commission</th>
+            <th>Payout</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td data-label="Sr">1</td>
+            <td data-label="Sale No">#550</td>
+            <td data-label="Sale Date">28-01-2026</td>
+            <td data-label="Mature Date">23-02-2026</td>
+            <td data-label="Paid Date">02-03-2026</td>
+            <td data-label="Agent">Shoaib Shah</td>
+            <td data-label="Business Name">RAJ INTERNATIONAL STORE LTD</td>
+            <td data-label="Service">Card Machine</td>
+            <td data-label="Commission" class="amount">PKR 76,230</td>
+            <td data-label="Payout"><span class="badge success">Finalized</span></td>
+            <td data-label="Status"><span class="badge transferred">Transferred</span></td>
+          </tr>
+
+          <tr>
+            <td data-label="Sr">2</td>
+            <td data-label="Sale No">#577</td>
+            <td data-label="Sale Date">06-02-2026</td>
+            <td data-label="Mature Date">26-02-2026</td>
+            <td data-label="Paid Date">02-03-2026</td>
+            <td data-label="Agent">Shoaib Shah</td>
+            <td data-label="Business Name">JTV MANCHESTER LTD</td>
+            <td data-label="Service">Card Machine</td>
+            <td data-label="Commission" class="amount">PKR 93,654</td>
+            <td data-label="Payout"><span class="badge success">Finalized</span></td>
+            <td data-label="Status"><span class="badge transferred">Transferred</span></td>
+          </tr>
+
+          <tr>
+            <td data-label="Sr">3</td>
+            <td data-label="Sale No">#578</td>
+            <td data-label="Sale Date">06-02-2026</td>
+            <td data-label="Mature Date">26-02-2026</td>
+            <td data-label="Paid Date">02-03-2026</td>
+            <td data-label="Agent">Shoaib Shah</td>
+            <td data-label="Business Name">JTV MANCHESTER LTD</td>
+            <td data-label="Service">Card Machine</td>
+            <td data-label="Commission" class="amount">PKR 93,654</td>
+            <td data-label="Payout"><span class="badge success">Finalized</span></td>
+            <td data-label="Status"><span class="badge transferred">Transferred</span></td>
+          </tr>
+
+          <tr>
+            <td data-label="Sr">4</td>
+            <td data-label="Sale No">#658</td>
+            <td data-label="Sale Date">24-02-2026</td>
+            <td data-label="Mature Date">26-02-2026</td>
+            <td data-label="Paid Date">02-03-2026</td>
+            <td data-label="Agent">Shoaib Shah</td>
+            <td data-label="Business Name">K & B Food And Wine</td>
+            <td data-label="Service">Card Machine</td>
+            <td data-label="Commission" class="amount">PKR 93,654</td>
+            <td data-label="Payout"><span class="badge success">Finalized</span></td>
+            <td data-label="Status"><span class="badge transferred">Transferred</span></td>
+          </tr>
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td colspan="8">Total</td>
+            <td colspan="3">PKR 357,192</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- MARCH -->
+  <div class="commission-card">
+    <div class="month-title">March 2026</div>
+
+    <div class="table-responsive">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th>Sr</th>
+            <th>Sale No</th>
+            <th>Sale Date</th>
+            <th>Mature Date</th>
+            <th>Paid Date</th>
+            <th>Agent</th>
+            <th>Business Name</th>
+            <th>Service</th>
+            <th>Commission</th>
+            <th>Payout</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td data-label="Sr">1</td>
+            <td data-label="Sale No">#592</td>
+            <td data-label="Sale Date">11-02-2026</td>
+            <td data-label="Mature Date">11-03-2026</td>
+            <td data-label="Paid Date">-</td>
+            <td data-label="Agent">Shoaib Shah</td>
+            <td data-label="Business Name">NSEJAS CALABAR KITCHEN</td>
+            <td data-label="Service">Card Machine</td>
+            <td data-label="Commission" class="amount">PKR 89,298</td>
+            <td data-label="Payout"><span class="badge pending">Finalize for Payout</span></td>
+            <td data-label="Status"><span class="badge pending">Pending</span></td>
+          </tr>
+
+          <tr>
+            <td data-label="Sr">2</td>
+            <td data-label="Sale No">#595</td>
+            <td data-label="Sale Date">11-02-2026</td>
+            <td data-label="Mature Date">11-03-2026</td>
+            <td data-label="Paid Date">-</td>
+            <td data-label="Agent">Shoaib Shah</td>
+            <td data-label="Business Name">Budleigh Mini Super Market</td>
+            <td data-label="Service">Card Machine</td>
+            <td data-label="Commission" class="amount">PKR 89,298</td>
+            <td data-label="Payout"><span class="badge pending">Finalize for Payout</span></td>
+            <td data-label="Status"><span class="badge pending">Pending</span></td>
+          </tr>
+
+          <tr>
+            <td data-label="Sr">3</td>
+            <td data-label="Sale No">#619</td>
+            <td data-label="Sale Date">16-02-2026</td>
+            <td data-label="Mature Date">11-03-2026</td>
+            <td data-label="Paid Date">-</td>
+            <td data-label="Agent">Shoaib Shah</td>
+            <td data-label="Business Name">HOMEBAZAARUK LTD</td>
+            <td data-label="Service">Card Machine</td>
+            <td data-label="Commission" class="amount">PKR 89,298</td>
+            <td data-label="Payout"><span class="badge pending">Finalize for Payout</span></td>
+            <td data-label="Status"><span class="badge pending">Pending</span></td>
+          </tr>
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td colspan="8">Total</td>
+            <td colspan="3">PKR 267,894</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#f3f4f6;
+  font-family:Arial, Helvetica, sans-serif;
+  color:#111827;
+}
+
+.table-wrapper{
+  width:100%;
+  padding:24px;
+}
+
+.commission-card{
+  background:#ffffff;
+  border-radius:18px;
+  padding:24px;
+  margin-bottom:35px;
+  box-shadow:0 12px 35px rgba(15,23,42,.08);
+}
+
+.month-title{
+  display:inline-block;
+  background:#111827;
+  color:#fff;
+  padding:9px 18px;
+  border-radius:30px;
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:18px;
+}
+
+.table-responsive{
+  width:100%;
+  overflow-x:auto;
+}
+
+.modern-table{
+  width:100%;
+  min-width:1050px;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  border-radius:12px;
+  font-size:14px;
+}
+
+.modern-table th{
+  background:#f9fafb;
+  color:#111827;
+  padding:15px;
+  text-align:left;
+  border-bottom:1px solid #e5e7eb;
+  white-space:nowrap;
+}
+
+.modern-table td{
+  padding:15px;
+  border-bottom:1px solid #edf2f7;
+  color:#475569;
+  vertical-align:middle;
+  white-space:nowrap;
+}
+
+.modern-table tbody tr:hover{
+  background:#f8fafc;
+}
+
+.amount{
+  color:#059669 !important;
+  font-weight:800;
+}
+
+.badge{
+  padding:7px 13px;
+  border-radius:30px;
+  font-size:12px;
+  font-weight:700;
+  display:inline-block;
+  white-space:nowrap;
+}
+
+.success{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.pending{
+  background:#fef3c7;
+  color:#92400e;
+}
+
+.transferred{
+  background:#e0f2fe;
+  color:#0369a1;
+}
+
+.modern-table tfoot td{
+  background:#111827;
+  color:#fff;
+  font-size:15px;
+  font-weight:800;
+}
+
+/* MOBILE RESPONSIVE CARD VIEW */
+@media (max-width:768px){
+
+  .table-wrapper{
+    padding:14px;
+  }
+
+  .commission-card{
+    padding:16px;
+    border-radius:14px;
+  }
+
+  .table-responsive{
+    overflow-x:visible;
+  }
+
+  .modern-table{
+    min-width:100%;
+    border-collapse:collapse;
+  }
+
+  .modern-table thead{
+    display:none;
+  }
+
+  .modern-table,
+  .modern-table tbody,
+  .modern-table tr,
+  .modern-table td{
+    display:block;
+    width:100%;
+  }
+
+  .modern-table tr{
+    margin-bottom:15px;
+    background:#fff;
+    border-radius:12px;
+    padding:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,.06);
+  }
+
+  .modern-table td{
+    text-align:right;
+    padding:10px 10px 10px 45%;
+    position:relative;
+    border-bottom:1px solid #f1f5f9;
+    white-space:normal;
+  }
+
+  .modern-table td::before{
+    content:attr(data-label);
+    position:absolute;
+    left:10px;
+    width:40%;
+    font-weight:700;
+    color:#6b7280;
+    text-align:left;
+  }
+
+  .modern-table tfoot tr{
+    background:#111827;
+  }
+
+  .modern-table tfoot td{
+    display:block;
+    width:100%;
+    text-align:right;
+    border:none;
+  }
+}
+</style>
 
 
 
