@@ -257,43 +257,49 @@
                         </div>
                     </div>
 
-                    <div id="scrollContainer" class="applications-container">
-                        @forelse ($applications as $item)
-                            @php
-                                $currentStatus = $statusMap[$item->status] ?? [
-                                    'class' => 'inactive',
-                                    'width' => '0%',
-                                    'step' => 0,
-                                ];
-                            @endphp
+                   <div id="scrollContainer" class="applications-container">
+    @forelse ($applications as $item)
+        @php
+            $currentStatus = $statusMap[$item->status] ?? [
+                'class' => 'inactive',
+                'width' => '0%',
+                'step' => 0,
+            ];
+        @endphp
 
-                            <div class="app-box-item">
-                                <div class="app-header">
-                                    <strong>Application #{{ $item->id }}</strong>
-                                    <span>({{ \Carbon\Carbon::parse($item->created_at)->format('d M, Y') }})</span>
-                                    <span class="status-badge {{ $currentStatus['class'] }}">{{ $item->status }}</span>
-                                </div>
+        <div class="app-box-item">
+            <div class="app-header">
+                <strong>Application #{{ $item->id }}</strong>
+                <span>({{ \Carbon\Carbon::parse($item->created_at)->format('d M, Y') }})</span>
+                <span class="status-badge {{ $currentStatus['class'] }}">
+                    {{ $item->status }}
+                </span>
+            </div>
 
-                                <div class="progress-track">
-                                    <div class="progress-bar-custom {{ $currentStatus['class'] }}"
-                                        style="width:{{ $currentStatus['width'] }}"></div>
-                                </div>
+            <div class="progress-track">
+                <div class="progress-bar-custom {{ $currentStatus['class'] }}"
+                    style="width: {{ $currentStatus['width'] }}">
+                </div>
+            </div>
 
-                                <div class="status-labels">
-                                    @foreach ($statusLabels as $index => $label)
-                                        <span class="{{ $index + 1 == $currentStatus['step'] ? 'status-active' : '' }}">
-                                            {{ $label }}
-                                        </span>
-                                    @endforeach
+            <div class="status-labels">
+                @foreach ($statusLabels as $index => $label)
+                    <span class="{{ $index + 1 == $currentStatus['step'] ? 'status-active' : '' }}">
+                        {{ $label }}
+                    </span>
+                @endforeach
+            </div>
+        </div>
 
-                                @empty
-                                    <div class="text-center p-4 bg-light rounded shadow-sm">
-                                        <iconify-icon icon="mdi:folder-open-outline"
-                                            style="font-size: 48px; color: #ccc;"></iconify-icon>
-                                        <p class="mt-2 text-secondary">No applications found at the moment.</p>
-                                    </div>
-                        @endforelse
-                    </div>
+    @empty
+        <div class="text-center p-4 bg-light rounded shadow-sm">
+            <iconify-icon icon="mdi:folder-open-outline"
+                style="font-size: 48px; color: #ccc;">
+            </iconify-icon>
+            <p class="mt-2 text-secondary">No applications found at the moment.</p>
+        </div>
+    @endforelse
+</div>
                 </div>
 
 
@@ -307,26 +313,26 @@
 
         </div>
 
-  {{-- Charts Section --}}
-                <div class="container-fluid py-4">
-                    <div class="row g-4 mt-2">
-                        <!-- Total Applications Line Chart -->
-                        <div class="col-md-6 col-12">
-                            <div class="card p-24 shadow-sm">
-                                <h6 class="fw-semibold mb-4 text-success-1000">Applications Line Chart</h6>
-                                <canvas id="applicationsLineChart"></canvas>
-                            </div>
-                        </div>
-
-                        <!-- Applications Bar Chart -->
-                        <div class="col-md-6 col-12">
-                            <div class="card p-24 shadow-sm">
-                                <h6 class="fw-semibold mb-4 text-success-1000">Applications Bar Chart</h6>
-                                <canvas id="applicationsBarChart"></canvas>
-                            </div>
-                        </div>
+        {{-- Charts Section --}}
+        <div class="container-fluid py-4">
+            <div class="row g-4 mt-2">
+                <!-- Total Applications Line Chart -->
+                <div class="col-md-6 col-12">
+                    <div class="card p-24 shadow-sm">
+                        <h6 class="fw-semibold mb-4 text-success-1000">Applications Line Chart</h6>
+                        <canvas id="applicationsLineChart"></canvas>
                     </div>
                 </div>
+
+                <!-- Applications Bar Chart -->
+                <div class="col-md-6 col-12">
+                    <div class="card p-24 shadow-sm">
+                        <h6 class="fw-semibold mb-4 text-success-1000">Applications Bar Chart</h6>
+                        <canvas id="applicationsBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
