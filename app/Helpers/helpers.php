@@ -43,7 +43,7 @@ if (!function_exists('configure_smtp_from_db')) {
             } else {
                 Config::set('mail.from', [
                     'address' => @$smtp->where('key', 'mail_username')->first()->value ?? 'hello@gmail.com',
-                    'name' => 'Five Star Compliance',
+                    'name' => 'Neom Solutions Compliance',
                 ]);
                 Log::error('Set (From Emial Address) & (From Emial Name) in site settings.');
             }

@@ -10,6 +10,7 @@ use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+
+        View::composer('*', function ($view) {
+        $chatifyUnreadCount = 0;
+
+        if (Auth::check()) {
+            $chatifyUnreadCount = DB::table('ch_messages')
+                ->where('to_id', Auth::id())
+                ->where('seen', 0)
+                ->count();
+        }
+
+        $view->with('chatifyUnreadCount', $chatifyUnreadCount);
+    });
+
 
         // Check if settings table exists before trying to use it
         if (Schema::hasTable('settings')) {

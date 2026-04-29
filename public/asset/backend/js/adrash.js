@@ -9,9 +9,13 @@ $(document).ready(function () {
     | reset form, and file preview reset.
     */
     function handleFormSubmit($form) {
-
+        let isSubmitting = false;
         $form.on("submit", function (e) {
             e.preventDefault();
+
+            if (isSubmitting) return;   // ❌ block double click
+
+            isSubmitting = true;        // 🔒 lock
 
             let formData = new FormData(this);
 
@@ -32,7 +36,7 @@ $(document).ready(function () {
                 // DISABLE SUBMIT BUTTON BEFORE REQUEST
                 beforeSend: function () {
                     $form.find("button[type='submit']").prop("disabled", true);
-                   
+
                     //   Swal.fire({
                     //     icon: 'success',
                     //     title: 'Success!',
@@ -40,11 +44,12 @@ $(document).ready(function () {
                     //     timer: 2000,
                     //     showConfirmButton: false
                     // });
-                
+
                 },
 
                 // SUCCESS RESPONSE
                 success: function (response) {
+                    isSubmitting = false;
 
                     $form.find("button[type='submit']").prop("disabled", false);
 
@@ -69,15 +74,16 @@ $(document).ready(function () {
                     resetUploader["#bankStatement"]();
                     resetUploader["#additionalUploads"]();
 
-                 // Reload the page after success
-                setTimeout(function() {
-                    window.location.reload();  // Reloads the current page
-                }, 2000);  // Wait for the success alert to finish before reloading
-                
+                    // Reload the page after success
+                    setTimeout(function () {
+                        window.location.reload();  // Reloads the current page
+                    }, 2000);  // Wait for the success alert to finish before reloading
+
                 },
 
                 // ERROR RESPONSE
                 error: function (xhr) {
+                    isSubmitting = false;
 
                     $form.find("button[type='submit']").prop("disabled", false);
 

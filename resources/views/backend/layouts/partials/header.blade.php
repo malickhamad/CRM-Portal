@@ -17,8 +17,44 @@
                 </button>
             </div>
         </div>
+
         <div class="col-auto">
             <div class="d-flex flex-wrap align-items-center gap-3">
+
+
+
+                {{-- <a href="{{ route('chatify') }}"
+   class="btn btn-success d-flex align-items-center justify-content-center rounded-circle shadow-sm position-relative"
+   style="width:40px; height:40px;"
+   title="Chat">
+
+    <iconify-icon icon="solar:chat-round-dots-bold" class="text-white" style="font-size:20px;"></iconify-icon>
+
+    @if (isset($chatifyUnreadCount) && $chatifyUnreadCount > 0)
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{ $chatifyUnreadCount }}
+        </span>
+    @endif
+</a> --}}
+
+
+
+
+
+                <a href="{{ route('chatify') }}"
+                    class="btn btn-success d-flex align-items-center justify-content-center rounded-circle shadow-sm position-relative"
+                    style="width:40px; height:40px;" title="Chat">
+
+                    <iconify-icon icon="solar:chat-round-dots-bold" class="text-white"
+                        style="font-size:20px;"></iconify-icon>
+
+                    <span id="chatifyBadge"
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                        style="{{ ($chatifyUnreadCount ?? 0) > 0 ? '' : 'display:none;' }}">
+                        {{ $chatifyUnreadCount ?? '' }}
+                    </span>
+                </a>
+
 
 
                 <div class="dropdown">
@@ -77,3 +113,37 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+<script>
+    function updateChatifyBadge() {
+        console.log('Chatify script running...');
+fetch('{{ route('chatify.unread.count') }}', {
+    headers: {
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+    }
+})            .then(res => res.json())
+            .then(data => {
+                let badge = document.getElementById('chatifyBadge');
+
+                if (!badge) return;
+
+                if (data.total_unread > 0) {
+                    badge.innerText = data.total_unread;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.innerText = '';
+                    badge.style.display = 'none';
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
+    updateChatifyBadge();
+
+    setInterval(updateChatifyBadge, 2000);
+</script>

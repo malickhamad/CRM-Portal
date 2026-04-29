@@ -10,7 +10,7 @@
     </button>
     <div class="align-center mr-3">
         <a href="{{ url('/') }}">
-            <img src="{{ isset($siteSettings['site_logo']) && file_exists(storage_path('app/public/' . $siteSettings['site_logo'])) ? asset('storage/' . $siteSettings['site_logo']) : asset('asset/backend/images/fivestarlogo.png') }}"
+            <img src="{{ isset($siteSettings['site_logo']) && file_exists(storage_path('app/public/' . $siteSettings['site_logo'])) ? asset('storage/' . $siteSettings['site_logo']) : asset('asset/backend/images/neomsolutionslogo.png') }}"
                 alt="Site Logo" style="height: 5rem; margin-top: 0.6rem;">
         </a>
 
@@ -47,12 +47,12 @@
     </li>
      @endcan
 
-     <li>
+     {{-- <li>
         <a href="{{ route('chatify') }}">
             <iconify-icon icon="mdi:message-text-outline" class="menu-icon"></iconify-icon>
             <span>Chat</span>
         </a>
-    </li>
+    </li> --}}
 
 
 

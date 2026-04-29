@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-lg-3 width-20">
                            <div class="header-logo-footer"><a class="d-flex" href="{{ route('frontend.home') }}">
-                        <img style="object-fit:contain;" src="{{ isset($siteSettings['site_logo']) && file_exists(storage_path('app/public/' . $siteSettings['site_logo'])) ? asset('storage/' . $siteSettings['site_logo']) : asset('asset/backend/images/fivestarlogo.png') }}"
+                        <img style="object-fit:contain;" src="{{ isset($siteSettings['site_logo']) && file_exists(storage_path('app/public/' . $siteSettings['site_logo'])) ? asset('storage/' . $siteSettings['site_logo']) : asset('asset/backend/images/neomsolutionslogo.png') }}"
                         alt="Site Logo" height="70" width="300">                            </a>
                         </div>
                     <p class="font-md mb-20 color-grey-400">
@@ -71,7 +71,7 @@
                             <li><a class="font-sm color-grey-300" href="">Terms of service</a></li>
                         </ul>
                     </div>
-                    <div class="col-lg-6 col-md-12 text-center text-lg-end"><span class="color-grey-300 font-md">© Five Star Solution
+                    <div class="col-lg-6 col-md-12 text-center text-lg-end"><span class="color-grey-300 font-md">© Neom Solutions Solution
                             Official 2025. All right reversed.</span></div>
                 </div>
             </div>

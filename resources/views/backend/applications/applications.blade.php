@@ -29,18 +29,21 @@
             <div class="d-flex flex-wrap gap-3 mb-24">
 
                 <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card"
+                    data-filter="pending"
                     style="background-color: #f3e5ab; padding: 10px 20px; border-radius: 12px; min-width: 320px;">
                     <span class="fw-semibold text-dark" style="font-size: 15px;">Pending Applications</span>
                     <span class="fw-bold text-dark" style="font-size: 18px;">{{ $pendingApplications }}</span>
                 </div>
 
                 <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card"
+                    data-filter="completed"
                     style="background-color: #d4e7c5; padding: 10px 20px; border-radius: 12px; min-width: 320px;">
                     <span class="fw-semibold text-dark" style="font-size: 15px;">Completed Applications</span>
                     <span class="fw-bold text-dark" style="font-size: 18px;">{{ $completedApplications }}</span>
                 </div>
 
                 <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card"
+                    data-filter="rejected"
                     style="background-color: #d1d9e9; padding: 10px 20px; border-radius: 12px; min-width: 320px">
                     <span class="fw-semibold text-dark" style="font-size: 15px;">Rejected Applications</span>
                     <span class="fw-bold text-dark" style="font-size: 18px;">{{ $rejectedApplications }}</span>
@@ -57,53 +60,55 @@
                         <div class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
                             <h4 class="card-title text-success-1000 mb-0">All Applications</h4>
 
-                         @if (auth()->user()->hasRole('Admin'))
-<div class="d-flex justify-content-center">
-    <div class="dropdown dropdown-hover position-relative">
+                            @if (auth()->user()->hasRole('Admin'))
+                                <div class="d-flex justify-content-center">
+                                    <div class="dropdown dropdown-hover position-relative">
 
-        <button class="btn btn-success dropdown-toggle" type="button">
-            {{ $selectedUserId
-                ? $users->where('id', $selectedUserId)->first()->name ?? 'Select User'
-                : 'All Users' }}
-        </button>
+                                        <button class="btn btn-success dropdown-toggle" type="button">
+                                            {{ $selectedUserId ? $users->where('id', $selectedUserId)->first()->name ?? 'Select User' : 'All Users' }}
+                                        </button>
 
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-hover">
-            <li>
-                <a class="dropdown-item" href="{{ route('admin.applications') }}">
-                   All users
-                </a>
-            </li>
+                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-hover">
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('admin.applications') }}">
+                                                    All users
+                                                </a>
+                                            </li>
 
-            @foreach ($users as $user)
-                <li>
-                    <a class="dropdown-item" href="{{ route('admin.applications', ['user_id' => $user->id]) }}">
-                       {{ $user->name }}
-                    </a>
-                </li>
-            @endforeach
-        </ul>
+                                            @foreach ($users as $user)
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.applications', ['user_id' => $user->id]) }}">
+                                                        {{ $user->name }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
 
-    </div>
-</div>
-@endif
+                                    </div>
+                                </div>
+                            @endif
 
-<style>
-/* Hover par show karne ke liye */
-.dropdown-hover:hover > .dropdown-menu-hover {
-    display: block;
-}
+                            <style>
+                                /* Hover par show karne ke liye */
+                                .dropdown-hover:hover>.dropdown-menu-hover {
+                                    display: block;
+                                }
 
-/* Menu ki alignment fix karne ke liye */
-.dropdown-menu-hover {
-    margin-top: 0; /* Gap khatam karne ke liye */
-    right: 0 !important; /* Right side se align karega taake screen se bahar na jaye */
-    left: auto !important; /* Left auto rakhein */
-}
+                                /* Menu ki alignment fix karne ke liye */
+                                .dropdown-menu-hover {
+                                    margin-top: 0;
+                                    /* Gap khatam karne ke liye */
+                                    right: 0 !important;
+                                    /* Right side se align karega taake screen se bahar na jaye */
+                                    left: auto !important;
+                                    /* Left auto rakhein */
+                                }
 
-.dropdown-hover > .dropdown-toggle:active {
-    pointer-events: none;
-}
-</style>
+                                .dropdown-hover>.dropdown-toggle:active {
+                                    pointer-events: none;
+                                }
+                            </style>
                         </div>
 
                         <div class="card-body  ">
@@ -142,7 +147,7 @@
                                             ];
                                         @endphp
                                         @foreach ($applications as $key => $item)
-                                            <tr>
+                                            <tr data-status="{{ $item->status }}">
                                                 {{-- Serial Number --}}
 
                                                 {{-- 1. Application Number --}}
@@ -153,13 +158,13 @@
                                                 {{-- 2. Action --}}
                                                 <td class="text-start">
                                                     <div class="d-flex align-items-center gap-2">
-                                                      @can('edit-application')
-                                                        <a href="{{ route('admin.applications.edit', $item->id) }}"
-    class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center"
-    data-bs-toggle="tooltip" title="Edit">
-    <iconify-icon icon="lucide:edit"></iconify-icon>
-</a>
-@endcan
+                                                        @can('edit-application')
+                                                            <a href="{{ route('admin.applications.edit', $item->id) }}"
+                                                                class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center"
+                                                                data-bs-toggle="tooltip" title="Edit">
+                                                                <iconify-icon icon="lucide:edit"></iconify-icon>
+                                                            </a>
+                                                        @endcan
 
                                                         <button type="button"
                                                             class="w-32-px h-32-px bg-info-focus text-info-main rounded-circle d-inline-flex align-items-center justify-content-center border-0"
@@ -176,7 +181,7 @@
                                                             <iconify-icon icon="mdi:printer-outline"></iconify-icon>
                                                         </a>
 
-                                                        <form action="{{ route('admin.applications.destroy', $item->id) }}"
+                                                        {{-- <form action="{{ route('admin.applications.destroy', $item->id) }}"
                                                             method="POST" class="d-inline">
                                                             @csrf
                                                             @method('DELETE')
@@ -184,7 +189,7 @@
                                                                 class="btn-delete w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center border-0">
                                                                 <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
                                                             </button>
-                                                        </form>
+                                                        </form> --}}
                                                     </div>
                                                 </td>
 
@@ -230,7 +235,7 @@
                                                         <option value="Submitted to Supplier"
                                                             {{ $item->status ==
                                                             'Submitted to
-                                                                                                                                                                                                                                                                                                                                                                                                                        Supplier'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Supplier'
                                                                 ? 'selected'
                                                                 : '' }}>
                                                             Submitted to Supplier</option>
@@ -267,8 +272,7 @@
 
 
                                             <div class="modal fade" id="commentModal{{ $item->id }}" tabindex="-1"
-                                                aria-labelledby="commentModalLabel{{ $item->id }}"
-                                                aria-hidden="true">
+                                                aria-labelledby="commentModalLabel{{ $item->id }}" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                                     <div class="modal-content border-0 shadow-lg  overflow-hidden">
 
@@ -362,7 +366,8 @@
                                                                                     style="width: 48px; height: 48px; object-fit: cover;">
 
                                                                                 <div>
-                                                                                    <h6 class="mb-1 fw-bold text-primary green_color">
+                                                                                    <h6
+                                                                                        class="mb-1 fw-bold text-primary green_color">
                                                                                         {{ $comment->user->name ?? 'User' }}
                                                                                     </h6>
 
@@ -567,5 +572,32 @@
             </script>
 
 
+
+
+            {{-- script for filtering completed pending and rejected  --}}
+
+            <script>
+                document.querySelectorAll('.stat-card').forEach(card => {
+                    card.style.cursor = 'pointer';
+
+                    card.addEventListener('click', function() {
+                        let filter = this.getAttribute('data-filter');
+
+                        document.querySelectorAll('#dataTable tbody tr').forEach(row => {
+                            let dropdown = row.querySelector('.status-dropdown');
+                            let status = dropdown ? dropdown.value : row.getAttribute('data-status');
+
+                            if (filter === 'pending') {
+                                row.style.display = (status !== 'Rejected' && status !== 'Paid') ? '' :
+                                    'none';
+                            } else if (filter === 'completed') {
+                                row.style.display = (status === 'Paid' || status === 'Live') ? '' : 'none';
+                            } else if (filter === 'rejected') {
+                                row.style.display = (status === 'Rejected') ? '' : 'none';
+                            }
+                        });
+                    });
+                });
+            </script>
         </div>
     @endsection

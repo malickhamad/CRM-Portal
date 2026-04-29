@@ -16,8 +16,8 @@
     <meta name="keywords" content="index, page">
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="32x32"
-    href="{{ isset($siteSettings['favicon']) ? asset('storage/' . $siteSettings['favicon']) : asset('asset/backend/images/fivestarlogo.png') }}">    <link href="{{ asset('asset/frontend/css/style.css?v=5.0.0') }}" rel="stylesheet">
-    <title>{{ $siteSettings['site_title'] ?? 'Five Star Solutions' }}</title>
+    href="{{ isset($siteSettings['favicon']) ? asset('storage/' . $siteSettings['favicon']) : asset('asset/backend/images/neomsolutionslogo.png') }}">    <link href="{{ asset('asset/frontend/css/style.css?v=5.0.0') }}" rel="stylesheet">
+    <title>{{ $siteSettings['site_title'] ?? 'Neom Solutions Solutions' }}</title>
 </head>
 
 <body>
@@ -40,7 +40,7 @@
             <div class="main-header">
                 <div class="header-left">
                     <div class="header-logo"><a class="d-flex" href="{{ route('frontend.home') }}">
-                        <img src="{{ isset($siteSettings['site_logo']) && file_exists(storage_path('app/public/' . $siteSettings['site_logo'])) ? asset('storage/' . $siteSettings['site_logo']) : asset('asset/backend/images/fivestarlogo.png') }}"
+                        <img src="{{ isset($siteSettings['site_logo']) && file_exists(storage_path('app/public/' . $siteSettings['site_logo'])) ? asset('storage/' . $siteSettings['site_logo']) : asset('asset/backend/images/neomsolutionslogo.png') }}"
                         alt="Site Logo" height="70" width="300">                            </a>
                         </div>
                     <div class="header-nav">
@@ -98,7 +98,7 @@
         <div class="mobile-header-wrapper-inner">
             <div class="mobile-header-content-area">
                 <div class="mobile-logo"><a class="d-flex" href="{{ route('frontend.home') }}">
-                 <img src="{{ isset($siteSettings['site_logo']) && file_exists(storage_path('app/public/' . $siteSettings['site_logo'])) ? asset('storage/' . $siteSettings['site_logo']) : asset('asset/backend/images/fivestarlogo.png') }}"
+                 <img src="{{ isset($siteSettings['site_logo']) && file_exists(storage_path('app/public/' . $siteSettings['site_logo'])) ? asset('storage/' . $siteSettings['site_logo']) : asset('asset/backend/images/neomsolutionslogo.png') }}"
                         alt="Site Logo" height="100" width="120">
                 </a></div></a></div>
                 <div class="burger-icon"><span class="burger-icon-top"></span><span

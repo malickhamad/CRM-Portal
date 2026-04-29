@@ -17,8 +17,8 @@
     <meta name="keywords" content="index, page">
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="32x32"
-    href="{{ isset($siteSettings['favicon']) ? asset('storage/' . $siteSettings['favicon']) : asset('asset/backend/images/fivestarlogo.png') }}">    <link href="{{ asset('asset/frontend/css/style.css?v=5.0.0') }}" rel="stylesheet">
-    <title>{{ $siteSettings['site_title'] ?? 'Five Star Solutions' }}</title>
+    href="{{ isset($siteSettings['favicon']) ? asset('storage/' . $siteSettings['favicon']) : asset('asset/backend/images/neomsolutionslogo.png') }}">    <link href="{{ asset('asset/frontend/css/style.css?v=5.0.0') }}" rel="stylesheet">
+    <title>{{ $siteSettings['site_title'] ?? 'Neom Solutions Solutions' }}</title>
 </head>
 
 <body>

@@ -33,7 +33,7 @@
                 </div>
                 <div class="card-info">
                   <h6 class="color-brand-1 mb-10">Help &amp; support</h6>
-                  <p class="font-xs color-grey-500">Email<a class="color-success" href="mailto:info@FiveStars.Solutions">info@FiveStars.Solutions</a><br>For help with a current product or service or refer to FAQs and developer tools</p>
+                  <p class="font-xs color-grey-500">Email<a class="color-success" href="mailto:info@neomsolutions.Solutions">info@neomsolutions.Solutions</a><br>For help with a current product or service or refer to FAQs and developer tools</p>
                 </div>
               </div>
             </div>

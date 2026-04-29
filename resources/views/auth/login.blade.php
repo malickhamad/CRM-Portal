@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <link rel="icon" type="image/png" sizes="32x32"
-    href="{{ isset($siteSettings['favicon']) ? asset('storage/' . $siteSettings['favicon']) : asset('asset/backend/images/fivestarlogo.png') }}">    <link href="{{ asset('asset/frontend/css/style.css?v=5.0.0') }}" rel="stylesheet">
-    <title>{{ $siteSettings['site_title'] ?? 'Five Star Solutions' }}</title>
+    href="{{ isset($siteSettings['favicon']) ? asset('storage/' . $siteSettings['favicon']) : asset('asset/backend/images/neomsolutionslogo.png') }}">    <link href="{{ asset('asset/frontend/css/style.css?v=5.0.0') }}" rel="stylesheet">
+    <title>{{ $siteSettings['site_title'] ?? 'Neom Solutions Solutions' }}</title>
         <!-- remix icon font css  -->
   <link rel="stylesheet" href="{{asset('asset/backend/css/remixicon.css')}}">
   <!-- BootStrap css -->

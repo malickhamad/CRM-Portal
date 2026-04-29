@@ -10,7 +10,7 @@ class HomepageSettingsSeeder extends Seeder
     public function run()
     {
         $homepageSettings = [
-            'homepage_section_1_heading' => 'Welcome to Five Star Compliance',
+            'homepage_section_1_heading' => 'Welcome to Neom Solutions Compliance',
             'homepage_section_1_desc' => 'We provide the best compliance services for your business.
             Our expert team ensures that you stay compliant with all regulations.
             With tailored solutions, we help businesses thrive and avoid penalties.

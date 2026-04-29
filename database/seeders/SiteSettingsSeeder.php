@@ -13,17 +13,17 @@ class SiteSettingsSeeder extends Seeder
     {
         $siteSettings = [
             'section' => 'site',
-            'site_logo' => 'asset/backend/images/fivestarlogo.png', // replace with your default image path
-            'favicon' => 'asset/backend/images/fivestarlogo.png', // replace with your default favicon path
-            'site_title' => 'Five Star Compliance',
-            'site_name' => 'Five Star Compliance',
+            'site_logo' => 'asset/backend/images/neomsolutionslogo.png', // replace with your default image path
+            'favicon' => 'asset/backend/images/neomsolutionslogo.png', // replace with your default favicon path
+            'site_title' => 'Neom Solutions Compliance',
+            'site_name' => 'Neom Solutions Compliance',
             'site_slogan' => 'The best site for awesome people!',
             'primary_phone' => '+1 234 567 890',
             'secondary_phone' => '+1 234 567 891',
-            'from_email' => 'no-reply@fivestarcompliance.com',
-            'to_email' => 'support@fivestarcompliance.com',
-            'from_email_name' => 'fivestarcompliance Support',
-            'to_email_name' => 'fivestarcompliance Admin',
+            'from_email' => 'no-reply@neomsolutions.com',
+            'to_email' => 'support@neomsolutions.com',
+            'from_email_name' => 'neomsolutions Support',
+            'to_email_name' => 'neomsolutions Admin',
             'default_currency' => 'USD',
             'street_address' => '123 Awesome St, Suite 101, City, Country',
             'site_google_map' => '<iframe src="https://www.google.com/maps/embed?..."></iframe>',
