@@ -456,7 +456,7 @@ class ApplicationController extends Controller
             ->causedBy(Auth::user())
             ->performedOn($application)
             ->log("Updated application: {$application->application_num}");
-            
+
             // Redirect sback with success message
             return back()->with('sweetalert', [
                 'type' => 'success',
@@ -676,11 +676,11 @@ class ApplicationController extends Controller
         $lastApplication = Application::latest('id')->first();
 
         if (!$lastApplication || empty($lastApplication->application_num)) {
-            return 'APP-001';
+            return '001';
         }
 
         $number = preg_replace('/[^0-9]/', '', (string) $lastApplication->application_num);
-        return 'APP-' . str_pad(((int) $number) + 1, 3, '0', STR_PAD_LEFT);
+        return '' . str_pad(((int) $number) + 1, 3, '0', STR_PAD_LEFT);
     }
 
     public function updateStatus(Request $request, $id)
