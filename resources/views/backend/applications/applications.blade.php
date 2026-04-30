@@ -165,7 +165,15 @@
                                                                 <iconify-icon icon="lucide:edit"></iconify-icon>
                                                             </a>
                                                         @endcan
-
+                                                        @if (auth()->user()->hasRole('Admin'))
+                                                            <button type="button"
+                                                                class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center border-0"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#commissionModal{{ $item->id }}"
+                                                                title="Add Commission">
+                                                                <iconify-icon icon="mdi:cash-plus"></iconify-icon>
+                                                            </button>
+                                                        @endif
                                                         <button type="button"
                                                             class="w-32-px h-32-px bg-info-focus text-info-main rounded-circle d-inline-flex align-items-center justify-content-center border-0"
                                                             data-bs-toggle="modal"
@@ -235,7 +243,7 @@
                                                         <option value="Submitted to Supplier"
                                                             {{ $item->status ==
                                                             'Submitted to
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Supplier'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Supplier'
                                                                 ? 'selected'
                                                                 : '' }}>
                                                             Submitted to Supplier</option>
@@ -270,9 +278,10 @@
                                             </tr>
 
 
-
+                                            {{-- Comment Modal --}}
                                             <div class="modal fade" id="commentModal{{ $item->id }}" tabindex="-1"
-                                                aria-labelledby="commentModalLabel{{ $item->id }}" aria-hidden="true">
+                                                aria-labelledby="commentModalLabel{{ $item->id }}"
+                                                aria-hidden="true">
                                                 <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                                     <div class="modal-content border-0 shadow-lg  overflow-hidden">
 
@@ -412,6 +421,57 @@
                                                                 Close
                                                             </button>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            {{-- Commission Modal --}}
+                                            <div class="modal fade" id="commissionModal{{ $item->id }}"
+                                                tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content border-0 shadow-lg">
+                                                        <form
+                                                            action="{{ route('admin.applications.commission.update', $item->id) }}"
+                                                            method="POST">
+                                                            @csrf
+
+                                                            <div class="modal-header">
+                                                                <h6 class="modal-title">Add Commission -
+                                                                    {{ $item->application_num }}</h6>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal"></button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Commission Amount</label>
+                                                                    <input type="number" step="0.01"
+                                                                        name="commission_amount"
+                                                                        value="{{ $item->commission_amount }}"
+                                                                        class="form-control" required>
+                                                                </div>
+
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Mature Date</label>
+                                                                    <input type="date" name="mature_date"
+                                                                        value="{{ $item->mature_date }}"
+                                                                        class="form-control">
+                                                                </div>
+
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Paid Date</label>
+                                                                    <input type="date" name="paid_date"
+                                                                        value="{{ $item->paid_date }}"
+                                                                        class="form-control">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-success">Save Commission</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>

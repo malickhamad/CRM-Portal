@@ -19,32 +19,49 @@ use Illuminate\Support\Facades\Auth;
 class ApplicationController extends Controller
 {
 
-    private function getCommonStats()
-    {
-        return [
-            'remainingLeads' => Application::whereNotIn('status', ['Paid', 'Rejected'])->count(),
+   private function getCommonStats()
+{
+    $query = Application::query();
 
-            'allSales' => Application::whereIn('status', ['Live', 'Paid'])->count(),
+    if (!auth()->user()->hasRole('Admin')) {
+        $query->where('user_id', auth()->id());
+    }
 
-            'thisMonthSales' => Application::whereIn('status', ['Live', 'Paid'])
-                ->whereMonth('created_at', now()->month)
-                ->whereYear('created_at', now()->year)
-                ->count(),
+    return [
+        'remainingLeads' => (clone $query)
+            ->whereNotIn('status', ['Paid', 'Rejected', 'Live'])
+            ->count(),
 
-            'todayApplications' => Application::whereDate('created_at', today())->count(),
+        'allSales' => (clone $query)
+            ->whereIn('status', ['Live', 'Paid'])
+            ->count(),
 
-            'thisWeekApplications' => Application::whereBetween('created_at', [
+        'thisMonthSales' => (clone $query)
+            ->whereIn('status', ['Live', 'Paid'])
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count(),
+
+        'todayApplications' => (clone $query)
+            ->whereDate('created_at', today())
+            ->count(),
+
+        'thisWeekApplications' => (clone $query)
+            ->whereBetween('created_at', [
                 now()->startOfWeek(),
                 now()->endOfWeek()
-            ])->count(),
+            ])
+            ->count(),
 
-            'thisMonthApplications' => Application::whereMonth('created_at', now()->month)
-                ->whereYear('created_at', now()->year)
-                ->count(),
+        'thisMonthApplications' => (clone $query)
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count(),
 
-            'allApplications' => Application::count(),
-        ];
-    }
+        'allApplications' => (clone $query)
+            ->count(),
+    ];
+}
 
     private function viewWithStats($view, $data = [])
     {
@@ -146,41 +163,46 @@ class ApplicationController extends Controller
         ));
     }
     public function applications(Request $request)
-    {
-        $selectedUserId = $request->user_id;
+{
+    $selectedUserId = $request->user_id;
 
-        $query = Application::with(['user', 'comments.user'])->latest();
+    $baseQuery = Application::query();
 
-        if (!empty($selectedUserId)) {
-            $query->where('user_id', $selectedUserId);
-        }
-
-        $applications = $query->get();
-
-        $pendingApplications = Application::when($selectedUserId, function ($q) use ($selectedUserId) {
-            $q->where('user_id', $selectedUserId);
-        })->whereNotIn('status', ['Paid', 'Rejected'])->count();
-
-        $completedApplications = Application::when($selectedUserId, function ($q) use ($selectedUserId) {
-            $q->where('user_id', $selectedUserId);
-        })->whereIn('status', ['Live', 'Paid'])->count();
-
-        $rejectedApplications = Application::when($selectedUserId, function ($q) use ($selectedUserId) {
-            $q->where('user_id', $selectedUserId);
-        })->where('status', 'Rejected')->count();
-
-        $users = \App\Models\User::orderBy('name')->get(['id', 'name']);
-
-        return view('backend.applications.applications', compact(
-            'applications',
-            'pendingApplications',
-            'completedApplications',
-            'rejectedApplications',
-            'users',
-            'selectedUserId'
-        ));
+    if (!auth()->user()->hasRole('Admin')) {
+        $baseQuery->where('user_id', auth()->id());
+        $selectedUserId = auth()->id();
+    } elseif (!empty($selectedUserId)) {
+        $baseQuery->where('user_id', $selectedUserId);
     }
 
+    $applications = (clone $baseQuery)
+        ->with(['user', 'comments.user'])
+        ->latest()
+        ->get();
+
+    $pendingApplications = (clone $baseQuery)
+        ->whereNotIn('status', ['Paid', 'Rejected', 'Live'])
+        ->count();
+
+    $completedApplications = (clone $baseQuery)
+        ->whereIn('status', ['Live', 'Paid'])
+        ->count();
+
+    $rejectedApplications = (clone $baseQuery)
+        ->where('status', 'Rejected')
+        ->count();
+
+    $users = \App\Models\User::orderBy('name')->get(['id', 'name']);
+
+    return view('backend.applications.applications', compact(
+        'applications',
+        'pendingApplications',
+        'completedApplications',
+        'rejectedApplications',
+        'users',
+        'selectedUserId'
+    ));
+}
     private function normalizeServiceType(?string $serviceType): string
     {
         $value = strtolower(trim((string) $serviceType));
@@ -730,5 +752,67 @@ class ApplicationController extends Controller
             ->header('Pragma', 'public') // Add pragma
             ->header('Expires', '0'); // Disable caching
     }
+
+
+public function updateCommission(Request $request, $id)
+{
+    $request->validate([
+        'commission_amount' => ['required', 'numeric', 'min:0'],
+        'mature_date' => ['nullable', 'date'],
+        'paid_date' => ['nullable', 'date'],
+    ]);
+
+    $application = Application::findOrFail($id);
+
+    // Check if commission already existed
+    $oldCommission = $application->commission_amount;
+    $oldMatureDate = $application->mature_date;
+    $oldPaidDate = $application->paid_date;
+
+    // Update values
+    $application->commission_amount = $request->commission_amount;
+    $application->mature_date = $request->mature_date;
+    $application->paid_date = $request->paid_date;
+
+    // Agar commission pehle finalize/transferred tha
+    // aur admin ne kuch change kiya hai to status reset ho jaye
+    $hasChanged =
+        $oldCommission != $request->commission_amount ||
+        $oldMatureDate != $request->mature_date ||
+        $oldPaidDate != $request->paid_date;
+
+    if ($hasChanged) {
+        $application->payout_status = 'pending';
+        $application->payout_finalized_at = null;
+        $application->payout_finalized_by = null;
+    }
+
+    $application->save();
+
+    return back()->with('success', 'Commission updated successfully.');
+}
+
+
+
+
+public function finalizePayout($id)
+{
+    $application = Application::where('user_id', auth()->id())
+        ->whereNotNull('commission_amount')
+        ->findOrFail($id);
+
+    if ($application->payout_status === 'transferred') {
+        return back()->with('error', 'This payout is already transferred.');
+    }
+
+    $application->payout_status = 'transferred';
+    $application->paid_date = now()->toDateString();
+    $application->payout_finalized_at = now();
+    $application->payout_finalized_by = auth()->id();
+    $application->save();
+
+    return back()->with('success', 'Payout finalized successfully.');
+}
+
 
 }

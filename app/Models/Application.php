@@ -28,7 +28,12 @@ class Application extends Model
         'name_on_account', 'account_number', 'sort_code', 'iban', 'bic', 'name_of_bank',
         'bill_payment_method', 'landlord_name', 'name_of_new_customer', 'status_taken_date',
         'password', 'customer_history',
-        'picture_id', 'inside_outside_pics', 'bill_upload', 'bank_statement', 'additional_uploads', 'status'
+        'picture_id', 'inside_outside_pics', 'bill_upload', 'bank_statement', 'additional_uploads', 'status','commission_amount',
+    'mature_date',
+    'paid_date',
+    'payout_status',
+    'payout_finalized_at',
+    'payout_finalized_by',
     ];
 
     protected $casts = [
@@ -58,4 +63,9 @@ class Application extends Model
     {
         return $this->hasMany(ApplicationComment::class, 'application_id')->latest();
     }
+
+    public function payoutFinalizedBy()
+{
+    return $this->belongsTo(User::class, 'payout_finalized_by');
+}
 }

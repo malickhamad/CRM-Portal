@@ -31,65 +31,91 @@ class DashboardController extends Controller
      */
 
 
-public function index()
+    public function index()
 {
-        $applications = Application::with('user')->get();
-    // Get the current application counts
-    $totalApplications = Application::count();
-    $pendingApplications = Application::where('status', 'pending')->count();
-    $liveApplications = Application::where('status', 'live')->count();
-    $rejectedApplications = Application::where('status', 'rejected')->count();
+    $query = Application::query();
 
-    // Get the previous month's application counts
-    // This is just an example. You might calculate it differently, depending on your database structure.
-    $prevMonthTotalApplications = Application::whereMonth('created_at', now()->subMonth()->month)->count();
-    $prevMonthPendingApplications = Application::where('status', 'pending')
-        ->whereMonth('created_at', now()->subMonth()->month)->count();
-    $prevMonthLiveApplications = Application::where('status', 'live')
-        ->whereMonth('created_at', now()->subMonth()->month)->count();
-    $prevMonthRejectedApplications = Application::where('status', 'rejected')
-        ->whereMonth('created_at', now()->subMonth()->month)->count();
+    if (!auth()->user()->hasRole('Admin')) {
+        $query->where('user_id', auth()->id());
+    }
 
-    // Calculate the percentage change
+    $applications = (clone $query)->with('user')->get();
+
+    $totalApplications = (clone $query)->count();
+    $pendingApplications = (clone $query)->where('status', 'pending')->count();
+    $liveApplications = (clone $query)->where('status', 'live')->count();
+    $rejectedApplications = (clone $query)->where('status', 'rejected')->count();
+
+    $prevMonthTotalApplications = (clone $query)
+        ->whereMonth('created_at', now()->subMonth()->month)
+        ->count();
+
+    $prevMonthPendingApplications = (clone $query)
+        ->where('status', 'pending')
+        ->whereMonth('created_at', now()->subMonth()->month)
+        ->count();
+
+    $prevMonthLiveApplications = (clone $query)
+        ->where('status', 'live')
+        ->whereMonth('created_at', now()->subMonth()->month)
+        ->count();
+
+    $prevMonthRejectedApplications = (clone $query)
+        ->where('status', 'rejected')
+        ->whereMonth('created_at', now()->subMonth()->month)
+        ->count();
+
     $totalApplicationsChange = $this->calculatePercentageChange($totalApplications, $prevMonthTotalApplications);
     $pendingApplicationsChange = $this->calculatePercentageChange($pendingApplications, $prevMonthPendingApplications);
     $liveApplicationsChange = $this->calculatePercentageChange($liveApplications, $prevMonthLiveApplications);
     $rejectedApplicationsChange = $this->calculatePercentageChange($rejectedApplications, $prevMonthRejectedApplications);
 
- // Get the distinct months from the created_at column for the last 6 months
     $months = [];
     $monthLabels = [];
 
-    // Get the last 6 months dynamically
     for ($i = 5; $i >= 0; $i--) {
         $month = Carbon::now()->subMonths($i);
         $months[] = $month->month;
-        $monthLabels[] = $month->format('F');  // Get the month name (e.g., January, February, etc.)
+        $monthLabels[] = $month->format('F');
     }
 
-    // Now fetch the counts for each status (Pending, Live, Rejected) for the last 6 months
     $pendingData = [];
     $liveData = [];
     $rejectedData = [];
 
     foreach ($months as $month) {
-        $pendingData[] = Application::where('status', 'pending')
+        $pendingData[] = (clone $query)
+            ->where('status', 'pending')
             ->whereMonth('created_at', $month)
             ->count();
-        $liveData[] = Application::where('status', 'live')
+
+        $liveData[] = (clone $query)
+            ->where('status', 'live')
             ->whereMonth('created_at', $month)
             ->count();
-        $rejectedData[] = Application::where('status', 'rejected')
+
+        $rejectedData[] = (clone $query)
+            ->where('status', 'rejected')
             ->whereMonth('created_at', $month)
             ->count();
     }
 
     return view('backend.admindashboard', compact(
-        'totalApplications', 'pendingApplications', 'liveApplications', 'rejectedApplications',
-        'totalApplicationsChange', 'pendingApplicationsChange', 'liveApplicationsChange', 'rejectedApplicationsChange', 'applications','monthLabels', 'pendingData', 'liveData', 'rejectedData'
+        'totalApplications',
+        'pendingApplications',
+        'liveApplications',
+        'rejectedApplications',
+        'totalApplicationsChange',
+        'pendingApplicationsChange',
+        'liveApplicationsChange',
+        'rejectedApplicationsChange',
+        'applications',
+        'monthLabels',
+        'pendingData',
+        'liveData',
+        'rejectedData'
     ));
 }
-
 private function calculatePercentageChange($current, $previous)
 {
     if ($previous == 0) {

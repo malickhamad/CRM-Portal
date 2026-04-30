@@ -117,77 +117,77 @@
                                 <tr>
                                     <td width="33.33%">
                                         <span class="field-label">NAME:</span>
-                                        <span class="field-value">{{ $profile->name ?? 'Admin' }}</span>
+                                        <span class="field-value">{{ $profile->name ?? 'N/A' }}</span>
                                     </td>
                                     <td width="33.33%">
                                         <span class="field-label">CODE:</span>
-                                        <span class="field-value">{{ $profile->code ?? '34066' }}</span>
+                                        <span class="field-value">{{ $profile->code ?? 'N/A' }}</span>
                                     </td>
                                     <td width="33.33%">
                                         <span class="field-label">DESIGNATION:</span>
-                                        <span class="field-value">{{ $profile->designation ?? 'CEO' }}</span>
+                                        <span class="field-value">{{ $profile->designation ?? 'N/A' }}</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span class="field-label">STATUS:</span>
-                                        <span class="field-value">{{ $profile->status ?? 'Manager' }}</span>
+                                        <span class="field-value">{{ $profile->status ?? 'N/A' }}</span>
                                     </td>
                                     <td>
                                         <span class="field-label">CNIC NO:</span>
-                                        <span class="field-value">{{ $profile->cnic_no ?? '33230993020' }}</span>
+                                        <span class="field-value">{{ $profile->cnic_no ?? 'N/A' }}</span>
                                     </td>
                                     <td>
                                         <span class="field-label">MOBILE NO:</span>
-                                        <span class="field-value">{{ $profile->mobile_no ?? '3290312099320' }}</span>
+                                        <span class="field-value">{{ $profile->mobile_no ?? 'N/A' }}</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span class="field-label">EMAIL:</span>
-                                        <span class="field-value">{{ $profile->email ?? 'admin@gmail.com' }}</span>
+                                        <span class="field-value">{{ $profile->email ?? 'N/A' }}</span>
                                     </td>
                                     <td>
                                         <span class="field-label">MARITAL STATUS:</span>
-                                        <span class="field-value">{{ $profile->marital_status ?? 'Married' }}</span>
+                                        <span class="field-value">{{ $profile->marital_status ?? 'N/A' }}</span>
                                     </td>
                                     <td>
                                         <span class="field-label">DATE OF BIRTH:</span>
-                                        <span class="field-value">{{ $profile->dob ?? '2026-04-17' }}</span>
+                                        <span class="field-value">{{ $profile->dob ?? 'N/A' }}</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span class="field-label">RELIGION:</span>
-                                        <span class="field-value">{{ $profile->religion ?? 'Islam' }}</span>
+                                        <span class="field-value">{{ $profile->religion ?? 'N/A' }}</span>
                                     </td>
                                     <td>
                                         <span class="field-label">FLOOR:</span>
-                                        <span class="field-value">{{ $profile->floor ?? '1' }}</span>
+                                        <span class="field-value">{{ $profile->floor ?? 'N/A' }}</span>
                                     </td>
                                     <td>
                                         <span class="field-label">SHIFT:</span>
-                                        <span class="field-value">{{ $profile->shift ?? 'Night' }}</span>
+                                        <span class="field-value">{{ $profile->shift ?? 'N/A' }}</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span class="field-label">DEPARTMENT:</span>
-                                        <span class="field-value">{{ $profile->department ?? 'NO' }}</span>
+                                        <span class="field-value">{{ $profile->department ?? 'N/A' }}</span>
                                     </td>
                                     <td>
                                         <span class="field-label">ACCOUNT TITLE:</span>
-                                        <span class="field-value">{{ $profile->account_title ?? 'NO' }}</span>
+                                        <span class="field-value">{{ $profile->account_title ?? 'N/A' }}</span>
                                     </td>
                                     <td>
                                         <span class="field-label">ACCOUNT NUMBER:</span>
-                                        <span class="field-value">{{ $profile->account_number ?? 'NIII' }}</span>
+                                        <span class="field-value">{{ $profile->account_number ?? 'N/A' }}</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">
                                         <span class="field-label">ADDRESS:</span>
-                                        <span class="field-value">{{ $profile->address ?? 'Nill' }}</span>
+                                        <span class="field-value">{{ $profile->address ?? 'N/A' }}</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -208,193 +208,126 @@
 
             <div class="table-wrapper">
 
-                <!-- FEBRUARY -->
-                <div class="commission-card">
-                    <div class="month-title">February 2026</div>
+                @forelse($commissions as $month => $items)
+                    <div class="commission-card">
+                        <div class="month-title">{{ $month }}</div>
 
-                    <div class="table-responsive">
-                        <table class="modern-table">
-                            <thead>
-                                <tr>
-                                    <th>Sr</th>
-                                    <th>Sale No</th>
-                                    <th>Sale Date</th>
-                                    <th>Mature Date</th>
-                                    <th>Paid Date</th>
-                                    <th>Agent</th>
-                                    <th>Business Name</th>
-                                    <th>Service</th>
-                                    <th>Commission</th>
-                                    <th>Payout</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
+                        <div class="table-responsive">
+                            <table class="modern-table">
+                                <thead>
+                                    <tr>
+                                        <th>Sr</th>
+                                        <th>Sale No</th>
+                                        <th>Sale Date</th>
+                                        <th>Mature Date</th>
+                                        <th>Paid Date</th>
+                                        <th>Agent</th>
+                                        <th>Business Name</th>
+                                        <th>Service</th>
+                                        <th>Commission</th>
+                                        <th>Payout</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
 
-                            <tbody>
-                                <tr>
-                                    <td data-label="Sr">1</td>
-                                    <td data-label="Sale No">#550</td>
-                                    <td data-label="Sale Date">28-01-2026</td>
-                                    <td data-label="Mature Date">23-02-2026</td>
-                                    <td data-label="Paid Date">02-03-2026</td>
-                                    <td data-label="Agent">Shoaib Shah</td>
-                                    <td data-label="Business Name">RAJ INTERNATIONAL STORE LTD</td>
-                                    <td data-label="Service">Card Machine</td>
-                                    <td data-label="Commission" class="amount">PKR 76,230</td>
-                                    <td data-label="Payout"><span class="badge success">Finalized</span></td>
-                                    <td data-label="Status"><span class="badge transferred">Transferred</span></td>
-                                </tr>
+                                <tbody>
+                                    @foreach ($items as $key => $item)
+                                        <tr>
+                                            <td data-label="Sr">{{ $key + 1 }}</td>
+                                            <td data-label="Sale No">{{ $item->application_num }}</td>
+                                            <td data-label="Sale Date">
+                                                {{ $item->application_date ? \Carbon\Carbon::parse($item->application_date)->format('d-m-Y') : $item->created_at->format('d-m-Y') }}
+                                            </td>
+                                            <td data-label="Mature Date">
+                                                {{ $item->mature_date ? \Carbon\Carbon::parse($item->mature_date)->format('d-m-Y') : '-' }}
+                                            </td>
+                                            <td data-label="Paid Date">
+                                                {{ $item->paid_date ? \Carbon\Carbon::parse($item->paid_date)->format('d-m-Y') : '-' }}
+                                            </td>
+                                            <td data-label="Agent">
+                                                {{ $item->application_agent ?? ($item->user->name ?? 'N/A') }}</td>
+                                            <td data-label="Business Name">{{ $item->company_name ?? 'N/A' }}</td>
+                                            <td data-label="Service">{{ $item->service_type }}</td>
+                                            <td data-label="Commission" class="amount">
+                                                PKR {{ number_format($item->commission_amount, 0) }}
+                                            </td>
 
-                                <tr>
-                                    <td data-label="Sr">2</td>
-                                    <td data-label="Sale No">#577</td>
-                                    <td data-label="Sale Date">06-02-2026</td>
-                                    <td data-label="Mature Date">26-02-2026</td>
-                                    <td data-label="Paid Date">02-03-2026</td>
-                                    <td data-label="Agent">Shoaib Shah</td>
-                                    <td data-label="Business Name">JTV MANCHESTER LTD</td>
-                                    <td data-label="Service">Card Machine</td>
-                                    <td data-label="Commission" class="amount">PKR 93,654</td>
-                                    <td data-label="Payout"><span class="badge success">Finalized</span></td>
-                                    <td data-label="Status"><span class="badge transferred">Transferred</span></td>
-                                </tr>
+                                            <td data-label="Payout">
+                                                @if ($item->payout_status === 'transferred')
+                                                    <span class="badge success">Finalized</span>
+                                                @else
+                                                    <form
+                                                        action="{{ route('admin.user.commissions.finalize', $item->id) }}"
+                                                        method="POST" class="d-inline payout-form">
+                                                        @csrf
+                                                        <button type="button"
+                                                            class="badge pending border-0 btn-payout-confirm">
+                                                            Finalize for Payout
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </td>
+                                            <script>
+                                                document.querySelectorAll('.btn-payout-confirm').forEach(function(button) {
+                                                    button.addEventListener('click', function(e) {
+                                                        e.preventDefault();
 
-                                <tr>
-                                    <td data-label="Sr">3</td>
-                                    <td data-label="Sale No">#578</td>
-                                    <td data-label="Sale Date">06-02-2026</td>
-                                    <td data-label="Mature Date">26-02-2026</td>
-                                    <td data-label="Paid Date">02-03-2026</td>
-                                    <td data-label="Agent">Shoaib Shah</td>
-                                    <td data-label="Business Name">JTV MANCHESTER LTD</td>
-                                    <td data-label="Service">Card Machine</td>
-                                    <td data-label="Commission" class="amount">PKR 93,654</td>
-                                    <td data-label="Payout"><span class="badge success">Finalized</span></td>
-                                    <td data-label="Status"><span class="badge transferred">Transferred</span></td>
-                                </tr>
+                                                        let form = this.closest('form');
 
-                                <tr>
-                                    <td data-label="Sr">4</td>
-                                    <td data-label="Sale No">#658</td>
-                                    <td data-label="Sale Date">24-02-2026</td>
-                                    <td data-label="Mature Date">26-02-2026</td>
-                                    <td data-label="Paid Date">02-03-2026</td>
-                                    <td data-label="Agent">Shoaib Shah</td>
-                                    <td data-label="Business Name">K & B Food And Wine</td>
-                                    <td data-label="Service">Card Machine</td>
-                                    <td data-label="Commission" class="amount">PKR 93,654</td>
-                                    <td data-label="Payout"><span class="badge success">Finalized</span></td>
-                                    <td data-label="Status"><span class="badge transferred">Transferred</span></td>
-                                </tr>
-                            </tbody>
+                                                        Swal.fire({
+                                                            title: 'Are you sure?',
+                                                            text: "Do you want to finalize this payout?",
+                                                            icon: 'warning',
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: '#16a34a',
+                                                            cancelButtonColor: '#d33',
+                                                            confirmButtonText: 'Yes, Finalize It!'
+                                                        }).then((result) => {
+                                                            if (result.isConfirmed) {
+                                                                form.submit();
+                                                            }
+                                                        });
+                                                    });
+                                                });
+                                            </script>
 
-                            <tfoot>
-                                <tr>
-                                    <td colspan="8">Total</td>
-                                    <td colspan="3">PKR 357,192</td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                            <td data-label="Status">
+                                                @if ($item->payout_status === 'transferred')
+                                                    <span class="badge transferred">Transferred</span>
+                                                @else
+                                                    <span class="badge pending">Pending</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="8">Total</td>
+                                        <td colspan="3">PKR {{ number_format($items->sum('commission_amount'), 0) }}
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
-                </div>
-
-                <!-- MARCH -->
-                <div class="commission-card">
-                    <div class="month-title">March 2026</div>
-
-                    <div class="table-responsive">
-                        <table class="modern-table">
-                            <thead>
-                                <tr>
-                                    <th>Sr</th>
-                                    <th>Sale No</th>
-                                    <th>Sale Date</th>
-                                    <th>Mature Date</th>
-                                    <th>Paid Date</th>
-                                    <th>Agent</th>
-                                    <th>Business Name</th>
-                                    <th>Service</th>
-                                    <th>Commission</th>
-                                    <th>Payout</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td data-label="Sr">1</td>
-                                    <td data-label="Sale No">#592</td>
-                                    <td data-label="Sale Date">11-02-2026</td>
-                                    <td data-label="Mature Date">11-03-2026</td>
-                                    <td data-label="Paid Date">-</td>
-                                    <td data-label="Agent">Shoaib Shah</td>
-                                    <td data-label="Business Name">NSEJAS CALABAR KITCHEN</td>
-                                    <td data-label="Service">Card Machine</td>
-                                    <td data-label="Commission" class="amount">PKR 89,298</td>
-                                    <td data-label="Payout"><span class="badge pending">Finalize for Payout</span></td>
-                                    <td data-label="Status"><span class="badge pending">Pending</span></td>
-                                </tr>
-
-                                <tr>
-                                    <td data-label="Sr">2</td>
-                                    <td data-label="Sale No">#595</td>
-                                    <td data-label="Sale Date">11-02-2026</td>
-                                    <td data-label="Mature Date">11-03-2026</td>
-                                    <td data-label="Paid Date">-</td>
-                                    <td data-label="Agent">Shoaib Shah</td>
-                                    <td data-label="Business Name">Budleigh Mini Super Market</td>
-                                    <td data-label="Service">Card Machine</td>
-                                    <td data-label="Commission" class="amount">PKR 89,298</td>
-                                    <td data-label="Payout"><span class="badge pending">Finalize for Payout</span></td>
-                                    <td data-label="Status"><span class="badge pending">Pending</span></td>
-                                </tr>
-
-                                <tr>
-                                    <td data-label="Sr">3</td>
-                                    <td data-label="Sale No">#619</td>
-                                    <td data-label="Sale Date">16-02-2026</td>
-                                    <td data-label="Mature Date">11-03-2026</td>
-                                    <td data-label="Paid Date">-</td>
-                                    <td data-label="Agent">Shoaib Shah</td>
-                                    <td data-label="Business Name">HOMEBAZAARUK LTD</td>
-                                    <td data-label="Service">Card Machine</td>
-                                    <td data-label="Commission" class="amount">PKR 89,298</td>
-                                    <td data-label="Payout"><span class="badge pending">Finalize for Payout</span></td>
-                                    <td data-label="Status"><span class="badge pending">Pending</span></td>
-                                </tr>
-                            </tbody>
-
-                            <tfoot>
-                                <tr>
-                                    <td colspan="8">Total</td>
-                                    <td colspan="3">PKR 267,894</td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                @empty
+                    <div class="commission-card">
+                        <h5>No commission found.</h5>
                     </div>
-                </div>
+                @endforelse
 
             </div>
 
+
             <style>
-                * {
-                    box-sizing: border-box;
-                }
-
-                body {
-                    margin: 0;
-                    background: #f3f4f6;
-                    font-family: Arial, Helvetica, sans-serif;
-                    color: #111827;
-                }
-
                 .table-wrapper {
                     width: 100%;
-                    /* padding: 24px; */
                 }
 
                 .commission-card {
-                    background: #ffffff;
+                    background: #fff;
                     border-radius: 18px;
                     padding: 24px;
                     margin-bottom: 35px;
@@ -484,11 +417,8 @@
                     font-weight: 800;
                 }
 
-                /* MOBILE RESPONSIVE CARD VIEW */
-                @media (max-width:768px) {
-
+                @media(max-width:768px) {
                     .table-wrapper {
-                        padding: 14px;
                     }
 
                     .commission-card {

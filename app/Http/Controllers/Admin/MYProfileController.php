@@ -3,24 +3,41 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Application;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Profile;
 
 
 class MYProfileController extends Controller
 
 {
     // Show My Profile
-    public function showProfile()
-    {
 
-        $user = Auth::user();
-        $profile = $user->profile ?? new Profile(); // If no profile exists, create an empty one.
-        return view('backend.my-profile.my-profile', compact('user', 'profile'));
+
+  public function showProfile()
+{
+    $user = Auth::user();
+    $profile = $user->profile ?? new Profile();
+
+    $query = Application::with('user')
+        ->whereNotNull('commission_amount');
+
+    if (!auth()->user()->hasRole('Admin')) {
+        $query->where('user_id', auth()->id());
     }
 
+    $commissions = (clone $query)
+        ->orderBy('mature_date', 'desc')
+        ->get()
+        ->groupBy(function ($item) {
+            return optional($item->mature_date)->format('F Y')
+                ?? $item->created_at->format('F Y');
+        });
+
+    return view('backend.my-profile.my-profile', compact('commissions', 'user', 'profile'));
+}
     // Show Edit Profile (allow modification)
     public function editProfile()
     {

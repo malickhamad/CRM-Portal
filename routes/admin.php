@@ -158,4 +158,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
 
 
+    //Commission routes
+Route::post('/admin/applications/{id}/commission', [ApplicationController::class, 'updateCommission'])
+    ->name('applications.commission.update');
+
+Route::get('/my-commissions', [ApplicationController::class, 'showProfile'])
+    ->name('user.commissions');
+
+Route::post('/my-commissions/{id}/finalize', [ApplicationController::class, 'finalizePayout'])
+    ->name('user.commissions.finalize');
+
 });
