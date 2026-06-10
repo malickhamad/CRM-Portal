@@ -224,6 +224,7 @@ class ApplicationController extends Controller
     {
         $rules = [
             'application_agent' => ['required', 'string', 'max:255'],
+            'sale_closer' => ['required', 'string', 'max:255'],
             'service_type' => ['required', 'string'],
             'application_num' => ['required', 'string', 'max:255'],
             'application_date' => ['required', 'date'],
@@ -379,7 +380,7 @@ class ApplicationController extends Controller
     {
         $prepared = $this->prepareRequestData($request);
         $serviceType = $prepared['service_type'] ?? '';
-        $validated = validator($prepared, $this->getValidationRules($serviceType))->validate();
+        // $validated = validator($prepared, $this->getValidationRules($serviceType))->validate();
 
         DB::beginTransaction();
         try {
@@ -457,7 +458,7 @@ class ApplicationController extends Controller
 
         // Get the service type from the request and validate
         $serviceType = $prepared['service_type'] ?? '';
-        validator($prepared, $this->getValidationRules($serviceType))->validate();
+        // validator($prepared, $this->getValidationRules($serviceType))->validate();
 
         DB::beginTransaction();
         try {
@@ -479,7 +480,7 @@ class ApplicationController extends Controller
             ->performedOn($application)
             ->log("Updated application: {$application->application_num}");
 
-            // Redirect sback with success message
+            // Redirect back with success message
             return back()->with('sweetalert', [
                 'type' => 'success',
                 'title' => 'Success',
@@ -519,6 +520,7 @@ class ApplicationController extends Controller
 
         $fields = [
             'application_agent',
+            'sale_closer',
             'application_num',
             'service_type',
             'company_name',

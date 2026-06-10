@@ -1,104 +1,126 @@
 @extends('backend.layouts.app')
 
 @section('content')
-@php
-    $fieldMap = [
-        'new_customer_name' => 'name_of_new_customer',
-    ];
+    @php
+        $fieldMap = [
+            'new_customer_name' => 'name_of_new_customer',
+        ];
 
-    $appValue = function ($name, $default = null) use ($application, $fieldMap) {
-        $attribute = $fieldMap[$name] ?? $name;
-        return old($name, data_get($application, $attribute, $default));
-    };
+        $appValue = function ($name, $default = null) use ($application, $fieldMap) {
+            $attribute = $fieldMap[$name] ?? $name;
+            return old($name, data_get($application, $attribute, $default));
+        };
 
-    $storedFile = function ($path) {
-        return $path ? asset('storage/' . ltrim($path, '/')) : null;
-    };
+        $storedFile = function ($path) {
+            return $path ? asset('storage/' . ltrim($path, '/')) : null;
+        };
 
-    $directorEntries = old('director_name')
-        ? collect(old('director_name'))->map(function ($name, $index) {
-            return [
-                'director_name' => $name,
-                'date_of_birth' => old('director_dob_array.' . $index),
-                'phone_no' => old('director_phone.' . $index),
-                'email_address' => old('director_email.' . $index),
-                'home_address' => old('director_home_address.' . $index),
-            ];
-        })->values()->all()
-        : ($application->directors->map(function ($director) {
-            return [
-                'director_name' => $director->director_name,
-                'date_of_birth' => $director->date_of_birth,
-                'phone_no' => $director->phone_no,
-                'email_address' => $director->email_address,
-                'home_address' => $director->home_address,
-            ];
-        })->values()->all() ?: [[
-            'director_name' => '',
-            'date_of_birth' => '',
-            'phone_no' => '',
-            'email_address' => '',
-            'home_address' => '',
-        ]]);
+        $directorEntries = old('director_name')
+            ? collect(old('director_name'))
+                ->map(function ($name, $index) {
+                    return [
+                        'director_name' => $name,
+                        'date_of_birth' => old('director_dob_array.' . $index),
+                        'phone_no' => old('director_phone.' . $index),
+                        'email_address' => old('director_email.' . $index),
+                        'home_address' => old('director_home_address.' . $index),
+                    ];
+                })
+                ->values()
+                ->all()
+            : ($application->directors
+                ->map(function ($director) {
+                    return [
+                        'director_name' => $director->director_name,
+                        'date_of_birth' => $director->date_of_birth,
+                        'phone_no' => $director->phone_no,
+                        'email_address' => $director->email_address,
+                        'home_address' => $director->home_address,
+                    ];
+                })
+                ->values()
+                ->all() ?: [
+                [
+                    'director_name' => '',
+                    'date_of_birth' => '',
+                    'phone_no' => '',
+                    'email_address' => '',
+                    'home_address' => '',
+                ],
+            ]);
 
-    $gasMeters = old('meters')
-        ?: ($application->meters->where('meter_type', 'gas')->map(function ($meter) {
-            return [
-                'supplier_name' => $meter->supplier_name,
-                'mprn_no' => $meter->mprn_no,
-                'offer_rate' => $meter->offer_rate,
-                'contract_duration' => $meter->contract_duration,
-                'uplift' => $meter->uplift,
-                'customer_no' => $meter->customer_no,
-                'bill_name' => $meter->name_appears_on_bill,
-                'current_meter_read' => $meter->current_meter_read,
-                'meter_serial_no' => $meter->meter_serial_no,
-                'last_bill_amount' => $meter->last_bill_amount,
-                'mode' => $meter->mode,
-            ];
-        })->values()->toArray() ?: [[
-            'supplier_name' => '',
-            'mprn_no' => '',
-            'offer_rate' => '',
-            'contract_duration' => '',
-            'uplift' => '',
-            'customer_no' => '',
-            'bill_name' => '',
-            'current_meter_read' => '',
-            'meter_serial_no' => '',
-            'last_bill_amount' => '',
-            'mode' => '',
-        ]]);
+        $gasMeters =
+            old('meters') ?:
+            ($application->meters
+                ->where('meter_type', 'gas')
+                ->map(function ($meter) {
+                    return [
+                        'supplier_name' => $meter->supplier_name,
+                        'mprn_no' => $meter->mprn_no,
+                        'offer_rate' => $meter->offer_rate,
+                        'contract_duration' => $meter->contract_duration,
+                        'uplift' => $meter->uplift,
+                        'customer_no' => $meter->customer_no,
+                        'bill_name' => $meter->name_appears_on_bill,
+                        'current_meter_read' => $meter->current_meter_read,
+                        'meter_serial_no' => $meter->meter_serial_no,
+                        'last_bill_amount' => $meter->last_bill_amount,
+                        'mode' => $meter->mode,
+                    ];
+                })
+                ->values()
+                ->toArray() ?: [
+                [
+                    'supplier_name' => '',
+                    'mprn_no' => '',
+                    'offer_rate' => '',
+                    'contract_duration' => '',
+                    'uplift' => '',
+                    'customer_no' => '',
+                    'bill_name' => '',
+                    'current_meter_read' => '',
+                    'meter_serial_no' => '',
+                    'last_bill_amount' => '',
+                    'mode' => '',
+                ],
+            ]);
 
-    $elecMeters = old('elec_meters')
-        ?: ($application->meters->where('meter_type', 'electricity')->map(function ($meter) {
-            return [
-                'supplier_name' => $meter->supplier_name,
-                'mpan_top_line' => $meter->mpan_top,
-                'mpan_bottom_line' => $meter->mpan_bottom,
-                'con_duration' => $meter->contract_duration,
-                'offer_rate' => $meter->offer_rate,
-                'name_on_bill' => $meter->name_appears_on_bill,
-                'customer_no' => $meter->customer_no,
-                'meter_serial_no' => $meter->meter_serial_no,
-                'current_meter_read' => $meter->current_meter_read,
-                'mode' => $meter->mode,
-                'last_bill_amount' => $meter->last_bill_amount,
-            ];
-        })->values()->toArray() ?: [[
-            'supplier_name' => '',
-            'mpan_top_line' => '',
-            'mpan_bottom_line' => '',
-            'con_duration' => '',
-            'offer_rate' => '',
-            'name_on_bill' => '',
-            'customer_no' => '',
-            'meter_serial_no' => '',
-            'current_meter_read' => '',
-            'mode' => '',
-            'last_bill_amount' => '',
-        ]]);
-@endphp
+        $elecMeters =
+            old('elec_meters') ?:
+            ($application->meters
+                ->where('meter_type', 'electricity')
+                ->map(function ($meter) {
+                    return [
+                        'supplier_name' => $meter->supplier_name,
+                        'mpan_top_line' => $meter->mpan_top,
+                        'mpan_bottom_line' => $meter->mpan_bottom,
+                        'con_duration' => $meter->contract_duration,
+                        'offer_rate' => $meter->offer_rate,
+                        'name_on_bill' => $meter->name_appears_on_bill,
+                        'customer_no' => $meter->customer_no,
+                        'meter_serial_no' => $meter->meter_serial_no,
+                        'current_meter_read' => $meter->current_meter_read,
+                        'mode' => $meter->mode,
+                        'last_bill_amount' => $meter->last_bill_amount,
+                    ];
+                })
+                ->values()
+                ->toArray() ?: [
+                [
+                    'supplier_name' => '',
+                    'mpan_top_line' => '',
+                    'mpan_bottom_line' => '',
+                    'con_duration' => '',
+                    'offer_rate' => '',
+                    'name_on_bill' => '',
+                    'customer_no' => '',
+                    'meter_serial_no' => '',
+                    'current_meter_read' => '',
+                    'mode' => '',
+                    'last_bill_amount' => '',
+                ],
+            ]);
+    @endphp
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -125,7 +147,7 @@
 
 
             {{-- leads and sales info --}}
-         @include('backend.layouts.partials.leads-sales-cards')
+            @include('backend.layouts.partials.leads-sales-cards')
 
             <div class="container-fluid bg-white px-3 py-5">
 
@@ -145,7 +167,7 @@
                             Back
                         </a>
                     </div>
-@include('backend.layouts.partials.application-summary-cards')
+                    @include('backend.layouts.partials.application-summary-cards')
                 </div>
                 <!-- HEADER -->
 
@@ -158,21 +180,28 @@
                     @method('PUT')
 
                     <!-- APPLICATION Form -->
-                    <div class="form-section mb-3">
+                      <div class="form-section mb-3">
                         <div class="section-title"><span>Application Form</span></div>
-                        <div class="row g-3 align-items-center">
-                            <div class="col-md-3 ">
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+
+                            <div class="col-md-2">
                                 <label>Application Agent <span class="text-danger">:*</span></label>
                             </div>
-                            <div class="col-md-9">
-                                <select class="form-select" name="application_agent" required>
-                                    <option disabled {{ $appValue('application_agent') ? '' : 'selected' }}>Select Agent</option>
-                                    <option {{ (string) $appValue('application_agent') === 'Ali Hassan' ? 'selected' : '' }}>Ali Hassan</option>
-                                    <option {{ (string) $appValue('application_agent') === 'Usman Khan' ? 'selected' : '' }}>Usman Khan</option>
-                                    <option {{ (string) $appValue('application_agent') === 'Sara Ahmed' ? 'selected' : '' }}>Sara Ahmed</option>
-                                </select>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" name="application_agent" class="form-control"
+                                    placeholder="Enter Agent Name"
+                                    value="{{ old('application_agent', $application->application_agent ?? '') }}" required>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Sale Closer <span class="text-danger">:*</span></label>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" name="sale_closer" class="form-control"
+                                    placeholder="Enter Sale Closer Name"
+                                    value="{{ old('sale_closer', $application->sale_closer ?? '') }}" required>
                             </div>
                         </div>
+
                     </div>
 
                     <!-- CUSTOMER DETAIL -->
@@ -230,7 +259,8 @@
 
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="business_address" class="form-control border-end-0"
-                                    placeholder="Enter business address" required value="{{ $appValue('business_address') }}">
+                                    placeholder="Enter business address" required
+                                    value="{{ $appValue('business_address') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-geo-alt"></i>
                                 </span>
@@ -240,7 +270,7 @@
 
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="email" name="email_address" class="form-control border-end-0"
-                                    placeholder="example@email.com" required value="{{ $appValue('email_address') }}">
+                                    placeholder="Enter email" required value="{{ $appValue('email_address') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-envelope"></i>
                                 </span>
@@ -273,9 +303,9 @@
                             <div class="col-md-2"><label>Director DOB <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                  <input type="date" name="director_dob_single"
-    class="form-control border-end-0"
-    value="{{ \Carbon\Carbon::parse($appValue('director_dob_single'))->format('Y-m-d') }}" required>
+                                <input type="date" name="director_dob_single" class="form-control border-end-0"
+                                    value="{{ \Carbon\Carbon::parse($appValue('director_dob_single'))->format('Y-m-d') }}"
+                                    required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar"></i>
                                 </span>
@@ -303,8 +333,8 @@
                             </div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" name="application_num" class="form-control border-end-0"
-                                    readonly required value="{{ $appValue('application_num') }}">
+                                <input type="text" name="application_num" class="form-control border-end-0" readonly
+                                    required value="{{ $appValue('application_num') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-hash"></i>
                                 </span>
@@ -313,8 +343,8 @@
                             <div class="col-md-2"><label>Service</label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control border-end-0" name="service_type"
-                                    readonly required value="{{ $appValue('service_type') }}">
+                                <input type="text" class="form-control border-end-0" name="service_type" readonly
+                                    required value="{{ $appValue('service_type') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-credit-card"></i>
                                 </span>
@@ -326,9 +356,9 @@
                             </div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" name="application_date"
-    class="form-control border-end-0"
-    value="{{ \Carbon\Carbon::parse($appValue('application_date'))->format('Y-m-d') }}" required>
+                                <input type="date" name="application_date" class="form-control border-end-0"
+                                    value="{{ \Carbon\Carbon::parse($appValue('application_date'))->format('Y-m-d') }}"
+                                    required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar"></i>
                                 </span>
@@ -337,7 +367,8 @@
                             <div class="col-md-2"><label>SPID <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="number" name="spid" class="form-control border-end-0" required value="{{ $appValue('spid') }}">
+                                <input type="number" name="spid" class="form-control border-end-0" required
+                                    value="{{ $appValue('spid') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-123"></i>
                                 </span>
@@ -350,8 +381,10 @@
                             <div class="col-md-4 d-flex align-items-center">
                                 <select class="form-select border-end-0" name="brand" required>
                                     <option disabled {{ $appValue('brand') ? '' : 'selected' }}>Select Brand</option>
-                                    <option {{ (string) $appValue('brand') === 'Verifone' ? 'selected' : '' }}>Verifone</option>
-                                    <option {{ (string) $appValue('brand') === 'Ingenico' ? 'selected' : '' }}>Ingenico</option>
+                                    <option {{ (string) $appValue('brand') === 'Verifone' ? 'selected' : '' }}>Verifone
+                                    </option>
+                                    <option {{ (string) $appValue('brand') === 'Ingenico' ? 'selected' : '' }}>Ingenico
+                                    </option>
                                     <option {{ (string) $appValue('brand') === 'PAX' ? 'selected' : '' }}>PAX</option>
                                 </select>
                                 <span class="icon-box border-start-0">
@@ -364,7 +397,8 @@
                             <div class="col-md-2"><label>Comment</label></div>
 
                             <div class="col-md-10 d-flex align-items-center">
-                                <input type="text" name="comment" class="form-control border-end-0" value="{{ $appValue('comment') }}">
+                                <input type="text" name="comment" class="form-control border-end-0"
+                                    value="{{ $appValue('comment') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-chat-left-text"></i>
                                 </span>
@@ -382,7 +416,8 @@
                             <div class="col-md-2"><label>Name On Account</label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input name="name_on_account" class="form-control border-end-0"
-                                    placeholder="Enter Name On Account" required value="{{ $appValue('name_on_account') }}">
+                                    placeholder="Enter Name On Account" required
+                                    value="{{ $appValue('name_on_account') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-person"></i>
                                 </span>
@@ -391,7 +426,8 @@
                             <div class="col-md-2"><label>Account Number</label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input name="account_number" class="form-control border-end-0"
-                                    placeholder="Enter Account Number" required value="{{ $appValue('account_number') }}">
+                                    placeholder="Enter Account Number" required
+                                    value="{{ $appValue('account_number') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-hash"></i>
                                 </span>
@@ -408,8 +444,8 @@
 
                             <div class="col-md-2"><label>IBAN</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input name="iban" class="form-control border-end-0" placeholder="Enter IBAN"
-                                    required value="{{ $appValue('iban') }}">
+                                <input name="iban" class="form-control border-end-0" placeholder="Enter IBAN" required
+                                    value="{{ $appValue('iban') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-credit-card-2-front"></i>
                                 </span>
@@ -417,7 +453,8 @@
 
                             <div class="col-md-2"><label>BIC</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input name="bic" class="form-control border-end-0" placeholder="Enter BIC" value="{{ $appValue('bic') }}">
+                                <input name="bic" class="form-control border-end-0" placeholder="Enter BIC"
+                                    value="{{ $appValue('bic') }}">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-bank"></i>
                                 </span>
@@ -451,7 +488,8 @@
                                     </div>
                                     @if ($application->picture_id)
                                         <div class="mt-2">
-                                            <a href="{{ $storedFile($application->picture_id) }}" target="_blank">View Current File</a>
+                                            <a href="{{ $storedFile($application->picture_id) }}" target="_blank">View
+                                                Current File</a>
                                         </div>
                                     @endif
                                 </div>
@@ -464,7 +502,8 @@
                                     </div>
                                     @if ($application->inside_outside_pics)
                                         <div class="mt-2">
-                                            <a href="{{ $storedFile($application->inside_outside_pics) }}" target="_blank">View Current File</a>
+                                            <a href="{{ $storedFile($application->inside_outside_pics) }}"
+                                                target="_blank">View Current File</a>
                                         </div>
                                     @endif
                                 </div>
@@ -477,7 +516,8 @@
                                     </div>
                                     @if ($application->bill_upload)
                                         <div class="mt-2">
-                                            <a href="{{ $storedFile($application->bill_upload) }}" target="_blank">View Current File</a>
+                                            <a href="{{ $storedFile($application->bill_upload) }}" target="_blank">View
+                                                Current File</a>
                                         </div>
                                     @endif
                                 </div>
@@ -491,7 +531,8 @@
                                     </div>
                                     @if ($application->bank_statement)
                                         <div class="mt-2">
-                                            <a href="{{ $storedFile($application->bank_statement) }}" target="_blank">View Current File</a>
+                                            <a href="{{ $storedFile($application->bank_statement) }}"
+                                                target="_blank">View Current File</a>
                                         </div>
                                     @endif
                                 </div>

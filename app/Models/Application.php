@@ -15,7 +15,7 @@ class Application extends Model
 
     protected $fillable = [
         'user_id',
-        'application_agent', 'application_num', 'service_type',
+        'application_agent', 'sale_closer', 'application_num', 'service_type',
         'company_name', 'trading_name', 'business_entity', 'business_nature',
         'title', 'merchant_full_name', 'first_name', 'last_name', 'position',
         'email_address', 'phone_number', 'mobile_no', 'landline_no', 'contact_person_name',

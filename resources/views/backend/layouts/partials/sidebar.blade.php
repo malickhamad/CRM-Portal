@@ -10,7 +10,7 @@
     </button>
     <div class="align-center mr-3">
         <a href="{{ url('/') }}">
-            <img src="{{ isset($siteSettings['site_logo']) && file_exists(storage_path('app/public/' . $siteSettings['site_logo'])) ? asset('storage/' . $siteSettings['site_logo']) : asset('asset/backend/images/neomsolutionslogo.png') }}"
+            <img src="{{ isset($siteSettings['site_logo']) && file_exists(storage_path('app/public/' . $siteSettings['site_logo'])) ? asset('storage/' . $siteSettings['site_logo']) : asset('asset/backend/images/neomsolutionslog.png') }}"
                 alt="Site Logo" style="height: 5rem; margin-top: 0.6rem;">
         </a>
 

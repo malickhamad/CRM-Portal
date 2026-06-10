@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
             $table->string('application_agent')->nullable();
+            $table->string('sale_closer')->nullable();
             $table->string('application_num')->nullable();
             $table->string('service_type')->nullable();
              $table->string('status')->nullable()->default('Pending');

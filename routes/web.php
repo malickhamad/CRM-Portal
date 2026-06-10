@@ -70,7 +70,7 @@ Route::get('/ajax/chatify-unread-count', function () {
        if (!request()->expectsJson()) {
         return redirect()->route('dashboard');
     }
-    
+
     return response()->json([
         'total_unread' => DB::table('ch_messages')
             ->where('to_id', auth()->id())

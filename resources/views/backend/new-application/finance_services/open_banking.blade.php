@@ -63,18 +63,26 @@
                     <!-- APPLICATION Form -->
                     <div class="form-section mb-3">
                         <div class="section-title"><span>Application Form</span></div>
-                        <div class="row g-3 align-items-center">
-                            <div class="col-md-3 "><label>Application Agent <span class="text-danger">:*</span></label>
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+
+                            <div class="col-md-2">
+                                <label>Application Agent <span class="text-danger">:*</span></label>
                             </div>
-                            <div class="col-md-9">
-                                <select class="form-select" name="application_agent" required>
-                                    <option disabled selected>Please Select</option>
-                                    <option>Ali Hassan</option>
-                                    <option>Usman Khan</option>
-                                    <option>Sara Ahmed</option>
-                                </select>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" name="application_agent" class="form-control"
+                                    placeholder="Enter Agent Name"
+                                    value="{{ old('application_agent', $application->application_agent ?? '') }}" required>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Sale Closer <span class="text-danger">:*</span></label>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" name="sale_closer" class="form-control"
+                                    placeholder="Enter Sale Closer Name"
+                                    value="{{ old('sale_closer', $application->sale_closer ?? '') }}" required>
                             </div>
                         </div>
+
                     </div>
 
                     <!-- Name DETAILS -->
@@ -134,7 +142,7 @@
 
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="email" class="form-control border-end-0" name="email_address" required
-                                    placeholder="example@email.com">
+                                    placeholder="Enter email">
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-envelope"></i>
                                 </span>

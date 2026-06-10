@@ -158,20 +158,30 @@
                     @method('PUT')
 
                     <!-- APPLICATION Form -->
-                    <div class="form-section mb-3">
+                      <div class="form-section mb-3">
                         <div class="section-title"><span>Application Form</span></div>
-                        <div class="row g-3 align-items-center">
-                            <div class="col-md-3"><label>Application Agent <span class="text-danger">:*</span></label></div>
-                            <div class="col-md-9">
-                                <select class="form-select" name="application_agent" required>
-                                    <option disabled {{ $appValue('application_agent') ? '' : 'selected' }}>Select Agent</option>
-                                    <option value="Ali Hassan" {{ (string) $appValue('application_agent') === 'Ali Hassan' ? 'selected' : '' }}>Ali Hassan</option>
-                                    <option value="Usman Khan" {{ (string) $appValue('application_agent') === 'Usman Khan' ? 'selected' : '' }}>Usman Khan</option>
-                                    <option value="Sara Ahmed" {{ (string) $appValue('application_agent') === 'Sara Ahmed' ? 'selected' : '' }}>Sara Ahmed</option>
-                                </select>
+                        <div class="row g-3 align-items-center mb-2 pb-2">
+
+                            <div class="col-md-2">
+                                <label>Application Agent <span class="text-danger">:*</span></label>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" name="application_agent" class="form-control"
+                                    placeholder="Enter Agent Name"
+                                    value="{{ old('application_agent', $application->application_agent ?? '') }}" required>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Sale Closer <span class="text-danger">:*</span></label>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" name="sale_closer" class="form-control"
+                                    placeholder="Enter Sale Closer Name"
+                                    value="{{ old('sale_closer', $application->sale_closer ?? '') }}" required>
                             </div>
                         </div>
+
                     </div>
+
 
                     <!-- CUSTOMER DETAIL -->
                     <div class="form-section mb-3">
@@ -222,7 +232,7 @@
                             <div class="col-md-2"><label>Email Address <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="email" name="email_address" class="form-control border-end-0"
-                                    placeholder="example@email.com" required value="{{ $appValue('email_address') }}">
+                                    placeholder="Enter email" required value="{{ $appValue('email_address') }}">
                                 <span class="icon-box border-start-0"><i class="bi bi-envelope"></i></span>
                             </div>
                         </div>

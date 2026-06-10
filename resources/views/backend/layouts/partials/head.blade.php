@@ -4,7 +4,7 @@
 
   <!-- favicon  -->
 <link rel="icon" type="image/png" sizes="32x32"
-      href="{{ isset($siteSettings['favicon']) ? asset('storage/' . $siteSettings['favicon']) : asset('asset/backend/images/neomsolutionslogo.png') }}">
+      href="{{ isset($siteSettings['favicon']) ? asset('storage/' . $siteSettings['favicon']) : asset('asset/backend/images/neomsolutionslog.png') }}">
 
 
   <!-- remix icon font css  -->
