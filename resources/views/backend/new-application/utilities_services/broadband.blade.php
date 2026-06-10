@@ -26,7 +26,7 @@
 
 
             {{-- leads and sales info --}}
-           @include('backend.layouts.partials.leads-sales-cards')
+            @include('backend.layouts.partials.leads-sales-cards')
 
             <div class="container-fluid bg-white px-3 py-5">
 
@@ -47,7 +47,7 @@
                         </a>
                     </div>
 
-                   @include('backend.layouts.partials.application-summary-cards')
+                    @include('backend.layouts.partials.application-summary-cards')
                 </div>
                 <!-- HEADER -->
 
@@ -58,7 +58,7 @@
                     @csrf
 
                     <!-- APPLICATION Form -->
-                   <div class="form-section mb-3">
+                    <div class="form-section mb-3">
                         <div class="section-title"><span>Application Form</span></div>
                         <div class="row g-3 align-items-center mb-2 pb-2">
 
@@ -155,7 +155,8 @@
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Director DOB <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" name="director_dob_single" class="form-control border-end-0" required>
+                                <input type="date" name="director_dob_single" class="form-control border-end-0"
+                                    required>
                                 <span class="icon-box border-start-0"><i class="bi bi-calendar"></i></span>
                             </div>
 
@@ -174,7 +175,7 @@
 
                         <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Application Num <span class="text-danger">:*</span></label></div>
-                             <div class="col-md-4 d-flex align-items-center">
+                            <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="application_num" class="form-control border-end-0"
                                     value="{{ $nextNum }}" readonly required>
                                 <span class="icon-box border-start-0">
@@ -198,16 +199,17 @@
                                 <span class="icon-box border-start-0"><i class="bi bi-calendar"></i></span>
                             </div>
 
-                            <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <select name="brand" class="form-select border-end-0" required>
-                                    <option disabled selected>Select Brand</option>
-                                    <option value="Verifone">Verifone</option>
-                                    <option value="Ingenico">Ingenico</option>
-                                    <option value="PAX">PAX</option>
-                                </select>
-                                <span class="icon-box border-start-0"><i class="bi bi-bag"></i></span>
-                            </div>
+                                 <div class="col-md-2">
+    <label>Brand <span class="text-danger">:*</span></label>
+</div>
+<div class="col-md-4 d-flex align-items-center">
+    <input type="text" name="brand" class="form-control border-end-0"
+        placeholder="Enter Brand "
+        value="{{ old('brand', $application->brand ?? '') }}" required>
+    <span class="icon-box border-start-0">
+        <i class="bi bi-bag"></i>
+    </span>
+</div>
                         </div>
 
                         <div class="row g-3 align-items-center mb-2">
@@ -241,15 +243,13 @@
 
                             <div class="col-md-2"><label>Sort Code</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input name="sort_code" class="form-control border-end-0"
-                                    placeholder="Enter Sort Code">
+                                <input name="sort_code" class="form-control border-end-0" placeholder="Enter Sort Code">
                                 <span class="icon-box border-start-0"><i class="bi bi-diagram-3"></i></span>
                             </div>
 
                             <div class="col-md-2"><label>IBAN</label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input name="iban" class="form-control border-end-0"
-                                    placeholder="Enter IBAN">
+                                <input name="iban" class="form-control border-end-0" placeholder="Enter IBAN">
                                 <span class="icon-box border-start-0"><i class="bi bi-credit-card-2-front"></i></span>
                             </div>
 

@@ -160,4 +160,5 @@
     $('#dataTable').on('draw.dt', function () {
         Iconify.scan();
     });
+    
 </script>

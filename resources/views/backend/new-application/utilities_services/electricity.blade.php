@@ -102,57 +102,71 @@
                             </div>
                         </div>
 
-                        <div class="row g-3 align-items-center mb-2 pb-2">
+                       <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Business Entity <span class="text-danger">:*</span></label></div>
-                            <div class="col-md-4">
-                                <select class="form-select" name="business_entity" required>
-                                    <option disabled selected>Please Select</option>
-                                                                        <option  selected>Business</option>
-                                    <option  selected>Individual</option>
-
-                                </select>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" name="business_entity" class="form-control border-end-0"
+                                    placeholder="Enter business entity "
+                                    value="{{ old('business_entity', $application->business_entity ?? '') }}" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-diagram-3"></i>
+                                </span>
                             </div>
 
                             <div class="col-md-2"><label>Business Nature <span class="text-danger">:*</span></label></div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" name="business_nature" required>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" name="business_nature" class="form-control border-end-0"
+                                    placeholder="Enter business nature "
+                                    value="{{ old('business_nature', $application->business_nature ?? '') }}" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-briefcase"></i>
+                                </span>
                             </div>
                         </div>
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Title <span class="text-danger">:*</span></label></div>
-                            <div class="col-md-4">
-                                <select class="form-select" name="title" required>
-                                    <option disabled selected>Please Select</option>
-                                    <option>Mr.</option>
-                                    <option>Mrs.</option>
-                                    <option>Miss.</option>
-                                </select>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" name="title" class="form-control border-end-0"
+                                    placeholder="Enter title " value="{{ old('title', $application->title ?? '') }}"
+                                    required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-person-badge"></i>
+                                </span>
                             </div>
 
-                            <div class="col-md-2"><label>Merchant Full Name <span class="text-danger">:*</span></label>
+                            <div class="col-md-2"><label>Merchant Full Name<span class="text-danger">:*</span></label>
                             </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" name="merchant_full_name" required>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" name="merchant_full_name" class="form-control border-end-0"
+                                    placeholder="Enter full name"
+                                    value="{{ old('merchant_full_name', $application->merchant_full_name ?? '') }}"
+                                    required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-person"></i>
+                                </span>
                             </div>
                         </div>
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Position <span class="text-danger">:*</span></label></div>
-                            <div class="col-md-4">
-                                <select class="form-select" name="position" required>
-                                    <option disabled selected>Please Select</option>
-                                    <option>Owner</option>
-                                    <option>Manager</option>
-                                    <option>Employee</option>
-                                </select>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" name="position" class="form-control border-end-0"
+                                    placeholder="Enter position "
+                                    value="{{ old('position', $application->position ?? '') }}" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-people"></i>
+                                </span>
                             </div>
 
                             <div class="col-md-2"><label>Email Address <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="email" class="form-control" placeholder="Enter email"
-                                    name="email_address" required>
-                                <span class="icon-box border-start-0"><i class="bi bi-envelope"></i></span>
+                                <input type="email" name="email_address" class="form-control border-end-0"
+                                    placeholder="Enter email"
+                                    value="{{ old('email_address', $application->email_address ?? '') }}" required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
                             </div>
                         </div>
 
@@ -261,15 +275,17 @@
                         </div>
 
                         <div class="row g-3 align-items-center mb-2">
-                            <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
-                            <div class="col-md-4">
-                                <select class="form-select" name="brand" required>
-                                    <option disabled selected>Select Brand</option>
-                                    <option>Verifone</option>
-                                    <option>Ingenico</option>
-                                    <option>PAX</option>
-                                </select>
-                            </div>
+                                 <div class="col-md-2">
+    <label>Brand <span class="text-danger">:*</span></label>
+</div>
+<div class="col-md-4 d-flex align-items-center">
+    <input type="text" name="brand" class="form-control border-end-0"
+        placeholder="Enter Brand "
+        value="{{ old('brand', $application->brand ?? '') }}" required>
+    <span class="icon-box border-start-0">
+        <i class="bi bi-bag"></i>
+    </span>
+</div>
 
                             <div class="col-md-2"><label>Comment</label></div>
                             <div class="col-md-4 d-flex align-items-center">

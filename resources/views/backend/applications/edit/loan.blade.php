@@ -451,18 +451,17 @@
                         </div>
 
                         <div class="row g-3 align-items-center mb-2">
-                            <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
-                            <div class="col-md-4 d-flex align-items-center">
-                                <select class="form-select border-end-0" name="brand" required>
-                                    <option disabled {{ $appValue('brand') ? '' : 'selected' }}>Please Select</option>
-                                    <option {{ (string) $appValue('brand') === 'Verifone' ? 'selected' : '' }}>Verifone</option>
-                                    <option {{ (string) $appValue('brand') === 'Ingenico' ? 'selected' : '' }}>Ingenico</option>
-                                    <option {{ (string) $appValue('brand') === 'PAX' ? 'selected' : '' }}>PAX</option>
-                                </select>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-bag"></i>
-                                </span>
-                            </div>
+                                 <div class="col-md-2">
+    <label>Brand <span class="text-danger">:*</span></label>
+</div>
+<div class="col-md-4 d-flex align-items-center">
+    <input type="text" name="brand" class="form-control border-end-0"
+        placeholder="Enter Brand "
+        value="{{ old('brand', $application->brand ?? '') }}" required>
+    <span class="icon-box border-start-0">
+        <i class="bi bi-bag"></i>
+    </span>
+</div>
 
                             <div class="col-md-2"><label>Card Machine Details</label></div>
                             <div class="col-md-4 d-flex align-items-center">

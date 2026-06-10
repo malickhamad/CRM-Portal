@@ -34,14 +34,7 @@ class UserPermissionSeeder extends Seeder
          //Assign permissions to User role
          $userPermissions = [
 
-            'user-list',
-           'user-create',
-           'user-edit',
-           'user-delete' ,
-           'assessment-user',
-            'user-subscription',
-           'reports',
-           'practice-info',
+        'new-application', 'find-application',
          ];
          $userRole->syncPermissions($userPermissions);
     }

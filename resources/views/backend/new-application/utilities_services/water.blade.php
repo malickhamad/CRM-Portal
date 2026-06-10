@@ -26,7 +26,7 @@
 
 
             {{-- leads and sales info --}}
-         @include('backend.layouts.partials.leads-sales-cards')
+            @include('backend.layouts.partials.leads-sales-cards')
 
             <div class="container-fluid bg-white px-3 py-5">
 
@@ -46,7 +46,7 @@
                             Back
                         </a>
                     </div>
-@include('backend.layouts.partials.application-summary-cards')
+                    @include('backend.layouts.partials.application-summary-cards')
                 </div>
                 <!-- HEADER -->
 
@@ -180,7 +180,8 @@
                             <div class="col-md-2"><label>Director DOB <span class="text-danger">:*</span></label></div>
 
                             <div class="col-md-4 d-flex align-items-center">
-                                <input type="date" name="director_dob_single" class="form-control border-end-0" required>
+                                <input type="date" name="director_dob_single" class="form-control border-end-0"
+                                    required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-calendar"></i>
                                 </span>
@@ -248,15 +249,13 @@
                         </div>
 
                         <div class="row g-3 align-items-center mb-2">
-                            <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
-
+                            <div class="col-md-2">
+                                <label>Brand <span class="text-danger">:*</span></label>
+                            </div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <select class="form-select border-end-0" name="brand" required>
-                                    <option disabled selected>Select Brand</option>
-                                    <option>Verifone</option>
-                                    <option>Ingenico</option>
-                                    <option>PAX</option>
-                                </select>
+                                <input type="text" name="brand" class="form-control border-end-0"
+                                    placeholder="Enter Brand " value="{{ old('brand', $application->brand ?? '') }}"
+                                    required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-bag"></i>
                                 </span>

@@ -28,28 +28,8 @@ class CreateAdminUserSeeder extends Seeder
 
         // Define admin permissions
         $adminPermissions = [
-           'user-list',
-'admin-reports',
-'user-create',
-'user-edit',
-'user-delete',
-'role-list',
-'role-create',
-'role-edit',
-'role-delete',
-'faqs',
-'contact-us',
-'settings',
-'activity-logs',
-'new-application',
-'edit-application',
-'delete-application',
-'view-application',
-'find-application',
-'logs',
-'permissions',
-'users',
-'roles',
+            'role-list', 'role-create', 'role-edit', 'role-delete',
+           'faqs', 'reports', 'contact-us', 'settings','activity-logs','new-application', 'edit-application', 'delete-application', 'view-application', 'find-application','logs','permissions','users','roles',
 
         ];
 

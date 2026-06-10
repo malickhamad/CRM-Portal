@@ -109,28 +109,20 @@
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Business Entity <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
-                                <select name="business_entity" class="form-select border-end-0" required>
-                                    <option disabled selected>Select</option>
-                                    <option value="Sole Trader">Sole Trader</option>
-                                    <option value="Partnership">Partnership</option>
-                                    <option value="Limited Company">Limited Company</option>
-                                </select>
+                                <input type="text" name="business_entity" class="form-control border-end-0"
+                                    placeholder="Enter business entity "
+                                    value="{{ old('business_entity', $application->business_entity ?? '') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-diagram-3"></i>
                                 </span>
                             </div>
 
                             <div class="col-md-2"><label>Business Nature <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
-                                <select name="business_nature" class="form-select border-end-0" required>
-                                    <option disabled selected>Select</option>
-                                    <option value="Retail">Retail</option>
-                                    <option value="Wholesale">Wholesale</option>
-                                    <option value="Services">Services</option>
-                                </select>
+                                <input type="text" name="business_nature" class="form-control border-end-0"
+                                    placeholder="Enter business nature "
+                                    value="{{ old('business_nature', $application->business_nature ?? '') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-briefcase"></i>
                                 </span>
@@ -139,15 +131,10 @@
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Title <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
-                                <select name="title" class="form-select border-end-0" required>
-                                    <option disabled selected>Select Title</option>
-                                    <option value="Mr">Mr</option>
-                                    <option value="Mrs">Mrs</option>
-                                    <option value="Miss">Miss</option>
-                                    <option value="Ms">Ms</option>
-                                </select>
+                                <input type="text" name="title" class="form-control border-end-0"
+                                    placeholder="Enter title " value="{{ old('title', $application->title ?? '') }}"
+                                    required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-person-badge"></i>
                                 </span>
@@ -155,10 +142,11 @@
 
                             <div class="col-md-2"><label>Merchant Full Name<span class="text-danger">:*</span></label>
                             </div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="merchant_full_name" class="form-control border-end-0"
-                                    placeholder="Enter full name" required>
+                                    placeholder="Enter full name"
+                                    value="{{ old('merchant_full_name', $application->merchant_full_name ?? '') }}"
+                                    required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-person"></i>
                                 </span>
@@ -167,24 +155,20 @@
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Position <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
-                                <select name="position" class="form-select border-end-0" required>
-                                    <option disabled selected>Select Position</option>
-                                    <option value="Owner">Owner</option>
-                                    <option value="Director">Director</option>
-                                    <option value="Manager">Manager</option>
-                                </select>
+                                <input type="text" name="position" class="form-control border-end-0"
+                                    placeholder="Enter position "
+                                    value="{{ old('position', $application->position ?? '') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-people"></i>
                                 </span>
                             </div>
 
                             <div class="col-md-2"><label>Email Address <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="email" name="email_address" class="form-control border-end-0"
-                                    placeholder="Enter email" required>
+                                    placeholder="Enter email"
+                                    value="{{ old('email_address', $application->email_address ?? '') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-envelope"></i>
                                 </span>
@@ -353,15 +337,13 @@
                         </div>
 
                         <div class="row g-3 align-items-center mb-2">
-                            <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
-
+                            <div class="col-md-2">
+                                <label>Brand <span class="text-danger">:*</span></label>
+                            </div>
                             <div class="col-md-4 d-flex align-items-center">
-                                <select name="brand" class="form-select border-end-0" required>
-                                    <option disabled selected>Select Brand</option>
-                                    <option value="Verifone">Verifone</option>
-                                    <option value="Ingenico">Ingenico</option>
-                                    <option value="PAX">PAX</option>
-                                </select>
+                                <input type="text" name="brand" class="form-control border-end-0"
+                                    placeholder="Enter Brand " value="{{ old('brand', $application->brand ?? '') }}"
+                                    required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-bag"></i>
                                 </span>

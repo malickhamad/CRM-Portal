@@ -192,6 +192,10 @@ class ApplicationController extends Controller
         ->where('status', 'Rejected')
         ->count();
 
+     $liveApplications = (clone $baseQuery)
+    ->where('status', 'Live')
+    ->count();
+
     $users = \App\Models\User::orderBy('name')->get(['id', 'name']);
 
     return view('backend.applications.applications', compact(
@@ -199,6 +203,7 @@ class ApplicationController extends Controller
         'pendingApplications',
         'completedApplications',
         'rejectedApplications',
+        'liveApplications',
         'users',
         'selectedUserId'
     ));

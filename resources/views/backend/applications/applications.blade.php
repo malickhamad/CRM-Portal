@@ -27,6 +27,11 @@
 
             {{-- leads and sales info --}}
             <div class="d-flex flex-wrap gap-3 mb-24">
+                <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card" data-filter="live"
+                    style="background-color: #e0f2fe; padding: 10px 20px; border-radius: 12px; min-width: 320px;">
+                    <span class="fw-semibold text-dark" style="font-size: 15px;">Live Applications</span>
+                    <span class="fw-bold text-dark" style="font-size: 18px;">{{ $liveApplications }}</span>
+                </div>
 
                 <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card"
                     data-filter="pending"
@@ -243,7 +248,7 @@
                                                         <option value="Submitted to Supplier"
                                                             {{ $item->status ==
                                                             'Submitted to
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Supplier'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Supplier'
                                                                 ? 'selected'
                                                                 : '' }}>
                                                             Submitted to Supplier</option>
@@ -637,27 +642,38 @@
             {{-- script for filtering completed pending and rejected  --}}
 
             <script>
-                document.querySelectorAll('.stat-card').forEach(card => {
-                    card.style.cursor = 'pointer';
+    document.querySelectorAll('.stat-card').forEach(card => {
+        card.style.cursor = 'pointer';
 
-                    card.addEventListener('click', function() {
-                        let filter = this.getAttribute('data-filter');
+        card.addEventListener('click', function() {
+            let filter = this.getAttribute('data-filter');
 
-                        document.querySelectorAll('#dataTable tbody tr').forEach(row => {
-                            let dropdown = row.querySelector('.status-dropdown');
-                            let status = dropdown ? dropdown.value : row.getAttribute('data-status');
+            document.querySelectorAll('#dataTable tbody tr').forEach(row => {
+                let dropdown = row.querySelector('.status-dropdown');
+                let status = dropdown ? dropdown.value : row.getAttribute('data-status');
 
-                            if (filter === 'pending') {
-                                row.style.display = (status !== 'Rejected' && status !== 'Paid') ? '' :
-                                    'none';
-                            } else if (filter === 'completed') {
-                                row.style.display = (status === 'Paid' || status === 'Live') ? '' : 'none';
-                            } else if (filter === 'rejected') {
-                                row.style.display = (status === 'Rejected') ? '' : 'none';
-                            }
-                        });
-                    });
-                });
-            </script>
+                // Status ko trim karke lowercase kar rahe hain taake spelling/case ka koi rona na rahe
+                status = status ? status.trim().toLowerCase() : '';
+
+                if (filter === 'pending') {
+                    // Purana solid logic: Jo rejected, paid, completed ya live nahi hai, woh sab pending hai
+                    row.style.display = (status !== 'rejected' && status !== 'paid' && status !== 'completed' && status !== 'live') ? '' : 'none';
+
+                } else if (filter === 'completed') {
+                    // Agar status 'paid' ya 'completed' ho
+                    row.style.display = (status === 'paid' || status === 'completed'|| status === 'live') ? '' : 'none';
+
+                } else if (filter === 'rejected') {
+                    // Agar status 'rejected' ho
+                    row.style.display = (status === 'rejected') ? '' : 'none';
+
+                } else if (filter === 'live') {
+                    // Naya Live filter
+                    row.style.display = (status === 'live') ? '' : 'none';
+                }
+            });
+        });
+    });
+</script>
         </div>
     @endsection

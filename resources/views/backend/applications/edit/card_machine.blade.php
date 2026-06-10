@@ -230,42 +230,22 @@
                             </div>
                         </div>
 
-                        <div class="row g-3 align-items-center mb-2 pb-2">
+                      <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Business Entity <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
-                                <select name="business_entity" class="form-select border-end-0" required>
-                                    <option disabled {{ $appValue('business_entity') ? '' : 'selected' }}>Select</option>
-                                    <option value="Sole Trader"
-                                        {{ (string) $appValue('business_entity') === 'Sole Trader' ? 'selected' : '' }}>Sole
-                                        Trader</option>
-                                    <option value="Partnership"
-                                        {{ (string) $appValue('business_entity') === 'Partnership' ? 'selected' : '' }}>
-                                        Partnership</option>
-                                    <option value="Limited Company"
-                                        {{ (string) $appValue('business_entity') === 'Limited Company' ? 'selected' : '' }}>
-                                        Limited Company</option>
-                                </select>
+                                <input type="text" name="business_entity" class="form-control border-end-0"
+                                    placeholder="Enter business entity "
+                                    value="{{ old('business_entity', $application->business_entity ?? '') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-diagram-3"></i>
                                 </span>
                             </div>
 
                             <div class="col-md-2"><label>Business Nature <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
-                                <select name="business_nature" class="form-select border-end-0" required>
-                                    <option disabled {{ $appValue('business_nature') ? '' : 'selected' }}>Select</option>
-                                    <option value="Retail"
-                                        {{ (string) $appValue('business_nature') === 'Retail' ? 'selected' : '' }}>Retail
-                                    </option>
-                                    <option value="Wholesale"
-                                        {{ (string) $appValue('business_nature') === 'Wholesale' ? 'selected' : '' }}>
-                                        Wholesale</option>
-                                    <option value="Services"
-                                        {{ (string) $appValue('business_nature') === 'Services' ? 'selected' : '' }}>
-                                        Services</option>
-                                </select>
+                                <input type="text" name="business_nature" class="form-control border-end-0"
+                                    placeholder="Enter business nature "
+                                    value="{{ old('business_nature', $application->business_nature ?? '') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-briefcase"></i>
                                 </span>
@@ -274,19 +254,10 @@
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Title <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
-                                <select name="title" class="form-select border-end-0" required>
-                                    <option disabled {{ $appValue('title') ? '' : 'selected' }}>Select Title</option>
-                                    <option value="Mr" {{ (string) $appValue('title') === 'Mr' ? 'selected' : '' }}>Mr
-                                    </option>
-                                    <option value="Mrs" {{ (string) $appValue('title') === 'Mrs' ? 'selected' : '' }}>
-                                        Mrs</option>
-                                    <option value="Miss" {{ (string) $appValue('title') === 'Miss' ? 'selected' : '' }}>
-                                        Miss</option>
-                                    <option value="Ms" {{ (string) $appValue('title') === 'Ms' ? 'selected' : '' }}>Ms
-                                    </option>
-                                </select>
+                                <input type="text" name="title" class="form-control border-end-0"
+                                    placeholder="Enter title " value="{{ old('title', $application->title ?? '') }}"
+                                    required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-person-badge"></i>
                                 </span>
@@ -294,10 +265,11 @@
 
                             <div class="col-md-2"><label>Merchant Full Name<span class="text-danger">:*</span></label>
                             </div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="merchant_full_name" class="form-control border-end-0"
-                                    placeholder="Enter full name" required value="{{ $appValue('merchant_full_name') }}">
+                                    placeholder="Enter full name"
+                                    value="{{ old('merchant_full_name', $application->merchant_full_name ?? '') }}"
+                                    required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-person"></i>
                                 </span>
@@ -306,29 +278,20 @@
 
                         <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Position <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
-                                <select name="position" class="form-select border-end-0" required>
-                                    <option disabled {{ $appValue('position') ? '' : 'selected' }}>Select Position</option>
-                                    <option value="Owner"
-                                        {{ (string) $appValue('position') === 'Owner' ? 'selected' : '' }}>Owner</option>
-                                    <option value="Director"
-                                        {{ (string) $appValue('position') === 'Director' ? 'selected' : '' }}>Director
-                                    </option>
-                                    <option value="Manager"
-                                        {{ (string) $appValue('position') === 'Manager' ? 'selected' : '' }}>Manager
-                                    </option>
-                                </select>
+                                <input type="text" name="position" class="form-control border-end-0"
+                                    placeholder="Enter position "
+                                    value="{{ old('position', $application->position ?? '') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-people"></i>
                                 </span>
                             </div>
 
                             <div class="col-md-2"><label>Email Address <span class="text-danger">:*</span></label></div>
-
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="email" name="email_address" class="form-control border-end-0"
-                                    placeholder="Enter email" required value="{{ $appValue('email_address') }}">
+                                    placeholder="Enter email"
+                                    value="{{ old('email_address', $application->email_address ?? '') }}" required>
                                 <span class="icon-box border-start-0">
                                     <i class="bi bi-envelope"></i>
                                 </span>
@@ -517,24 +480,17 @@
                         </div>
 
                         <div class="row g-3 align-items-center mb-2">
-                            <div class="col-md-2"><label>Brand <span class="text-danger">:*</span></label></div>
-
-                            <div class="col-md-4 d-flex align-items-center">
-                                <select name="brand" class="form-select border-end-0" required>
-                                    <option disabled {{ $appValue('brand') ? '' : 'selected' }}>Select Brand</option>
-                                    <option value="Verifone"
-                                        {{ (string) $appValue('brand') === 'Verifone' ? 'selected' : '' }}>Verifone
-                                    </option>
-                                    <option value="Ingenico"
-                                        {{ (string) $appValue('brand') === 'Ingenico' ? 'selected' : '' }}>Ingenico
-                                    </option>
-                                    <option value="PAX" {{ (string) $appValue('brand') === 'PAX' ? 'selected' : '' }}>
-                                        PAX</option>
-                                </select>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-bag"></i>
-                                </span>
-                            </div>
+                                 <div class="col-md-2">
+    <label>Brand <span class="text-danger">:*</span></label>
+</div>
+<div class="col-md-4 d-flex align-items-center">
+    <input type="text" name="brand" class="form-control border-end-0"
+        placeholder="Enter Brand "
+        value="{{ old('brand', $application->brand ?? '') }}" required>
+    <span class="icon-box border-start-0">
+        <i class="bi bi-bag"></i>
+    </span>
+</div>
 
                             <div class="col-md-2"><label>Qty <span class="text-danger">:*</span></label></div>
 
