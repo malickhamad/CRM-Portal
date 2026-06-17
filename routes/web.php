@@ -16,9 +16,19 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 
+// Route::get('/optimize-clear', function () {
+//     Artisan::call('optimize:clear');
+//     return "Cache cleared!";
+// });
+
 Route::get('/optimize-clear', function () {
-    Artisan::call('optimize:clear');
-    return "Cache cleared!";
+    try {
+        Artisan::call('optimize:clear');
+
+        return '<pre>' . Artisan::output() . '</pre>';
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
 });
 
 Route::get('/cache-clear', function () {
@@ -58,10 +68,23 @@ Route::get('/migrate-fresh', function () {
     }
 });
 
+// Route::get('/db-seed', function () {
+//     Artisan::call('db:seed');
+//     return "Seeder executed!";
+// });
+
 Route::get('/db-seed', function () {
-    Artisan::call('db:seed');
-    return "Seeder executed!";
+    try {
+        Artisan::call('db:seed', [
+            '--force' => true
+        ]);
+
+        return '<pre>' . Artisan::output() . '</pre>';
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
 });
+
 
 Route::get('/storage-link', function () {
     Artisan::call('storage:link');
