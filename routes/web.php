@@ -47,8 +47,15 @@ Route::get('/migrate', function () {
 });
 
 Route::get('/migrate-fresh', function () {
-    Artisan::call('migrate:fresh');
-    return "Fresh Migration executed!";
+    try {
+        Artisan::call('migrate:fresh', [
+            '--force' => true
+        ]);
+
+        return '<pre>' . Artisan::output() . '</pre>';
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
 });
 
 Route::get('/db-seed', function () {
