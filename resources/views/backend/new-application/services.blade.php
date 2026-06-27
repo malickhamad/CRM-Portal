@@ -40,7 +40,7 @@
                                 <div class="text-center mt-5">
 
                                     <!-- Heading -->
-                                    <h4 class="fw-semibold mb-0 text-success-1000">Our Servicees</h4>
+                                    <h4 class="fw-semibold mb-0 text-success-1000">Our Services</h4>
                                     <p class="text-muted mb-5">Select a service to continue</p>
 
                                     <!-- Hidden Input -->
@@ -53,7 +53,7 @@
                                         <div class="card border-0 shadow-sm service-card" data-service="finance">
 
                                             <div class="service-img-box">
-                                                <img src="{{ asset('asset/crm/services/finance.png') }}"
+                                                <img src="{{ asset('asset/crm/services/Finance.png') }}"
                                                     class="img-fluid service-img">
                                             </div>
                                             <h6 class="fw-semibold text-secondary small mb-0">Finance</h6>
