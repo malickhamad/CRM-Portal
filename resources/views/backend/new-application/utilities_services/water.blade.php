@@ -378,6 +378,20 @@
                                     </div>
                                 </div>
 
+                                  <div class="col-md-6">
+                                    <label class="fw-semibold mb-2">
+                                        <i class="bi bi-bank me-1 text-info"></i> Additional Uploads
+                                    </label>
+
+                                    <div class="kyc-upload-box"
+                                        onclick="document.getElementById('additionalUploads').click();">
+                                        <p class="text-muted mb-0">Drop files here to upload</p>
+                                        <input type="file" id="additionalUploads" name="additional_uploads" hidden
+                                            required>
+                                    </div>
+                                </div>
+                                
+                                
                             </div>
                         </div>
                     </div>
