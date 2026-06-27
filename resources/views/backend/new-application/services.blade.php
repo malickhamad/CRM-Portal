@@ -40,7 +40,7 @@
                                 <div class="text-center mt-5">
 
                                     <!-- Heading -->
-                                    <h4 class="fw-semibold mb-0 text-success-1000">Our Services</h4>
+                                    <h4 class="fw-semibold mb-0 text-success-1000">Our Servicees</h4>
                                     <p class="text-muted mb-5">Select a service to continue</p>
 
                                     <!-- Hidden Input -->
