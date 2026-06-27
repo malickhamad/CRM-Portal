@@ -53,7 +53,7 @@
                                         <div class="card border-0 shadow-sm service-card" data-service="finance">
 
                                             <div class="service-img-box">
-                                                <img src="{{ asset('asset/crm/services/finance.png') }}"
+                                                <img src="{{ asset('asset/crm/services/Finance.png') }}"
                                                     class="img-fluid service-img">
                                             </div>
                                             <h6 class="fw-semibold text-secondary small mb-0">Finance</h6>
