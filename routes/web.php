@@ -86,14 +86,13 @@ Route::get('/db-seed', function () {
 });
 
 
-// Route::get('/storage-link', function () {
-//     Artisan::call('storage:link');
-//     return "Storage linked!";
-// });
+Route::get('/storage-link', function () {
+    Artisan::call('storage:link');
+    return "Storage linked!";
+});
 
 
 
-Route::get('/storage-link', function () { Artisan::call('storage:link', [ '--force' => true, ]); return nl2br(Artisan::output()); });
 
 use Illuminate\Support\Facades\DB;
 
