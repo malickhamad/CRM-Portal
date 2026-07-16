@@ -383,6 +383,7 @@ class ApplicationController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $prepared = $this->prepareRequestData($request);
         $serviceType = $prepared['service_type'] ?? '';
         // $validated = validator($prepared, $this->getValidationRules($serviceType))->validate();
@@ -604,7 +605,29 @@ class ApplicationController extends Controller
                 if (!$isCreate && !empty($app->{$field})) {
                     Storage::disk('public')->delete($app->{$field});
                 }
-                $app->{$field} = $request->file($name)->store('kyc', 'public');
+                // $app->{$field} = $request->file($name)->store('kyc', 'public');
+                
+                //   dd($request->file($name));
+          $file = $request->file($name);
+
+if (is_array($file)) {
+
+    $files = [];
+
+    foreach ($file as $item) {
+        $files[] = $item->store('kyc', 'public');
+    }
+
+    $app->{$field} = implode(',', $files);
+
+} else {
+
+    $app->{$field} = $file->store('kyc', 'public');
+
+}
+
+
+
                 return;
             }
         }

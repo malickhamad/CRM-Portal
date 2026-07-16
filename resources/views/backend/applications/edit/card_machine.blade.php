@@ -674,7 +674,7 @@
                         </div>
                     </div>
 
-                    <div class="card shadow-sm border-0 mt-4">
+                    {{-- <div class="card shadow-sm border-0 mt-4">
                         <div class="card-body">
 
                             <div class="section-title"><span>KYC Verification</span></div>
@@ -769,7 +769,136 @@
                                 </div>
                             </div>
                         </div>
+                    </div> --}}
+
+
+
+
+
+                    <div class="card shadow-sm border-0 mt-4">
+    <div class="card-body">
+
+        <div class="section-title"><span>KYC Verification</span></div>
+
+        <div class="row g-4">
+
+            <div class="col-md-6">
+                <label class="fw-semibold mb-2">
+                    <i class="bi bi-person-badge me-1 text-primary"></i> Picture ID
+                </label>
+
+                <div class="kyc-upload-box" onclick="document.getElementById('pictureId').click();">
+                    <p class="text-muted mb-0">Drop files here to upload</p>
+                    <input type="file" id="pictureId" name="picture_id[]" multiple hidden>
+                </div>
+
+                @if ($application->picture_id)
+                    <div class="mt-2 text-muted small">
+                        <div class="fw-semibold mb-1">Existing Files:</div>
+                        @foreach(explode(',', $application->picture_id) as $file)
+                            <div>{{ basename(trim($file)) }}</div>
+                        @endforeach
                     </div>
+                @endif
+            </div>
+
+
+            <div class="col-md-6">
+                <label class="fw-semibold mb-2">
+                    <i class="bi bi-building me-1 text-success"></i> Inside/Outside pics
+                </label>
+
+                <div class="kyc-upload-box" onclick="document.getElementById('insidePics').click();">
+                    <p class="text-muted mb-0">Drop files here to upload</p>
+                    <input type="file" id="insidePics" name="inside_outside_pics[]" multiple hidden>
+                </div>
+
+                @if ($application->inside_outside_pics)
+                    <div class="mt-2 text-muted small">
+                        <div class="fw-semibold mb-1">Existing Files:</div>
+                        @foreach(explode(',', $application->inside_outside_pics) as $file)
+                            <div>{{ basename(trim($file)) }}</div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+
+            <div class="col-md-6">
+                <label class="fw-semibold mb-2">
+                    <i class="bi bi-receipt me-1 text-warning"></i> Bill
+                </label>
+
+                <div class="kyc-upload-box" onclick="document.getElementById('billUpload').click();">
+                    <p class="text-muted mb-0">Drop files here to upload</p>
+                    <input type="file" id="billUpload" name="bill_upload[]" multiple hidden>
+                </div>
+
+                @if ($application->bill_upload)
+                    <div class="mt-2 text-muted small">
+                        <div class="fw-semibold mb-1">Existing Files:</div>
+                        @foreach(explode(',', $application->bill_upload) as $file)
+                            <div>{{ basename(trim($file)) }}</div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+
+            <div class="col-md-6">
+                <label class="fw-semibold mb-2">
+                    <i class="bi bi-bank me-1 text-info"></i> Bank Statement
+                </label>
+
+                <div class="kyc-upload-box" onclick="document.getElementById('bankStatement').click();">
+                    <p class="text-muted mb-0">Drop files here to upload</p>
+                    <input type="file" id="bankStatement" name="bank_statement[]" multiple hidden>
+                </div>
+
+                @if ($application->bank_statement)
+                    <div class="mt-2 text-muted small">
+                        <div class="fw-semibold mb-1">Existing Files:</div>
+                        @foreach(explode(',', $application->bank_statement) as $file)
+                            <div>{{ basename(trim($file)) }}</div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+
+            <div class="col-md-6">
+                <label class="fw-semibold mb-2">
+                    <i class="bi bi-upload me-1 text-info"></i> Additional Uploads
+                </label>
+
+                <div class="kyc-upload-box" onclick="document.getElementById('additionalUploads').click();">
+                    <p class="text-muted mb-0">Drop files here to upload</p>
+                    <input type="file" id="additionalUploads" name="additional_uploads[]" multiple hidden>
+                </div>
+
+                @if ($application->additional_uploads)
+                    <div class="mt-2 text-muted small">
+                        <div class="fw-semibold mb-1">Existing Files:</div>
+                        @foreach(explode(',', $application->additional_uploads) as $file)
+                            <div>{{ basename(trim($file)) }}</div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
 
                     <div class="mt-3 ">
                         <button type="submit" class="btn btn-primary bg_green_color">
