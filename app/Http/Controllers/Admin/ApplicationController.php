@@ -210,34 +210,58 @@ class ApplicationController extends Controller
 }
 
 
-public function deleteFile(Request $request, $id)
-{
-    $application = Application::findOrFail($id);
+        public function deleteFile(Request $request, $id)
+        {
+            $application = Application::findOrFail($id);
 
-    $files = explode(',', $application->picture_id);
+            $fileToDelete = trim($request->file);
 
-    $fileToDelete = $request->file;
 
-    // Remove file from storage
-    if(Storage::disk('public')->exists($fileToDelete)){
-        Storage::disk('public')->delete($fileToDelete);
-    }
+            // Delete physical file
+            if(Storage::disk('public')->exists($fileToDelete)){
+                Storage::disk('public')->delete($fileToDelete);
+            }
 
-    // Remove from array
-    $files = array_filter($files, function($file) use ($fileToDelete){
-        return $file != $fileToDelete;
-    });
 
-    // Save remaining files
-    $application->update([
-        'picture_id' => implode(',', $files)
-    ]);
+            // Columns where files are stored
+            $fileColumns = [
+                'picture_id',
+                'inside_outside_pics',
+                'bill_upload',
+                'bank_statement',
+                'additional_uploads'
+            ];
 
-    return response()->json([
-        'success' => true
-    ]);
-}
 
+            foreach($fileColumns as $column){
+
+                if(!empty($application->$column)){
+
+                    $files = array_filter(explode(',', $application->$column));
+
+
+                    // Remove deleted file path
+                    $files = array_filter($files, function($file) use ($fileToDelete){
+                        return trim($file) !== $fileToDelete;
+                    });
+
+
+                    // Update column
+                    $application->$column = !empty($files)
+                        ? implode(',', $files)
+                        : null;
+                }
+            }
+
+
+            $application->save();
+
+
+            return response()->json([
+                'success' => true,
+                'message' => 'File deleted successfully'
+            ]);
+        }
 
     private function normalizeServiceType(?string $serviceType): string
     {
