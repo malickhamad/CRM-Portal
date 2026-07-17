@@ -2,19 +2,6 @@
 
 @section('content')
 
-<style>
-
-.kyc-upload-box img,
-.kyc-upload-box canvas {
-    display:none !important;
-}
-
-.kyc-upload-box {
-    overflow:hidden;
-}
-
-</style>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <main class="dashboard-main">
@@ -664,11 +651,11 @@
                             </div> --}}
 
 
-
-                            <div class="row g-4">
+<div class="row g-4">
 
     {{-- Picture ID --}}
     <div class="col-md-6">
+
         <label class="fw-semibold mb-2">
             <i class="bi bi-person-badge me-1 text-primary"></i> Picture ID
         </label>
@@ -679,8 +666,6 @@
                 Drop files here to upload
             </p>
 
-            <div id="pictureIdPreview" class="mt-2"></div>
-
             <input type="file"
                 id="pictureId"
                 name="picture_id[]"
@@ -689,13 +674,18 @@
                 onchange="showFiles(this,'pictureIdPreview','pictureIdText')">
 
         </div>
+
+        <div id="pictureIdPreview" class="mt-2"></div>
+
     </div>
+
 
 
     {{-- Inside Outside Pics --}}
     <div class="col-md-6">
+
         <label class="fw-semibold mb-2">
-            <i class="bi bi-building me-1 text-success"></i> Inside/Outside pics
+            <i class="bi bi-building me-1 text-success"></i> Inside/Outside Pics
         </label>
 
         <div class="kyc-upload-box" onclick="document.getElementById('insidePics').click();">
@@ -703,8 +693,6 @@
             <p id="insidePicsText" class="text-muted mb-0">
                 Drop files here to upload
             </p>
-
-            <div id="insidePicsPreview" class="mt-2"></div>
 
             <input type="file"
                 id="insidePics"
@@ -714,11 +702,16 @@
                 onchange="showFiles(this,'insidePicsPreview','insidePicsText')">
 
         </div>
+
+        <div id="insidePicsPreview" class="mt-2"></div>
+
     </div>
+
 
 
     {{-- Bill --}}
     <div class="col-md-6">
+
         <label class="fw-semibold mb-2">
             <i class="bi bi-receipt me-1 text-warning"></i> Bill
         </label>
@@ -729,8 +722,6 @@
                 Drop files here to upload
             </p>
 
-            <div id="billUploadPreview" class="mt-2"></div>
-
             <input type="file"
                 id="billUpload"
                 name="bill_upload[]"
@@ -739,11 +730,16 @@
                 onchange="showFiles(this,'billUploadPreview','billUploadText')">
 
         </div>
+
+        <div id="billUploadPreview" class="mt-2"></div>
+
     </div>
+
 
 
     {{-- Bank Statement --}}
     <div class="col-md-6">
+
         <label class="fw-semibold mb-2">
             <i class="bi bi-bank me-1 text-info"></i> Bank Statement
         </label>
@@ -754,8 +750,6 @@
                 Drop files here to upload
             </p>
 
-            <div id="bankStatementPreview" class="mt-2"></div>
-
             <input type="file"
                 id="bankStatement"
                 name="bank_statement[]"
@@ -764,13 +758,18 @@
                 onchange="showFiles(this,'bankStatementPreview','bankStatementText')">
 
         </div>
+
+        <div id="bankStatementPreview" class="mt-2"></div>
+
     </div>
+
 
 
     {{-- Additional Uploads --}}
     <div class="col-md-6">
+
         <label class="fw-semibold mb-2">
-            <i class="bi bi-bank me-1 text-info"></i> Additional Uploads
+            <i class="bi bi-upload me-1 text-info"></i> Additional Uploads
         </label>
 
         <div class="kyc-upload-box" onclick="document.getElementById('additionalUploads').click();">
@@ -778,8 +777,6 @@
             <p id="additionalUploadsText" class="text-muted mb-0">
                 Drop files here to upload
             </p>
-
-            <div id="additionalUploadsPreview" class="mt-2"></div>
 
             <input type="file"
                 id="additionalUploads"
@@ -789,10 +786,13 @@
                 onchange="showFiles(this,'additionalUploadsPreview','additionalUploadsText')">
 
         </div>
+
+        <div id="additionalUploadsPreview" class="mt-2"></div>
+
     </div>
 
-</div>
 
+</div>
 
 
 

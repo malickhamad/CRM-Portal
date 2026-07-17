@@ -145,88 +145,88 @@ $(document).ready(function () {
 
 // for all for handling kyc section last section of form
 
-$(document).ready(function () {
+// $(document).ready(function () {
 
-    function initUploader(selector) {
+//     function initUploader(selector) {
 
-        let input = $(selector);
-        let box = input.closest(".kyc-upload-box");
+//         let input = $(selector);
+//         let box = input.closest(".kyc-upload-box");
 
-        function reset() {
-            box.find(".preview-img, .remove-btn").remove();
-            box.find("p").show();
-        }
+//         function reset() {
+//             box.find(".preview-img, .remove-btn").remove();
+//             box.find("p").show();
+//         }
 
-        function show(file) {
+//         function show(file) {
 
-            if (!file || !file.type.startsWith("image/")) return;
+//             if (!file || !file.type.startsWith("image/")) return;
 
-            let reader = new FileReader();
+//             let reader = new FileReader();
 
-            reader.onload = function (e) {
+//             reader.onload = function (e) {
 
-                reset();
+//                 reset();
 
-                box.css("position", "relative");
+//                 box.css("position", "relative");
 
-                box.append(`
-                    <img class="preview-img"
-                         src="${e.target.result}"
-                         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;border-radius:inherit;">
+//                 box.append(`
+//                     <img class="preview-img"
+//                          src="${e.target.result}"
+//                          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;border-radius:inherit;">
 
-                    <span class="remove-btn"
-                          style="position:absolute;top:6px;right:6px;z-index:2;
-                          background:red;color:#fff;width:22px;height:22px;
-                          display:flex;align-items:center;justify-content:center;
-                          border-radius:50%;cursor:pointer;">×</span>
-                `);
+//                     <span class="remove-btn"
+//                           style="position:absolute;top:6px;right:6px;z-index:2;
+//                           background:red;color:#fff;width:22px;height:22px;
+//                           display:flex;align-items:center;justify-content:center;
+//                           border-radius:50%;cursor:pointer;">×</span>
+//                 `);
 
-                box.find("p").hide();
-            };
+//                 box.find("p").hide();
+//             };
 
-            reader.readAsDataURL(file);
-        }
+//             reader.readAsDataURL(file);
+//         }
 
-        box.on("click", function (e) {
-            if ($(e.target).hasClass("remove-btn")) return;
-            input.trigger("click");
-        });
+//         box.on("click", function (e) {
+//             if ($(e.target).hasClass("remove-btn")) return;
+//             input.trigger("click");
+//         });
 
-        input.on("change", function () {
-            if (this.files[0]) show(this.files[0]);
-        });
+//         input.on("change", function () {
+//             if (this.files[0]) show(this.files[0]);
+//         });
 
-        box.on("dragover", e => e.preventDefault());
+//         box.on("dragover", e => e.preventDefault());
 
-        box.on("drop", function (e) {
-            e.preventDefault();
+//         box.on("drop", function (e) {
+//             e.preventDefault();
 
-            let file = e.originalEvent.dataTransfer.files[0];
-            if (!file) return;
+//             let file = e.originalEvent.dataTransfer.files[0];
+//             if (!file) return;
 
-            input[0].files = e.originalEvent.dataTransfer.files;
-            show(file);
-        });
+//             input[0].files = e.originalEvent.dataTransfer.files;
+//             show(file);
+//         });
 
-        box.on("click", ".remove-btn", function (e) {
-            e.stopPropagation();
-            input.val("");
-            reset();
-        });
+//         box.on("click", ".remove-btn", function (e) {
+//             e.stopPropagation();
+//             input.val("");
+//             reset();
+//         });
 
-        reset();
+//         reset();
 
-        // ⭐ IMPORTANT: expose reset function globally
-        window.resetUploader = window.resetUploader || {};
-        window.resetUploader[selector] = reset;
-    }
+//         // ⭐ IMPORTANT: expose reset function globally
+//         window.resetUploader = window.resetUploader || {};
+//         window.resetUploader[selector] = reset;
+//     }
 
-    [
-        "#pictureId",
-        "#insidePics",
-        "#billUpload",
-        "#bankStatement",
-        "#additionalUploads"
-    ].forEach(initUploader);
+//     [
+//         "#pictureId",
+//         "#insidePics",
+//         "#billUpload",
+//         "#bankStatement",
+//         "#additionalUploads"
+//     ].forEach(initUploader);
 
-});
+// });

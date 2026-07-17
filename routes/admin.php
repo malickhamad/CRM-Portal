@@ -37,6 +37,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/applications/{id}/update', [ApplicationController::class, 'update'])->name('applications.update');
     Route::delete('/applications/{id}/destroy', [ApplicationController::class, 'destroy'])->name('applications.destroy');
 
+    Route::delete('/application/file-delete/{id}',[ApplicationController::class, 'deleteFile'])->name('applications.delete.file');
+
     // Route to update application status
     Route::post('/applications/{id}/status', [ApplicationController::class, 'updateStatus']);
 

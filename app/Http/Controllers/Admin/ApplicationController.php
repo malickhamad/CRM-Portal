@@ -208,6 +208,37 @@ class ApplicationController extends Controller
         'selectedUserId'
     ));
 }
+
+
+public function deleteFile(Request $request, $id)
+{
+    $application = Application::findOrFail($id);
+
+    $files = explode(',', $application->picture_id);
+
+    $fileToDelete = $request->file;
+
+    // Remove file from storage
+    if(Storage::disk('public')->exists($fileToDelete)){
+        Storage::disk('public')->delete($fileToDelete);
+    }
+
+    // Remove from array
+    $files = array_filter($files, function($file) use ($fileToDelete){
+        return $file != $fileToDelete;
+    });
+
+    // Save remaining files
+    $application->update([
+        'picture_id' => implode(',', $files)
+    ]);
+
+    return response()->json([
+        'success' => true
+    ]);
+}
+
+
     private function normalizeServiceType(?string $serviceType): string
     {
         $value = strtolower(trim((string) $serviceType));
@@ -597,41 +628,95 @@ class ApplicationController extends Controller
         $this->handleFile($request, $app, 'additional_uploads', $isCreate);
     }
 
-    private function handleFile(Request $request, Application $app, string $field, bool $isCreate, array $aliases = []): void
-    {
-        $allNames = array_merge([$field], $aliases);
-        foreach ($allNames as $name) {
-            if ($request->hasFile($name)) {
-                if (!$isCreate && !empty($app->{$field})) {
-                    Storage::disk('public')->delete($app->{$field});
-                }
-                // $app->{$field} = $request->file($name)->store('kyc', 'public');
+    // private function handleFile(Request $request, Application $app, string $field, bool $isCreate, array $aliases = []): void
+    // {
+    //     $allNames = array_merge([$field], $aliases);
+    //     foreach ($allNames as $name) {
+    //         if ($request->hasFile($name)) {
+    //             if (!$isCreate && !empty($app->{$field})) {
+    //                 Storage::disk('public')->delete($app->{$field});
+    //             }
+    //             // $app->{$field} = $request->file($name)->store('kyc', 'public');
                 
-                //   dd($request->file($name));
-          $file = $request->file($name);
+    //             //   dd($request->file($name));
+    //       $file = $request->file($name);
 
-if (is_array($file)) {
+    //         if (is_array($file)) {
 
-    $files = [];
+    //             $files = [];
 
-    foreach ($file as $item) {
-        $files[] = $item->store('kyc', 'public');
-    }
+    //             foreach ($file as $item) {
+    //                 $files[] = $item->store('kyc', 'public');
+    //             }
 
-    $app->{$field} = implode(',', $files);
+    //             $app->{$field} = implode(',', $files);
 
-} else {
+    //         } else {
 
-    $app->{$field} = $file->store('kyc', 'public');
+    //             $app->{$field} = $file->store('kyc', 'public');
 
-}
+    //         }
 
 
 
-                return;
+    //             return;
+    //         }
+    //     }
+    // }
+
+
+
+
+    private function handleFile(Request $request, Application $app, string $field, bool $isCreate, array $aliases = []): void
+{
+    $allNames = array_merge([$field], $aliases);
+
+    foreach ($allNames as $name) {
+
+        if ($request->hasFile($name)) {
+
+            $file = $request->file($name);
+
+            $newFiles = [];
+
+
+            $files = is_array($file) ? $file : [$file];
+
+
+            foreach ($files as $item) {
+
+                $originalName = $item->getClientOriginalName();
+
+               $uniqueName = $originalName . '_' . uniqid();
+
+
+                $path = $item->storeAs(
+                    'kyc',
+                    $uniqueName,
+                    'public'
+                );
+
+
+                $newFiles[] = $path;
             }
+
+
+            // Keep old files
+            $oldFiles = [];
+
+            if (!$isCreate && !empty($app->{$field})) {
+                $oldFiles = explode(',', $app->{$field});
+            }
+
+
+            $app->{$field} = implode(',', array_merge($oldFiles, $newFiles));
+
+
+            return;
         }
     }
+}
+
 
     private function syncDirectors(Application $application, array $data): void
     {
