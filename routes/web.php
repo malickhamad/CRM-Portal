@@ -75,6 +75,6 @@ Route::get('/ajax/chatify-unread-count', function () {
         'total_unread' => DB::table('ch_messages')
             ->where('to_id', auth()->id())
             ->where('seen', 0)
-            ->count()
+            ->count() 
     ]);
 })->middleware('auth')->name('chatify.unread.count');
