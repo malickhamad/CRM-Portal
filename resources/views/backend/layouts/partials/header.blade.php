@@ -1,0 +1,149 @@
+@php
+    $isAdmin = auth()->user()->hasRole(roles: 'Admin');
+    $isSubuser = auth()->user()->hasRole(roles: 'Subuser');
+
+@endphp
+
+<div class="navbar-header">
+    <div class="row align-items-center justify-content-between">
+        <div class="col-auto">
+            <div class="d-flex flex-wrap align-items-center gap-4">
+                <button type="button" class="sidebar-toggle">
+                    <iconify-icon icon="heroicons:bars-3-solid" class="icon text-2xl non-active"></iconify-icon>
+                    <iconify-icon icon="iconoir:arrow-right" class="icon text-2xl active"></iconify-icon>
+                </button>
+                <button type="button" class="sidebar-mobile-toggle">
+                    <iconify-icon icon="heroicons:bars-3-solid" class="icon"></iconify-icon>
+                </button>
+            </div>
+        </div>
+
+        <div class="col-auto">
+            <div class="d-flex flex-wrap align-items-center gap-3">
+
+
+
+                {{-- <a href="{{ route('chatify') }}"
+   class="btn btn-success d-flex align-items-center justify-content-center rounded-circle shadow-sm position-relative"
+   style="width:40px; height:40px;"
+   title="Chat">
+
+    <iconify-icon icon="solar:chat-round-dots-bold" class="text-white" style="font-size:20px;"></iconify-icon>
+
+    @if (isset($chatifyUnreadCount) && $chatifyUnreadCount > 0)
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{ $chatifyUnreadCount }}
+        </span>
+    @endif
+</a> --}}
+
+
+
+
+
+                <a href="{{ route('chatify') }}"
+                    class="btn btn-success d-flex align-items-center justify-content-center rounded-circle shadow-sm position-relative"
+                    style="width:40px; height:40px;" title="Chat">
+
+                    <iconify-icon icon="solar:chat-round-dots-bold" class="text-white"
+                        style="font-size:20px;"></iconify-icon>
+
+                    <span id="chatifyBadge"
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                        style="{{ ($chatifyUnreadCount ?? 0) > 0 ? '' : 'display:none;' }}">
+                        {{ $chatifyUnreadCount ?? '' }}
+                    </span>
+                </a>
+
+
+
+                <div class="dropdown">
+                    <button class="d-flex justify-content-center align-items-center rounded-circle" type="button"
+                        data-bs-toggle="dropdown">
+                        <!-- Profile Picture in Header -->
+                        <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('asset/backend/images/profilepic2.jpg') }}"
+                            alt="Profile Picture" class="w-40-px h-40-px object-fit-cover rounded-circle">
+                    </button>
+                    <div class="dropdown-menu to-top dropdown-menu-sm">
+                        <div
+                            class="py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
+                            <div>
+                                <h6 class="text-success-1000 fw-semibold mb-2">{{ Auth::user()->name }}</h6>
+                                <span class="text-secondary-light fw-medium text-sm">
+                                    {{ Auth::user()->roles->pluck('name')->first() }}
+                                </span>
+                            </div>
+
+                            <button type="button" class="hover-text-danger">
+                                <iconify-icon icon="radix-icons:cross-1" class="icon text-xl"></iconify-icon>
+                            </button>
+                        </div>
+                        <ul class="to-top-list">
+                            <li>
+                                <a class="dropdown-item text-success-1000 px-0 py-8 hover-bg-transparent hover-text-success d-flex align-items-center gap-3"
+                                    href="{{ $isAdmin ? route('admin.my-profile') : ($isSubuser ? 'javascript:void(0)' : route('admin.my-profile')) }}"
+                                    @if ($isSubuser) onclick="alert('You do not have permission to access this page.');" @endif>
+                                    My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-success-1000 px-0 py-8 hover-bg-transparent hover-text-success d-flex align-items-center gap-3"
+                                    href="{{ $isAdmin ? route('admin.account-settings') : ($isSubuser ? 'javascript:void(0)' : route('user.account-settings')) }}"
+                                    @if ($isSubuser) onclick="alert('You do not have permission to access this page.');" @endif>
+                                    Account Settings
+                                </a>
+                            </li>
+
+
+
+                            <li>
+                                <a class="dropdown-item text-success-1000 px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
+                                    href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Log Out
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div> <!-- Profile dropdown end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    function updateChatifyBadge() {
+        console.log('Chatify script running...');
+fetch('{{ route('chatify.unread.count') }}', {
+    headers: {
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+    }
+})            .then(res => res.json())
+            .then(data => {
+                let badge = document.getElementById('chatifyBadge');
+
+                if (!badge) return;
+
+                if (data.total_unread > 0) {
+                    badge.innerText = data.total_unread;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.innerText = '';
+                    badge.style.display = 'none';
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
+    updateChatifyBadge();
+
+    setInterval(updateChatifyBadge, 2000);
+</script>
