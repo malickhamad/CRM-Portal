@@ -26,7 +26,7 @@
 
 
             {{-- leads and sales info --}}
-          @include('backend.layouts.partials.leads-sales-cards')
+            @include('backend.layouts.partials.leads-sales-cards')
 
             <div class="container-fluid bg-white px-3 py-5">
 
@@ -47,7 +47,7 @@
                         </a>
                     </div>
 
-                   @include('backend.layouts.partials.application-summary-cards')
+                    @include('backend.layouts.partials.application-summary-cards')
                 </div>
                 <!-- HEADER -->
 
@@ -110,7 +110,7 @@
                             </div>
                         </div>
 
-                      <div class="row g-3 align-items-center mb-2 pb-2">
+                        <div class="row g-3 align-items-center mb-2 pb-2">
                             <div class="col-md-2"><label>Business Entity <span class="text-danger">:*</span></label></div>
                             <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="business_entity" class="form-control border-end-0"
@@ -238,7 +238,7 @@
                         <div class="row g-3 align-items-center mb-2">
                             <div class="col-md-2"><label>Application Num <span class="text-danger">:*</span></label></div>
 
-                           <div class="col-md-4 d-flex align-items-center">
+                            <div class="col-md-4 d-flex align-items-center">
                                 <input type="text" name="application_num" class="form-control border-end-0"
                                     value="{{ $nextNum }}" readonly required>
                                 <span class="icon-box border-start-0">
@@ -319,17 +319,17 @@
                         </div>
 
                         <div class="row g-3 align-items-center mb-2">
-                                  <div class="col-md-2">
-    <label>Brand <span class="text-danger">:*</span></label>
-</div>
-<div class="col-md-4 d-flex align-items-center">
-    <input type="text" name="brand" class="form-control border-end-0"
-        placeholder="Enter Brand "
-        value="{{ old('brand', $application->brand ?? '') }}" required>
-    <span class="icon-box border-start-0">
-        <i class="bi bi-bag"></i>
-    </span>
-</div>
+                            <div class="col-md-2">
+                                <label>Brand <span class="text-danger">:*</span></label>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-center">
+                                <input type="text" name="brand" class="form-control border-end-0"
+                                    placeholder="Enter Brand " value="{{ old('brand', $application->brand ?? '') }}"
+                                    required>
+                                <span class="icon-box border-start-0">
+                                    <i class="bi bi-bag"></i>
+                                </span>
+                            </div>
 
                             <div class="col-md-2"><label>Comment</label></div>
 
@@ -362,15 +362,15 @@
 
                                 <div class="row align-items-center">
 
- <div class="col-md-2"><label>Meter Type</label></div>
+                                    <div class="col-md-2"><label>Meter Type</label></div>
 
-                            <div class="col-md-4 d-flex align-items-center">
-                                <input type="text" class="form-control" value="gas" name="meters[0][meter_type]" readonly
-                                    required>
-                                <span class="icon-box border-start-0">
-                                    <i class="bi bi-credit-card"></i>
-                                </span>
-                            </div>
+                                    <div class="col-md-4 d-flex align-items-center">
+                                        <input type="text" class="form-control" value="gas"
+                                            name="meters[0][meter_type]" readonly required>
+                                        <span class="icon-box border-start-0">
+                                            <i class="bi bi-credit-card"></i>
+                                        </span>
+                                    </div>
 
 
                                     <div class="col-md-2"><label class="mb-0">Supplier Name</label></div>
@@ -582,74 +582,9 @@
 
 
                     <!-- KYC VERIFICATION SECTION -->
-                    <div class="card shadow-sm border-0 mt-4">
-                        <div class="card-body">
+                    @include('backend.new-application.kyc_section')
 
-                            <div class="section-title"><span>KYC Verification</span></div>
 
-                            <div class="row g-4">
-
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">
-                                        <i class="bi bi-person-badge me-1 text-primary"></i> Picture ID
-                                    </label>
-
-                                    <div class="kyc-upload-box" onclick="document.getElementById('pictureId').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="pictureId" name="picture_id" hidden>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">
-                                        <i class="bi bi-building me-1 text-success"></i> Inside/Outside pics
-                                    </label>
-
-                                    <div class="kyc-upload-box" onclick="document.getElementById('insidePics').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="insidePics" name="inside_outside_pics" hidden>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">
-                                        <i class="bi bi-receipt me-1 text-warning"></i> Bill
-                                    </label>
-
-                                    <div class="kyc-upload-box" onclick="document.getElementById('billUpload').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="billUpload" name="bill_upload" hidden>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">
-                                        <i class="bi bi-bank me-1 text-info"></i> Bank Statement
-                                    </label>
-
-                                    <div class="kyc-upload-box"
-                                        onclick="document.getElementById('bankStatement').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="bankStatement" name="bank_statement" hidden>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">
-                                        <i class="bi bi-bank me-1 text-info"></i> Additional Uploads
-                                    </label>
-
-                                    <div class="kyc-upload-box"
-                                        onclick="document.getElementById('additionalUploads').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="additionalUploads" name="additional_uploads" hidden
-                                            required>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
 
 
                     <!-- SUBMIT BUTTON -->
@@ -664,52 +599,52 @@
             </div>
             <script>
                 document.getElementById('add-meter-btn').addEventListener('click', function() {
-    const container = document.getElementById('meter-container');
-    const firstBlock = container.querySelector('.meter-block');
+                    const container = document.getElementById('meter-container');
+                    const firstBlock = container.querySelector('.meter-block');
 
-    // Clone
-    const newBlock = firstBlock.cloneNode(true);
+                    // Clone
+                    const newBlock = firstBlock.cloneNode(true);
 
-    // Reset values for all inputs in the cloned block
-    newBlock.querySelectorAll('input').forEach(input => {
-        input.value = ''; // Clear the input fields
-    });
+                    // Reset values for all inputs in the cloned block
+                    newBlock.querySelectorAll('input').forEach(input => {
+                        input.value = ''; // Clear the input fields
+                    });
 
-    // Set the default 'gas' value for the meter type in the cloned block
-    const meterTypeInput = newBlock.querySelector('input[name^="meters"][name$="[meter_type]"]');
-    if (meterTypeInput) {
-        meterTypeInput.value = 'gas'; // Set the 'gas' value to the cloned meter type input
-    }
+                    // Set the default 'gas' value for the meter type in the cloned block
+                    const meterTypeInput = newBlock.querySelector('input[name^="meters"][name$="[meter_type]"]');
+                    if (meterTypeInput) {
+                        meterTypeInput.value = 'gas'; // Set the 'gas' value to the cloned meter type input
+                    }
 
-    // Manage Remove Button
-    const removeBtn = newBlock.querySelector('.remove-meter-btn');
-    removeBtn.classList.remove('d-none');
-    removeBtn.onclick = function() {
-        newBlock.remove();
-        updateMeterIndexes();
-    };
+                    // Manage Remove Button
+                    const removeBtn = newBlock.querySelector('.remove-meter-btn');
+                    removeBtn.classList.remove('d-none');
+                    removeBtn.onclick = function() {
+                        newBlock.remove();
+                        updateMeterIndexes();
+                    };
 
-    container.appendChild(newBlock);
-    updateMeterIndexes();
-});
+                    container.appendChild(newBlock);
+                    updateMeterIndexes();
+                });
 
-function updateMeterIndexes() {
-    const blocks = document.querySelectorAll('.meter-block');
-    blocks.forEach((block, index) => {
-        // Update Label (Meter #1, Meter #2...)
-        block.querySelector('.meter-label').innerText = `Meter #${index + 1}`;
+                function updateMeterIndexes() {
+                    const blocks = document.querySelectorAll('.meter-block');
+                    blocks.forEach((block, index) => {
+                        // Update Label (Meter #1, Meter #2...)
+                        block.querySelector('.meter-label').innerText = `Meter #${index + 1}`;
 
-        // Update Input Names (meters[0], meters[1]...)
-        block.querySelectorAll('input').forEach(input => {
-            const name = input.getAttribute('name');
-            if (name) {
-                // This regex will replace the index [0], [1], etc. in the input's name
-                const newName = name.replace(/meters\[\d+\]/, `meters[${index}]`);
-                input.setAttribute('name', newName);
-            }
-        });
-    });
-}
+                        // Update Input Names (meters[0], meters[1]...)
+                        block.querySelectorAll('input').forEach(input => {
+                            const name = input.getAttribute('name');
+                            if (name) {
+                                // This regex will replace the index [0], [1], etc. in the input's name
+                                const newName = name.replace(/meters\[\d+\]/, `meters[${index}]`);
+                                input.setAttribute('name', newName);
+                            }
+                        });
+                    });
+                }
             </script>
 
             <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

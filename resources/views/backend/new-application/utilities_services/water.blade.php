@@ -337,64 +337,11 @@
                         </div>
                     </div>
 
-                    <!-- KYC -->
-                    <div class="card shadow-sm border-0 mt-4">
-                        <div class="card-body">
 
-                            <div class="section-title"><span>KYC Verification</span></div>
+                    <!-- KYC VERIFICATION SECTION -->
+                    @include('backend.new-application.kyc_section')
 
-                            <div class="row g-4">
 
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">Picture ID</label>
-                                    <div class="kyc-upload-box" onclick="document.getElementById('pictureId').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="pictureId" name="picture_id" hidden>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">Inside/Outside pics</label>
-                                    <div class="kyc-upload-box" onclick="document.getElementById('insidePics').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="insidePics" name="inside_outside_pics" hidden>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">Bill</label>
-                                    <div class="kyc-upload-box" onclick="document.getElementById('billUpload').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="billUpload" name="bill_upload" hidden>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">Bank Statement</label>
-                                    <div class="kyc-upload-box"
-                                        onclick="document.getElementById('bankStatement').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="bankStatement" name="bank_statement" hidden>
-                                    </div>
-                                </div>
-
-                                  <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">
-                                        <i class="bi bi-bank me-1 text-info"></i> Additional Uploads
-                                    </label>
-
-                                    <div class="kyc-upload-box"
-                                        onclick="document.getElementById('additionalUploads').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="additionalUploads" name="additional_uploads" hidden
-                                            required>
-                                    </div>
-                                </div>
-                                
-                                
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- SUBMIT -->
                     <div class="mt-3 ">

@@ -396,6 +396,10 @@
                         </div>
                     </div>
 
+                    {{-- KYC Section --}}
+                    @include('backend.applications.edit.edit_kyc_section')
+
+
                     <!-- SUBMIT -->
                     <div class="mt-3 ">
                         <button class="btn btn-primary bg_green_color">

@@ -398,92 +398,10 @@
                         </div>
                     </div>
 
-                    <!-- KYC -->
-                    <div class="card shadow-sm border-0 mt-4">
-                        <div class="card-body">
+                {{-- KYC Section --}}
+            @include('backend.applications.edit.edit_kyc_section')
 
-                            <div class="section-title"><span>KYC Verification</span></div>
 
-                            <div class="row g-4">
-
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">Picture ID</label>
-                                    <div class="kyc-upload-box" onclick="document.getElementById('pictureId').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="pictureId" name="picture_id" hidden>
-                                    </div>
-                                    @if ($application->picture_id)
-                                        <div class="mt-2">
-                                            <a href="{{ $storedFile($application->picture_id) }}" target="_blank">View
-                                                Current File</a>
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">Inside/Outside pics</label>
-                                    <div class="kyc-upload-box" onclick="document.getElementById('insidePics').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="insidePics" name="inside_outside_pics" hidden>
-                                    </div>
-                                    @if ($application->inside_outside_pics)
-                                        <div class="mt-2">
-                                            <a href="{{ $storedFile($application->inside_outside_pics) }}"
-                                                target="_blank">View Current File</a>
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">Bill</label>
-                                    <div class="kyc-upload-box" onclick="document.getElementById('billUpload').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="billUpload" name="bill_upload" hidden>
-                                    </div>
-                                    @if ($application->bill_upload)
-                                        <div class="mt-2">
-                                            <a href="{{ $storedFile($application->bill_upload) }}" target="_blank">View
-                                                Current File</a>
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">Bank Statement</label>
-                                    <div class="kyc-upload-box"
-                                        onclick="document.getElementById('bankStatement').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="bankStatement" name="bank_statement" hidden>
-                                    </div>
-                                    @if ($application->bank_statement)
-                                        <div class="mt-2">
-                                            <a href="{{ $storedFile($application->bank_statement) }}"
-                                                target="_blank">View Current File</a>
-                                        </div>
-                                    @endif
-                                </div>
-
-                                 <div class="col-md-6">
-                                    <label class="fw-semibold mb-2">
-                                        <i class="bi bi-bank me-1 text-info"></i> Additional Uploads
-                                    </label>
-
-                                    <div class="kyc-upload-box"
-                                        onclick="document.getElementById('additionalUploads').click();">
-                                        <p class="text-muted mb-0">Drop files here to upload</p>
-                                        <input type="file" id="additionalUploads" name="additional_uploads" hidden>
-                                    </div>
-                                    @if ($application->additional_uploads)
-                                        <div class="mt-2">
-                                            <a href="{{ $storedFile($application->additional_uploads) }}"
-                                                target="_blank">View Current File</a>
-                                        </div>
-                                    @endif
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- SUBMIT -->
                     <div class="mt-3">
