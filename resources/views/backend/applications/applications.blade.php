@@ -203,6 +203,15 @@
                                                                 <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
                                                             </button>
                                                         </form> --}}
+                                                        {{-- KYC Documents Button --}}
+                                                        <button type="button"
+                                                            class="w-32-px h-32-px bg-primary-focus text-primary-main rounded-circle d-inline-flex align-items-center justify-content-center border-0"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#kycModal{{ $item->id }}"
+                                                            title="View KYC Documents">
+                                                            <iconify-icon
+                                                                icon="mdi:file-document-multiple-outline"></iconify-icon>
+                                                        </button>
                                                     </div>
                                                 </td>
 
@@ -248,7 +257,7 @@
                                                         <option value="Submitted to Supplier"
                                                             {{ $item->status ==
                                                             'Submitted to
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Supplier'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Supplier'
                                                                 ? 'selected'
                                                                 : '' }}>
                                                             Submitted to Supplier</option>
@@ -431,6 +440,167 @@
                                             </div>
 
 
+                                              {{-- KYC Documents Modal --}}
+            <div class="modal fade" id="kycModal{{ $item->id }}" tabindex="-1"
+                aria-labelledby="kycModalLabel{{ $item->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                    <div class="modal-content border-0 shadow-lg">
+
+                        <div class="modal-header bg-white border-bottom py-3 px-4">
+                            <div>
+                                <h6 class="fw-semibold mb-0 text-success-1000" id="kycModalLabel{{ $item->id }}">
+                                    <i class="bi bi-shield-check me-2"></i>KYC Documents - {{ $item->application_num }}
+                                </h6>
+                                <small class="text-muted">{{ $item->company_name }} /
+                                    {{ $item->merchant_full_name }}</small>
+                            </div>
+                            <button type="button" class="btn-close fs-6" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body bg-light-subtle p-4">
+
+                            @php
+                                $kycSections = [
+                                    'picture_id' => [
+                                        'icon' => 'bi-person-badge',
+                                        'color' => 'primary',
+                                        'label' => 'Picture ID',
+                                    ],
+                                    'inside_outside_pics' => [
+                                        'icon' => 'bi-building',
+                                        'color' => 'success',
+                                        'label' => 'Inside/Outside Pics',
+                                    ],
+                                    'bill_upload' => [
+                                        'icon' => 'bi-receipt',
+                                        'color' => 'warning',
+                                        'label' => 'Bill',
+                                    ],
+                                    'bank_statement' => [
+                                        'icon' => 'bi-bank',
+                                        'color' => 'info',
+                                        'label' => 'Bank Statement',
+                                    ],
+                                    'additional_uploads' => [
+                                        'icon' => 'bi-upload',
+                                        'color' => 'secondary',
+                                        'label' => 'Additional Uploads',
+                                    ],
+                                ];
+                            @endphp
+
+                            @foreach ($kycSections as $field => $section)
+                                @php
+                                    $files = !empty($item->$field) ? explode(',', $item->$field) : [];
+                                @endphp
+
+                                <div class="card border-0 shadow-sm mb-3">
+                                    <div class="card-header bg-white border-bottom py-3">
+                                        <h6 class="mb-0">
+                                            <i class="bi {{ $section['icon'] }} me-2 text-{{ $section['color'] }}"></i>
+                                            {{ $section['label'] }}
+                                            @if (count($files) > 0)
+                                                <span class="badge bg-{{ $section['color'] }} ms-2">{{ count($files) }}
+                                                    file(s)</span>
+                                            @endif
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        @if (count($files) > 0)
+                                            <div class="row g-3">
+                                                @foreach ($files as $file)
+                                                    @php
+                                                        $filePath = trim($file);
+                                                        $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
+                                                        $isImage = in_array(strtolower($fileExtension), [
+                                                            'jpg',
+                                                            'jpeg',
+                                                            'png',
+                                                            'gif',
+                                                            'webp',
+                                                        ]);
+                                                    @endphp
+
+                                                    <div class="col-md-3 col-sm-4 col-6">
+                                                        <div class="border rounded-3 bg-white p-2 position-relative h-100">
+
+                                                            @if ($isImage)
+                                                                <a href="{{ asset('storage/' . $filePath) }}"
+                                                                    target="_blank" class="d-block">
+                                                                    <img src="{{ asset('storage/' . $filePath) }}"
+                                                                        alt="KYC Document"
+                                                                        class="img-fluid rounded-2 w-100"
+                                                                        style="height: 150px; object-fit: cover;">
+                                                                </a>
+                                                            @else
+                                                                <a href="{{ asset('storage/' . $filePath) }}"
+                                                                    target="_blank"
+                                                                    class="d-flex flex-column align-items-center justify-content-center text-decoration-none"
+                                                                    style="height: 150px;">
+                                                                    <i
+                                                                        class="bi bi-file-earmark-pdf display-4 text-danger mb-2"></i>
+                                                                    <span class="small text-muted text-center text-break">
+                                                                        {{ basename($filePath) }}
+                                                                    </span>
+                                                                </a>
+                                                            @endif
+
+                                                            <div
+                                                                class="d-flex justify-content-between align-items-center mt-2 px-1">
+                                                                <small class="text-muted text-truncate"
+                                                                    style="max-width: 120px;"
+                                                                    title="{{ basename($filePath) }}">
+                                                                    {{ \Illuminate\Support\Str::limit(basename($filePath), 15) }}
+                                                                </small>
+
+                                                                <div class="d-flex gap-1">
+                                                                    <a href="{{ asset('storage/' . $filePath) }}" download
+                                                                        class="btn btn-sm btn-light rounded-circle p-1"
+                                                                        title="Download">
+                                                                        <i class="bi bi-download"></i>
+                                                                    </a>
+
+                                                                    @if (auth()->user()->hasRole('Admin'))
+                                                                        <button type="button"
+                                                                            class="btn btn-sm btn-light rounded-circle p-1 text-danger delete-kyc-file"
+                                                                            data-file="{{ $filePath }}"
+                                                                            data-application-id="{{ $item->id }}"
+                                                                            title="Delete">
+                                                                            <i class="bi bi-trash"></i>
+                                                                        </button>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <div class="text-center py-4">
+                                                <i class="bi bi-folder2-open display-4 text-muted mb-2"></i>
+                                                <p class="text-muted mb-0">No files uploaded yet</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+
+                        </div>
+
+                        <div class="modal-footer bg-white border-top px-4 py-3">
+                            <button type="button" class="btn btn-secondary rounded-3 px-4" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <a href="{{ route('admin.applications.print', $item->id) }}" target="_blank"
+                                class="btn btn-primary rounded-3 px-4">
+                                <i class="bi bi-printer me-1"></i> Print Application
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
                                             {{-- Commission Modal --}}
                                             <div class="modal fade" id="commissionModal{{ $item->id }}"
@@ -493,6 +663,53 @@
 
 
             </div>
+
+
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Handle KYC file deletion
+                    document.querySelectorAll('.delete-kyc-file').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const file = this.getAttribute('data-file');
+                            const applicationId = this.getAttribute('data-application-id');
+
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#d33',
+                                cancelButtonColor: '#3085d6',
+                                confirmButtonText: 'Yes, delete it!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Create form and submit
+                                    const form = document.createElement('form');
+                                    form.method = 'POST';
+                                    form.action =
+                                    `/admin/applications/${applicationId}/delete-file`;
+
+                                    const csrfToken = document.querySelector(
+                                        'meta[name="csrf-token"]').getAttribute('content');
+
+                                    form.innerHTML = `
+                        <input type="hidden" name="_token" value="${csrfToken}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="file" value="${file}">
+                    `;
+
+                                    document.body.appendChild(form);
+                                    form.submit();
+                                }
+                            });
+                        });
+                    });
+                });
+            </script>
+
+
+
             <script>
                 document.addEventListener('change', function(e) {
                     if (e.target.classList.contains('comment-image-input')) {
@@ -642,38 +859,40 @@
             {{-- script for filtering completed pending and rejected  --}}
 
             <script>
-    document.querySelectorAll('.stat-card').forEach(card => {
-        card.style.cursor = 'pointer';
+                document.querySelectorAll('.stat-card').forEach(card => {
+                    card.style.cursor = 'pointer';
 
-        card.addEventListener('click', function() {
-            let filter = this.getAttribute('data-filter');
+                    card.addEventListener('click', function() {
+                        let filter = this.getAttribute('data-filter');
 
-            document.querySelectorAll('#dataTable tbody tr').forEach(row => {
-                let dropdown = row.querySelector('.status-dropdown');
-                let status = dropdown ? dropdown.value : row.getAttribute('data-status');
+                        document.querySelectorAll('#dataTable tbody tr').forEach(row => {
+                            let dropdown = row.querySelector('.status-dropdown');
+                            let status = dropdown ? dropdown.value : row.getAttribute('data-status');
 
-                // Status ko trim karke lowercase kar rahe hain taake spelling/case ka koi rona na rahe
-                status = status ? status.trim().toLowerCase() : '';
+                            // Status ko trim karke lowercase kar rahe hain taake spelling/case ka koi rona na rahe
+                            status = status ? status.trim().toLowerCase() : '';
 
-                if (filter === 'pending') {
-                    // Purana solid logic: Jo rejected, paid, completed ya live nahi hai, woh sab pending hai
-                    row.style.display = (status !== 'rejected' && status !== 'paid' && status !== 'completed' && status !== 'live') ? '' : 'none';
+                            if (filter === 'pending') {
+                                // Purana solid logic: Jo rejected, paid, completed ya live nahi hai, woh sab pending hai
+                                row.style.display = (status !== 'rejected' && status !== 'paid' &&
+                                    status !== 'completed' && status !== 'live') ? '' : 'none';
 
-                } else if (filter === 'completed') {
-                    // Agar status 'paid' ya 'completed' ho
-                    row.style.display = (status === 'paid' || status === 'completed'|| status === 'live') ? '' : 'none';
+                            } else if (filter === 'completed') {
+                                // Agar status 'paid' ya 'completed' ho
+                                row.style.display = (status === 'paid' || status === 'completed' ||
+                                    status === 'live') ? '' : 'none';
 
-                } else if (filter === 'rejected') {
-                    // Agar status 'rejected' ho
-                    row.style.display = (status === 'rejected') ? '' : 'none';
+                            } else if (filter === 'rejected') {
+                                // Agar status 'rejected' ho
+                                row.style.display = (status === 'rejected') ? '' : 'none';
 
-                } else if (filter === 'live') {
-                    // Naya Live filter
-                    row.style.display = (status === 'live') ? '' : 'none';
-                }
-            });
-        });
-    });
-</script>
+                            } else if (filter === 'live') {
+                                // Naya Live filter
+                                row.style.display = (status === 'live') ? '' : 'none';
+                            }
+                        });
+                    });
+                });
+            </script>
         </div>
     @endsection
