@@ -441,7 +441,7 @@
 
 
                                               {{-- KYC Documents Modal --}}
-            <div class="modal fade" id="kycModal{{ $item->id }}" tabindex="-1"
+            {{-- <div class="modal fade" id="kycModal{{ $item->id }}" tabindex="-1"
                 aria-labelledby="kycModalLabel{{ $item->id }}" aria-hidden="true">
                 <div class="modal-dialog modal-xl modal-dialog-scrollable">
                     <div class="modal-content border-0 shadow-lg">
@@ -599,8 +599,252 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
+
+             <div class="modal fade" id="kycModal{{ $item->id }}" tabindex="-1">
+
+                                                <div class="modal-dialog modal-xl modal-dialog-scrollable">
+
+                                                    <div class="modal-content border-0 shadow-lg rounded-4">
+
+
+                                                        <div class="modal-header bg-white">
+
+                                                            <div>
+                                                                <h5 class="fw-bold text-success mb-1">
+                                                                    <i class="bi bi-shield-check me-2"></i>
+                                                                    KYC Documents
+                                                                </h5>
+
+                                                                <small class="text-muted">
+                                                                    {{ $item->application_num }} |
+                                                                    {{ $item->company_name }}
+                                                                </small>
+
+                                                            </div>
+
+                                                            <button class="btn-close" data-bs-dismiss="modal"></button>
+
+                                                        </div>
+
+
+
+                                                        <div class="modal-body bg-light">
+
+
+                                                            @php
+
+                                                                $sections = [
+                                                                    'picture_id' => 'Picture ID',
+                                                                    'inside_outside_pics' => 'Inside / Outside Pics',
+                                                                    'bill_upload' => 'Bills',
+                                                                    'bank_statement' => 'Bank Statement',
+                                                                    'additional_uploads' => 'Additional Files',
+                                                                ];
+
+                                                            @endphp
+
+
+
+                                                            @foreach ($sections as $field => $title)
+                                                                @php
+
+                                                                    $files = !empty($item->$field)
+                                                                        ? explode(',', $item->$field)
+                                                                        : [];
+
+                                                                @endphp
+
+
+
+                                                                <div class="card border-0 shadow-sm rounded-4 mb-3">
+
+
+                                                                    <div class="card-header bg-white py-3">
+
+                                                                        <strong>
+                                                                            <i
+                                                                                class="bi bi-folder2-open text-success me-2"></i>
+                                                                            {{ $title }}
+                                                                        </strong>
+
+                                                                        <span class="badge bg-success ms-2">
+                                                                            {{ count($files) }}
+                                                                        </span>
+
+                                                                    </div>
+
+
+
+                                                                    <div class="card-body">
+
+
+                                                                        @if (count($files))
+                                                                            <div class="row g-3">
+
+
+                                                                                @foreach ($files as $file)
+                                                                                    @php
+
+                                                                                        $file = trim($file);
+
+                                                                                        $extension = strtolower(
+                                                                                            pathinfo(
+                                                                                                $file,
+                                                                                                PATHINFO_EXTENSION,
+                                                                                            ),
+                                                                                        );
+
+                                                                                        $isImage = in_array(
+                                                                                            $extension,
+                                                                                            [
+                                                                                                'jpg',
+                                                                                                'jpeg',
+                                                                                                'png',
+                                                                                                'webp',
+                                                                                                'gif',
+                                                                                            ],
+                                                                                        );
+
+                                                                                        $fileIcon = match ($extension) {
+                                                                                            'pdf'
+                                                                                                => 'bi-file-earmark-pdf text-danger',
+
+                                                                                            'doc',
+                                                                                            'docx'
+                                                                                                => 'bi-file-earmark-word text-primary',
+
+                                                                                            'xls',
+                                                                                            'xlsx'
+                                                                                                => 'bi-file-earmark-excel text-success',
+
+                                                                                            default
+                                                                                                => 'bi-file-earmark-text text-secondary',
+                                                                                        };
+
+                                                                                    @endphp
+
+
+
+                                                                                    <div
+                                                                                        class="col-xl-3 col-lg-4 col-md-6">
+
+
+                                                                                        <div
+                                                                                            class="card border rounded-3 h-100">
+
+
+                                                                                            <div
+                                                                                                class="text-center bg-light rounded-top">
+
+
+                                                                                                @if ($isImage)
+                                                                                                    <a href="{{ asset('storage/' . $file) }}"
+                                                                                                        target="_blank">
+
+
+                                                                                                        <img src="{{ asset('storage/' . $file) }}"
+                                                                                                            class="img-fluid rounded-top"
+                                                                                                            style="height:120px;width:100%;object-fit:cover;">
+
+                                                                                                    </a>
+                                                                                                @else
+                                                                                                    <div class="d-flex justify-content-center align-items-center"
+                                                                                                        style="height:120px">
+
+
+                                                                                                        <i class="bi {{ $fileIcon }}"
+                                                                                                            style="font-size:45px"></i>
+
+
+                                                                                                    </div>
+                                                                                                @endif
+
+
+                                                                                            </div>
+
+
+
+
+                                                                                            <div class="card-body p-2">
+
+
+                                                                                                <div class="small text-truncate fw-semibold"
+                                                                                                    title="{{ basename($file) }}">
+
+                                                                                                    {{ basename($file) }}
+
+                                                                                                </div>
+
+
+
+                                                                                                <a href="{{ asset('storage/' . $file) }}"
+                                                                                                    target="_blank"
+                                                                                                    class="btn btn-sm btn-outline-success w-100 mt-2">
+
+
+                                                                                                    <i
+                                                                                                        class="bi bi-eye"></i>
+                                                                                                    View
+
+                                                                                                </a>
+
+
+                                                                                            </div>
+
+
+
+                                                                                        </div>
+
+
+                                                                                    </div>
+                                                                                @endforeach
+
+
+                                                                            </div>
+                                                                        @else
+                                                                            <div class="text-center text-muted py-3">
+
+                                                                                <i class="bi bi-folder-x fs-3"></i>
+
+                                                                                <br>
+                                                                                No files available
+
+                                                                            </div>
+                                                                        @endif
+
+
+                                                                    </div>
+
+
+                                                                </div>
+                                                            @endforeach
+
+
+
+                                                        </div>
+
+
+
+                                                        <div class="modal-footer">
+
+                                                            <button class="btn btn-secondary rounded-3"
+                                                                data-bs-dismiss="modal">
+
+                                                                Close
+
+                                                            </button>
+
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            
 
                                             {{-- Commission Modal --}}
                                             <div class="modal fade" id="commissionModal{{ $item->id }}"
