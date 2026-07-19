@@ -711,7 +711,7 @@ class ApplicationController extends Controller
 
                 $originalName = $item->getClientOriginalName();
 
-               $uniqueName = $originalName . '_' . uniqid();
+               $uniqueName = $originalName;
 
 
                 $path = $item->storeAs(

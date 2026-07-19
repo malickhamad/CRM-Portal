@@ -40,7 +40,10 @@
 
 <!-- main js -->
 <script>
-    let table = new DataTable('#dataTable');
+    // let table = new DataTable('#dataTable');
+    let table = new DataTable('#dataTable', {
+        pageLength: 50
+    });
 
     $('#categoryFilter').on('change', function () {
         let selectedCategory = $(this).val();

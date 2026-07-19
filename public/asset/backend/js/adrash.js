@@ -44,11 +44,41 @@ $(document).ready(function () {
                     //     timer: 2000,
                     //     showConfirmButton: false
                     // });
+         Swal.fire({
+                icon: 'info',
+                title: 'Please Wait',
+                html: `
+                    <div class="mt-2">
+                        <p><strong>Your application is being processed.</strong></p>
+                        <p style="color:#666;font-size:14px;">
+                            This may take a few seconds.<br>
+                            Please do not refresh or close this page.
+                        </p>
+                    </div>
+                `,
+                iconColor: '#198754',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                    // Make the loading spinner green
+                    const loader = Swal.getHtmlContainer().parentElement.querySelector('.swal2-loader');
+                    if (loader) {
+                        loader.style.borderColor = '#198754 transparent #198754 transparent';
+                    }
+                }
+            });
+
+
 
                 },
 
                 // SUCCESS RESPONSE
                 success: function (response) {
+                        window.location.reload();  // Reloads the current page
+                    
+                      Swal.close(); 
                     isSubmitting = false;
 
                     $form.find("button[type='submit']").prop("disabled", false);
@@ -83,6 +113,7 @@ $(document).ready(function () {
 
                 // ERROR RESPONSE
                 error: function (xhr) {
+                      Swal.close(); 
                     isSubmitting = false;
 
                     $form.find("button[type='submit']").prop("disabled", false);
