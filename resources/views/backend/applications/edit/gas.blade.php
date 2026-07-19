@@ -764,12 +764,6 @@
                     {{-- KYC Section --}}
                     @include('backend.applications.edit.edit_kyc_section')
 
-                    {{-- KYC Section --}}
-                    @include('backend.applications.edit.edit_kyc_section')
-
-
-
-
                     <!-- SUBMIT BUTTON -->
                     <div class="mt-3 ">
                         <button class="btn btn-primary bg_green_color" required>
