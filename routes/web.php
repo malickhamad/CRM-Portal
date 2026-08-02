@@ -73,6 +73,10 @@ Route::get('/migrate-fresh', function () {
 //     return "Seeder executed!";
 // });
 
+Route::get('/php-info', function () {
+    phpinfo();
+});
+
 Route::get('/db-seed', function () {
     try {
         Artisan::call('db:seed', [

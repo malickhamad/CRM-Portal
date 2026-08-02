@@ -229,7 +229,8 @@ class ApplicationController extends Controller
                 'inside_outside_pics',
                 'bill_upload',
                 'bank_statement',
-                'additional_uploads'
+                'additional_uploads',
+                'meter_pictures'
             ];
 
 
@@ -650,6 +651,7 @@ class ApplicationController extends Controller
         $this->handleFile($request, $app, 'bill_upload', $isCreate, ['bill']);
         $this->handleFile($request, $app, 'bank_statement', $isCreate);
         $this->handleFile($request, $app, 'additional_uploads', $isCreate);
+        $this->handleFile($request, $app, 'meter_pictures', $isCreate);
     }
 
     // private function handleFile(Request $request, Application $app, string $field, bool $isCreate, array $aliases = []): void

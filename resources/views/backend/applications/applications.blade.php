@@ -641,6 +641,7 @@
                                                                     'bill_upload' => 'Bills',
                                                                     'bank_statement' => 'Bank Statement',
                                                                     'additional_uploads' => 'Additional Files',
+                                                                    'meter_pictures' => 'Meter Pictures',
                                                                 ];
 
                                                             @endphp

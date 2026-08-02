@@ -10,7 +10,7 @@
 <!-- {{-- <script src="{{ asset('asset/backend/js/lib/apexcharts.min.js') }}"></script> --}} -->
 <!-- Data Table js -->
 <script src="{{ asset('asset/backend/js/lib/dataTables.min.js') }}"></script>
-<script src="https://geodata.solutions/includes/countrystatecity.js"></script>
+{{-- <script src="https://geodata.solutions/includes/countrystatecity.js"></script> --}}
 <!-- SweetAlert2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

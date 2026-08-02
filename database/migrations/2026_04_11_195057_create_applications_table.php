@@ -75,11 +75,12 @@ return new class extends Migration {
             $table->string('password')->nullable();
             $table->text('customer_history')->nullable();
 
-            $table->string('picture_id')->nullable();
-            $table->string('inside_outside_pics')->nullable();
-            $table->string('bill_upload')->nullable();
-            $table->string('bank_statement')->nullable();
-            $table->string('additional_uploads')->nullable();
+            $table->text('picture_id')->nullable();
+            $table->text('inside_outside_pics')->nullable();
+            $table->text('bill_upload')->nullable();
+            $table->text('bank_statement')->nullable();
+            $table->text('additional_uploads')->nullable();
+            $table->text('meter_pictures')->nullable();
 
             $table->timestamps();
         });

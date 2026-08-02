@@ -6,6 +6,36 @@
 
          <div class="row g-4">
 
+            @if(in_array(Route::currentRouteName(), ['admin.gas', 'admin.electricity', 'admin.electric_gas']))
+
+{{-- Meter Pictures --}}
+<div class="col-md-6">
+
+    <label class="fw-semibold mb-2">
+        <i class="bi bi-speedometer me-1 text-primary"></i> Meter Pictures
+    </label>
+
+    <div class="kyc-upload-box" onclick="document.getElementById('meterPictures').click();">
+
+        <p id="meterPicturesText" class="text-muted mb-0">
+            Drop files here to upload
+        </p>
+
+        <input type="file"
+               id="meterPictures"
+               name="meter_pictures[]"
+               multiple
+               hidden
+               onchange="showFiles(this,'meterPicturesPreview','meterPicturesText')">
+
+    </div>
+
+    <div id="meterPicturesPreview" class="mt-2"></div>
+
+</div>
+
+@endif
+
              {{-- Picture ID --}}
              <div class="col-md-6">
 

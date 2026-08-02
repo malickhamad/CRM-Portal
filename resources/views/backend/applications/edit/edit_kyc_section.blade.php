@@ -5,6 +5,101 @@
 
         <div class="row g-4">
 
+            {{-- Meter Pictures --}}
+@if(isset($application) && in_array(strtolower($application->service_type), [
+    'gas',
+    'electricity',
+    'electric gas'
+]))
+
+<div class="col-md-6">
+
+    <label class="fw-semibold mb-2">
+        <i class="bi bi-speedometer me-1 text-success"></i>
+        Meter Pictures
+    </label>
+
+
+    <div class="kyc-upload-box" onclick="document.getElementById('meterPictures').click();">
+
+        <p class="text-muted mb-0" id="meterPicturesText">
+            Drop files here to upload
+        </p>
+
+        <input type="file"
+            id="meterPictures"
+            name="meter_pictures[]"
+            multiple
+            hidden
+            onchange="showFiles(this,'meterPicturesPreview','meterPicturesText')">
+
+    </div>
+
+
+    {{-- New Selected Files --}}
+    <div id="meterPicturesPreview" class="mt-2"></div>
+
+
+    {{-- Existing Files --}}
+    @if ($application->meter_pictures)
+
+        <div class="mt-3 small">
+
+            <div class="fw-semibold mb-2">
+                Existing Files:
+            </div>
+
+
+            @foreach (explode(',', $application->meter_pictures) as $file)
+
+                @php
+                    $file = trim($file);
+                    $name = basename($file);
+                @endphp
+
+
+                @if ($file)
+
+                <div class="existing-file-item d-flex justify-content-between align-items-center border rounded px-2 py-2 mb-2">
+
+
+                    <a href="{{ asset('storage/' . $file) }}"
+                        target="_blank"
+                        class="text-decoration-none text-dark text-truncate"
+                        style="max-width:75%;">
+
+                        <i class="bi bi-file-earmark text-primary me-1"></i>
+
+                        {{ strlen($name) > 25 ? substr($name,0,22).'...' : $name }}
+
+                    </a>
+
+
+                    <button type="button"
+                        class="btn btn-sm btn-outline-danger delete-existing-file"
+                        data-column="meter_pictures"
+                        data-file="{{ $file }}">
+
+                        <i class="bi bi-trash"></i>
+
+                    </button>
+
+
+                </div>
+
+                @endif
+
+            @endforeach
+
+        </div>
+
+    @endif
+
+
+</div>
+
+@endif
+
 
             <!-- Picture ID -->
             <div class="col-md-6">
