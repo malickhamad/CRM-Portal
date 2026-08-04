@@ -28,7 +28,7 @@ class Application extends Model
         'name_on_account', 'account_number', 'sort_code', 'iban', 'bic', 'name_of_bank',
         'bill_payment_method', 'landlord_name', 'name_of_new_customer', 'status_taken_date',
         'password', 'customer_history',
-        'picture_id', 'inside_outside_pics', 'bill_upload', 'bank_statement', 'additional_uploads','meter_pictures', 'status','commission_amount',
+        'picture_id', 'inside_outside_pics', 'bill_upload', 'bank_statement', 'additional_uploads','meter_pictures' ,'water_pictures', 'status','commission_amount',
     'mature_date',
     'paid_date',
     'payout_status',

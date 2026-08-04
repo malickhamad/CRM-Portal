@@ -24,36 +24,115 @@
             </div>
             <x-sweet-alert :type="session('sweetalert.type')" :message="session('sweetalert.message')" :title="session('sweetalert.title')" />
 
-
             {{-- leads and sales info --}}
             <div class="d-flex flex-wrap gap-3 mb-24">
-                <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card" data-filter="live"
-                    style="background-color: #e0f2fe; padding: 10px 20px; border-radius: 12px; min-width: 320px;">
+                <!-- Live Applications -->
+                <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card position-relative"
+                    data-filter="live"
+                    style="background-color: #e0f2fe; padding: 10px 20px; border-radius: 12px; min-width: 320px; cursor: pointer;">
                     <span class="fw-semibold text-dark" style="font-size: 15px;">Live Applications</span>
                     <span class="fw-bold text-dark" style="font-size: 18px;">{{ $liveApplications }}</span>
+                    <div class="status-tooltip">
+                        @foreach ($liveStatuses as $status)
+                            <div class="d-flex justify-content-between gap-3">
+                                <span>{{ $status }}</span>
+                                <strong>{{ $liveBreakdown[$status] ?? 0 }}</strong>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
 
-                <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card"
+                <!-- Pending Applications -->
+                <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card position-relative"
                     data-filter="pending"
-                    style="background-color: #f3e5ab; padding: 10px 20px; border-radius: 12px; min-width: 320px;">
+                    style="background-color: #f3e5ab; padding: 10px 20px; border-radius: 12px; min-width: 320px; cursor: pointer;">
                     <span class="fw-semibold text-dark" style="font-size: 15px;">Pending Applications</span>
                     <span class="fw-bold text-dark" style="font-size: 18px;">{{ $pendingApplications }}</span>
+                    <div class="status-tooltip">
+                        @foreach ($pendingStatuses as $status)
+                            <div class="d-flex justify-content-between gap-3">
+                                <span>{{ $status }}</span>
+                                <strong>{{ $pendingBreakdown[$status] ?? 0 }}</strong>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
 
-                <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card"
+                <!-- Completed Applications -->
+                <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card position-relative"
                     data-filter="completed"
-                    style="background-color: #d4e7c5; padding: 10px 20px; border-radius: 12px; min-width: 320px;">
+                    style="background-color: #d4e7c5; padding: 10px 20px; border-radius: 12px; min-width: 320px; cursor: pointer;">
                     <span class="fw-semibold text-dark" style="font-size: 15px;">Completed Applications</span>
                     <span class="fw-bold text-dark" style="font-size: 18px;">{{ $completedApplications }}</span>
+                    <div class="status-tooltip">
+                        @foreach ($completedStatuses as $status)
+                            <div class="d-flex justify-content-between gap-3">
+                                <span>{{ $status }}</span>
+                                <strong>{{ $completedBreakdown[$status] ?? 0 }}</strong>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
 
-                <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card"
+                <!-- Rejected Applications -->
+                <div class="d-flex align-items-center justify-content-between shadow-sm border stat-card position-relative"
                     data-filter="rejected"
-                    style="background-color: #d1d9e9; padding: 10px 20px; border-radius: 12px; min-width: 320px">
+                    style="background-color: #d1d9e9; padding: 10px 20px; border-radius: 12px; min-width: 320px; cursor: pointer;">
                     <span class="fw-semibold text-dark" style="font-size: 15px;">Rejected Applications</span>
                     <span class="fw-bold text-dark" style="font-size: 18px;">{{ $rejectedApplications }}</span>
+                    <div class="status-tooltip">
+                        @foreach ($rejectedStatuses as $status)
+                            <div class="d-flex justify-content-between gap-3">
+                                <span>{{ $status }}</span>
+                                <strong>{{ $rejectedBreakdown[$status] ?? 0 }}</strong>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
+
+         <style>
+.stat-card {
+    position: relative;
+    cursor: pointer;
+}
+
+.status-tooltip {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 10px 15px;
+    min-width: 200px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    margin-top: 5px;
+    color: #e0e0e0;
+}
+
+.stat-card:hover .status-tooltip {
+    display: block;
+}
+
+.status-tooltip div {
+    padding: 4px 0;
+    font-size: 14px;
+    border-bottom: 1px solid #333;
+    color: #e0e0e0;
+}
+
+.status-tooltip div:last-child {
+    border-bottom: none;
+}
+
+.status-tooltip div strong {
+    color: #fff;
+}
+</style>
+
 
 
 
@@ -257,7 +336,7 @@
                                                         <option value="Submitted to Supplier"
                                                             {{ $item->status ==
                                                             'Submitted to
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Supplier'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Supplier'
                                                                 ? 'selected'
                                                                 : '' }}>
                                                             Submitted to Supplier</option>
@@ -440,8 +519,8 @@
                                             </div>
 
 
-                                              {{-- KYC Documents Modal --}}
-            {{-- <div class="modal fade" id="kycModal{{ $item->id }}" tabindex="-1"
+                                            {{-- KYC Documents Modal --}}
+                                            {{-- <div class="modal fade" id="kycModal{{ $item->id }}" tabindex="-1"
                 aria-labelledby="kycModalLabel{{ $item->id }}" aria-hidden="true">
                 <div class="modal-dialog modal-xl modal-dialog-scrollable">
                     <div class="modal-content border-0 shadow-lg">
@@ -602,7 +681,7 @@
             </div> --}}
 
 
-             <div class="modal fade" id="kycModal{{ $item->id }}" tabindex="-1">
+                                            <div class="modal fade" id="kycModal{{ $item->id }}" tabindex="-1">
 
                                                 <div class="modal-dialog modal-xl modal-dialog-scrollable">
 
@@ -845,7 +924,7 @@
                                                 </div>
 
                                             </div>
-                                            
+
 
                                             {{-- Commission Modal --}}
                                             <div class="modal fade" id="commissionModal{{ $item->id }}"
@@ -933,7 +1012,7 @@
                                     const form = document.createElement('form');
                                     form.method = 'POST';
                                     form.action =
-                                    `/admin/applications/${applicationId}/delete-file`;
+                                        `/admin/applications/${applicationId}/delete-file`;
 
                                     const csrfToken = document.querySelector(
                                         'meta[name="csrf-token"]').getAttribute('content');

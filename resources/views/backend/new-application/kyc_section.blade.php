@@ -36,6 +36,36 @@
 
 @endif
 
+
+@if(in_array(Route::currentRouteName(), ['admin.water']))
+
+{{-- Water Pictures --}}
+<div class="col-md-6">
+
+    <label class="fw-semibold mb-2">
+        <i class="bi bi-water me-1 text-primary"></i> Water Pictures
+    </label>
+
+    <div class="kyc-upload-box" onclick="document.getElementById('waterPictures').click();">
+
+        <p id="waterPicturesText" class="text-muted mb-0">
+            Drop files here to upload
+        </p>
+
+        <input type="file"
+               id="waterPictures"
+               name="water_pictures[]"
+               multiple
+               hidden
+               onchange="showFiles(this,'waterPicturesPreview','waterpicturesText')">
+
+    </div>
+
+    <div id="waterPicturesPreview" class="mt-2"></div>
+
+</div>
+
+@endif
              {{-- Picture ID --}}
              <div class="col-md-6">
 

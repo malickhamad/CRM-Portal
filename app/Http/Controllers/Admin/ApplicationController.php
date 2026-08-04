@@ -19,49 +19,49 @@ use Illuminate\Support\Facades\Auth;
 class ApplicationController extends Controller
 {
 
-   private function getCommonStats()
-{
-    $query = Application::query();
+    private function getCommonStats()
+    {
+        $query = Application::query();
 
-    if (!auth()->user()->hasRole('Admin')) {
-        $query->where('user_id', auth()->id());
+        if (!auth()->user()->hasRole('Admin')) {
+            $query->where('user_id', auth()->id());
+        }
+
+        return [
+            'remainingLeads' => (clone $query)
+                ->whereNotIn('status', ['Paid', 'Rejected', 'Live'])
+                ->count(),
+
+            'allSales' => (clone $query)
+                ->whereIn('status', ['Live', 'Paid'])
+                ->count(),
+
+            'thisMonthSales' => (clone $query)
+                ->whereIn('status', ['Live', 'Paid'])
+                ->whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->count(),
+
+            'todayApplications' => (clone $query)
+                ->whereDate('created_at', today())
+                ->count(),
+
+            'thisWeekApplications' => (clone $query)
+                ->whereBetween('created_at', [
+                    now()->startOfWeek(),
+                    now()->endOfWeek()
+                ])
+                ->count(),
+
+            'thisMonthApplications' => (clone $query)
+                ->whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->count(),
+
+            'allApplications' => (clone $query)
+                ->count(),
+        ];
     }
-
-    return [
-        'remainingLeads' => (clone $query)
-            ->whereNotIn('status', ['Paid', 'Rejected', 'Live'])
-            ->count(),
-
-        'allSales' => (clone $query)
-            ->whereIn('status', ['Live', 'Paid'])
-            ->count(),
-
-        'thisMonthSales' => (clone $query)
-            ->whereIn('status', ['Live', 'Paid'])
-            ->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->count(),
-
-        'todayApplications' => (clone $query)
-            ->whereDate('created_at', today())
-            ->count(),
-
-        'thisWeekApplications' => (clone $query)
-            ->whereBetween('created_at', [
-                now()->startOfWeek(),
-                now()->endOfWeek()
-            ])
-            ->count(),
-
-        'thisMonthApplications' => (clone $query)
-            ->whereMonth('created_at', now()->month)
-            ->whereYear('created_at', now()->year)
-            ->count(),
-
-        'allApplications' => (clone $query)
-            ->count(),
-    ];
-}
 
     private function viewWithStats($view, $data = [])
     {
@@ -162,7 +162,7 @@ class ApplicationController extends Controller
             $this->getCommonStats()
         ));
     }
-    public function applications(Request $request)
+   public function applications(Request $request)
 {
     $selectedUserId = $request->user_id;
 
@@ -192,9 +192,44 @@ class ApplicationController extends Controller
         ->where('status', 'Rejected')
         ->count();
 
-     $liveApplications = (clone $baseQuery)
-    ->where('status', 'Live')
-    ->count();
+    $liveApplications = (clone $baseQuery)
+        ->where('status', 'Live')
+        ->count();
+
+    // Status lists for tooltips
+    $pendingStatuses = ['App Sent', 'Docs Required', 'Cot in process', 'Awaiting Signature', 'Cot Done', 'Signed', 'Submitted to Supplier', 'Cost Objected'];
+    $completedStatuses = ['Live', 'Paid'];
+    $liveStatuses = ['Live'];
+    $rejectedStatuses = ['Rejected'];
+
+    // Breakdown queries
+    $pendingBreakdown = (clone $baseQuery)
+        ->whereNotIn('status', ['Paid', 'Rejected', 'Live'])
+        ->select('status', DB::raw('count(*) as count'))
+        ->groupBy('status')
+        ->pluck('count', 'status')
+        ->toArray();
+
+    $completedBreakdown = (clone $baseQuery)
+        ->whereIn('status', ['Live', 'Paid'])
+        ->select('status', DB::raw('count(*) as count'))
+        ->groupBy('status')
+        ->pluck('count', 'status')
+        ->toArray();
+
+    $rejectedBreakdown = (clone $baseQuery)
+        ->where('status', 'Rejected')
+        ->select('status', DB::raw('count(*) as count'))
+        ->groupBy('status')
+        ->pluck('count', 'status')
+        ->toArray();
+
+    $liveBreakdown = (clone $baseQuery)
+        ->where('status', 'Live')
+        ->select('status', DB::raw('count(*) as count'))
+        ->groupBy('status')
+        ->pluck('count', 'status')
+        ->toArray();
 
     $users = \App\Models\User::orderBy('name')->get(['id', 'name']);
 
@@ -204,65 +239,75 @@ class ApplicationController extends Controller
         'completedApplications',
         'rejectedApplications',
         'liveApplications',
+        'pendingBreakdown',
+        'completedBreakdown',
+        'rejectedBreakdown',
+        'liveBreakdown',
+        'pendingStatuses',
+        'completedStatuses',
+        'liveStatuses',
+        'rejectedStatuses',
         'users',
         'selectedUserId'
     ));
 }
 
 
-        public function deleteFile(Request $request, $id)
-        {
-            $application = Application::findOrFail($id);
+    public function deleteFile(Request $request, $id)
+    {
+        $application = Application::findOrFail($id);
 
-            $fileToDelete = trim($request->file);
-
-
-            // Delete physical file
-            if(Storage::disk('public')->exists($fileToDelete)){
-                Storage::disk('public')->delete($fileToDelete);
-            }
+        $fileToDelete = trim($request->file);
 
 
-            // Columns where files are stored
-            $fileColumns = [
-                'picture_id',
-                'inside_outside_pics',
-                'bill_upload',
-                'bank_statement',
-                'additional_uploads',
-                'meter_pictures'
-            ];
-
-
-            foreach($fileColumns as $column){
-
-                if(!empty($application->$column)){
-
-                    $files = array_filter(explode(',', $application->$column));
-
-
-                    // Remove deleted file path
-                    $files = array_filter($files, function($file) use ($fileToDelete){
-                        return trim($file) !== $fileToDelete;
-                    });
-
-
-                    // Update column
-                    $application->$column = !empty($files)
-                        ? implode(',', $files)
-                        : null;
-                }
-            }
-
-
-            $application->save();
-
-
-            return response()->json([
-                'success' => true,
-                'message' => 'File deleted successfully'
-            ]);
+        // Delete physical file
+        if (Storage::disk('public')->exists($fileToDelete)) {
+            Storage::disk('public')->delete($fileToDelete);
         }
+
+
+        // Columns where files are stored
+        $fileColumns = [
+            'picture_id',
+            'inside_outside_pics',
+            'bill_upload',
+            'bank_statement',
+            'additional_uploads',
+            'meter_pictures',
+            'water_pictures'
+
+        ];
+
+
+        foreach ($fileColumns as $column) {
+
+            if (!empty($application->$column)) {
+
+                $files = array_filter(explode(',', $application->$column));
+
+
+                // Remove deleted file path
+                $files = array_filter($files, function ($file) use ($fileToDelete) {
+                    return trim($file) !== $fileToDelete;
+                });
+
+
+                // Update column
+                $application->$column = !empty($files)
+                    ? implode(',', $files)
+                    : null;
+            }
+        }
+
+
+        $application->save();
+
+
+        return response()->json([
+            'success' => true,
+            'message' => 'File deleted successfully'
+        ]);
+    }
 
     private function normalizeServiceType(?string $serviceType): string
     {
@@ -455,11 +500,11 @@ class ApplicationController extends Controller
 
             DB::commit();
 
-             // Activity log for creating the application
+            // Activity log for creating the application
             activity()
-            ->causedBy(Auth::user())
-            ->performedOn($application)
-            ->log("Created application: {$application->application_num}");
+                ->causedBy(Auth::user())
+                ->performedOn($application)
+                ->log("Created application: {$application->application_num}");
 
 
             return back()->with('success', 'Application Submitted Successfully!');
@@ -470,36 +515,36 @@ class ApplicationController extends Controller
     }
 
 
-   public function edit($id)
-{
-    $application = Application::with('directors', 'meters')->findOrFail($id);
-    $serviceType = $this->normalizeServiceType($application->service_type);
+    public function edit($id)
+    {
+        $application = Application::with('directors', 'meters')->findOrFail($id);
+        $serviceType = $this->normalizeServiceType($application->service_type);
 
-    // Fetch only the meters associated with the application
-    $meters = $application->meters;
+        // Fetch only the meters associated with the application
+        $meters = $application->meters;
 
-    // Now filter the meters based on their type
-    $gasMeters = $meters->where('meter_type', 'gas')->values();
-    $electricityMeters = $meters->where('meter_type', 'electricity')->values();
+        // Now filter the meters based on their type
+        $gasMeters = $meters->where('meter_type', 'gas')->values();
+        $electricityMeters = $meters->where('meter_type', 'electricity')->values();
 
-    $view = match ($serviceType) {
-        'Card Machine' => 'backend.applications.edit.card_machine',
-        'Loan' => 'backend.applications.edit.loan',
-        'Open Banking' => 'backend.applications.edit.open_banking',
-        'Water' => 'backend.applications.edit.water',
-        'Broadband' => 'backend.applications.edit.broadband',
-        'Telecom' => 'backend.applications.edit.telecom',
-        'Gas' => 'backend.applications.edit.gas',
-        'Electricity' => 'backend.applications.edit.electricity',
-        'Electric Gas' => 'backend.applications.edit.electric_gas',
-        default => 'backend.applications.edit.loan',
-    };
+        $view = match ($serviceType) {
+            'Card Machine' => 'backend.applications.edit.card_machine',
+            'Loan' => 'backend.applications.edit.loan',
+            'Open Banking' => 'backend.applications.edit.open_banking',
+            'Water' => 'backend.applications.edit.water',
+            'Broadband' => 'backend.applications.edit.broadband',
+            'Telecom' => 'backend.applications.edit.telecom',
+            'Gas' => 'backend.applications.edit.gas',
+            'Electricity' => 'backend.applications.edit.electricity',
+            'Electric Gas' => 'backend.applications.edit.electric_gas',
+            default => 'backend.applications.edit.loan',
+        };
 
-    return view($view, array_merge(
-        ['application' => $application, 'gasMeters' => $gasMeters, 'electricityMeters' => $electricityMeters],
-        $this->getCommonStats()
-    ));
-}
+        return view($view, array_merge(
+            ['application' => $application, 'gasMeters' => $gasMeters, 'electricityMeters' => $electricityMeters],
+            $this->getCommonStats()
+        ));
+    }
 
 
     public function update(Request $request, $id)
@@ -536,11 +581,11 @@ class ApplicationController extends Controller
 
             DB::commit();
 
-               // Activity log for updating the application
-        activity()
-            ->causedBy(Auth::user())
-            ->performedOn($application)
-            ->log("Updated application: {$application->application_num}");
+            // Activity log for updating the application
+            activity()
+                ->causedBy(Auth::user())
+                ->performedOn($application)
+                ->log("Updated application: {$application->application_num}");
 
             // Redirect back with success message
             return back()->with('sweetalert', [
@@ -563,11 +608,11 @@ class ApplicationController extends Controller
     {
         $app = Application::findOrFail($id);
 
-          // Activity log for deleting the application
-          activity()
-        ->causedBy(Auth::user())
-        ->performedOn($app)
-        ->log("Deleted application: {$app->application_num}");
+        // Activity log for deleting the application
+        activity()
+            ->causedBy(Auth::user())
+            ->performedOn($app)
+            ->log("Deleted application: {$app->application_num}");
 
 
         $app->delete();
@@ -652,6 +697,7 @@ class ApplicationController extends Controller
         $this->handleFile($request, $app, 'bank_statement', $isCreate);
         $this->handleFile($request, $app, 'additional_uploads', $isCreate);
         $this->handleFile($request, $app, 'meter_pictures', $isCreate);
+        $this->handleFile($request, $app, 'water_pictures', $isCreate);
     }
 
     // private function handleFile(Request $request, Application $app, string $field, bool $isCreate, array $aliases = []): void
@@ -663,7 +709,7 @@ class ApplicationController extends Controller
     //                 Storage::disk('public')->delete($app->{$field});
     //             }
     //             // $app->{$field} = $request->file($name)->store('kyc', 'public');
-                
+
     //             //   dd($request->file($name));
     //       $file = $request->file($name);
 
@@ -694,54 +740,54 @@ class ApplicationController extends Controller
 
 
     private function handleFile(Request $request, Application $app, string $field, bool $isCreate, array $aliases = []): void
-{
-    $allNames = array_merge([$field], $aliases);
+    {
+        $allNames = array_merge([$field], $aliases);
 
-    foreach ($allNames as $name) {
+        foreach ($allNames as $name) {
 
-        if ($request->hasFile($name)) {
+            if ($request->hasFile($name)) {
 
-            $file = $request->file($name);
+                $file = $request->file($name);
 
-            $newFiles = [];
-
-
-            $files = is_array($file) ? $file : [$file];
+                $newFiles = [];
 
 
-            foreach ($files as $item) {
-
-                $originalName = $item->getClientOriginalName();
-
-               $uniqueName = $originalName;
+                $files = is_array($file) ? $file : [$file];
 
 
-                $path = $item->storeAs(
-                    'kyc',
-                    $uniqueName,
-                    'public'
-                );
+                foreach ($files as $item) {
+
+                    $originalName = $item->getClientOriginalName();
+
+                    $uniqueName = $originalName;
 
 
-                $newFiles[] = $path;
+                    $path = $item->storeAs(
+                        'kyc',
+                        $uniqueName,
+                        'public'
+                    );
+
+
+                    $newFiles[] = $path;
+                }
+
+
+                // Keep old files
+                $oldFiles = [];
+
+                if (!$isCreate && !empty($app->{$field})) {
+                    $oldFiles = explode(',', $app->{$field});
+                }
+
+
+                $app->{$field} = implode(',', array_merge($oldFiles, $newFiles));
+
+
+                return;
             }
-
-
-            // Keep old files
-            $oldFiles = [];
-
-            if (!$isCreate && !empty($app->{$field})) {
-                $oldFiles = explode(',', $app->{$field});
-            }
-
-
-            $app->{$field} = implode(',', array_merge($oldFiles, $newFiles));
-
-
-            return;
         }
     }
-}
 
 
     private function syncDirectors(Application $application, array $data): void
@@ -859,15 +905,15 @@ class ApplicationController extends Controller
         $application->status = $request->input('status');
         $application->save();
 
-         // Log the status change activity
-         activity()
-        ->causedBy(Auth::user())  // The user performing the action
-        ->performedOn($application)  // The application being updated
-        ->withProperties([
-            'old_status' => $oldStatus,
-            'new_status' => $application->status,
-        ])  // Log the old and new status
-        ->log("Updated status for application: {$application->application_num} from '{$oldStatus}' to '{$application->status}'");
+        // Log the status change activity
+        activity()
+            ->causedBy(Auth::user())  // The user performing the action
+            ->performedOn($application)  // The application being updated
+            ->withProperties([
+                'old_status' => $oldStatus,
+                'new_status' => $application->status,
+            ])  // Log the old and new status
+            ->log("Updated status for application: {$application->application_num} from '{$oldStatus}' to '{$application->status}'");
 
 
         return response()->json([
@@ -895,65 +941,63 @@ class ApplicationController extends Controller
     }
 
 
-public function updateCommission(Request $request, $id)
-{
-    $request->validate([
-        'commission_amount' => ['required', 'numeric', 'min:0'],
-        'mature_date' => ['nullable', 'date'],
-        'paid_date' => ['nullable', 'date'],
-    ]);
+    public function updateCommission(Request $request, $id)
+    {
+        $request->validate([
+            'commission_amount' => ['required', 'numeric', 'min:0'],
+            'mature_date' => ['nullable', 'date'],
+            'paid_date' => ['nullable', 'date'],
+        ]);
 
-    $application = Application::findOrFail($id);
+        $application = Application::findOrFail($id);
 
-    // Check if commission already existed
-    $oldCommission = $application->commission_amount;
-    $oldMatureDate = $application->mature_date;
-    $oldPaidDate = $application->paid_date;
+        // Check if commission already existed
+        $oldCommission = $application->commission_amount;
+        $oldMatureDate = $application->mature_date;
+        $oldPaidDate = $application->paid_date;
 
-    // Update values
-    $application->commission_amount = $request->commission_amount;
-    $application->mature_date = $request->mature_date;
-    $application->paid_date = $request->paid_date;
+        // Update values
+        $application->commission_amount = $request->commission_amount;
+        $application->mature_date = $request->mature_date;
+        $application->paid_date = $request->paid_date;
 
-    // Agar commission pehle finalize/transferred tha
-    // aur admin ne kuch change kiya hai to status reset ho jaye
-    $hasChanged =
-        $oldCommission != $request->commission_amount ||
-        $oldMatureDate != $request->mature_date ||
-        $oldPaidDate != $request->paid_date;
+        // Agar commission pehle finalize/transferred tha
+        // aur admin ne kuch change kiya hai to status reset ho jaye
+        $hasChanged =
+            $oldCommission != $request->commission_amount ||
+            $oldMatureDate != $request->mature_date ||
+            $oldPaidDate != $request->paid_date;
 
-    if ($hasChanged) {
-        $application->payout_status = 'pending';
-        $application->payout_finalized_at = null;
-        $application->payout_finalized_by = null;
+        if ($hasChanged) {
+            $application->payout_status = 'pending';
+            $application->payout_finalized_at = null;
+            $application->payout_finalized_by = null;
+        }
+
+        $application->save();
+
+        return back()->with('success', 'Commission updated successfully.');
     }
 
-    $application->save();
-
-    return back()->with('success', 'Commission updated successfully.');
-}
 
 
 
+    public function finalizePayout($id)
+    {
+        $application = Application::where('user_id', auth()->id())
+            ->whereNotNull('commission_amount')
+            ->findOrFail($id);
 
-public function finalizePayout($id)
-{
-    $application = Application::where('user_id', auth()->id())
-        ->whereNotNull('commission_amount')
-        ->findOrFail($id);
+        if ($application->payout_status === 'transferred') {
+            return back()->with('error', 'This payout is already transferred.');
+        }
 
-    if ($application->payout_status === 'transferred') {
-        return back()->with('error', 'This payout is already transferred.');
+        $application->payout_status = 'transferred';
+        $application->paid_date = now()->toDateString();
+        $application->payout_finalized_at = now();
+        $application->payout_finalized_by = auth()->id();
+        $application->save();
+
+        return back()->with('success', 'Payout finalized successfully.');
     }
-
-    $application->payout_status = 'transferred';
-    $application->paid_date = now()->toDateString();
-    $application->payout_finalized_at = now();
-    $application->payout_finalized_by = auth()->id();
-    $application->save();
-
-    return back()->with('success', 'Payout finalized successfully.');
-}
-
-
 }
